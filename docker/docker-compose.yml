@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  gcb:
+    image: local/yiisoftware/yii2-php:7.3-apache
+    volumes:
+      - ../:/app
+    ports:
+      - '8000:80'
+    networks:
+      - backend
+    environment:
+      DB_HOST: 'gcb_db'
+      DB_NAME: 'gcb'
+    labels:
+     - "traefik.backend=gcb"
+     - "traefik.frontend.rule=Host:api.gcb.local"
+     - "traefik.port=80"
+
+  gcb_db:
+    image: mariadb:10.4
+    restart: always
+    volumes:
+     - ./../../dbdata:/var/lib/mysql
+    environment:
+     MYSQL_ROOT_PASSWORD: root
+    ports:
+     - 3306:3306
+    networks:
+      - backend
+
+##### PROXY
+
+  proxy:
+    image: traefik:1.7.6
+    restart: always
+    command: --web --docker --docker.domain=local
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/proxy/traefik.toml:/etc/traefik/traefik.toml
+    labels:
+     - "traefik.backend=proxy"
+     - "traefik.frontend.rule=Host:proxy.local"
+     - "traefik.port=8080"
+    networks:
+      - backend
+     
+networks:
+  backend:

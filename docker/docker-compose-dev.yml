@@ -1,0 +1,6 @@
+version: '2'
+
+services:
+  gcb: 
+   environment:
+       RUNMODE: dev
