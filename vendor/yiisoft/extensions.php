@@ -106,4 +106,13 @@ return array (
     ),
     'bootstrap' => 'schmunk42\\giiant\\Bootstrap',
   ),
+  'msheng/yii2-jwt' => 
+  array (
+    'name' => 'msheng/yii2-jwt',
+    'version' => '1.0.1.0',
+    'alias' => 
+    array (
+      '@msheng/JWT' => $vendorDir . '/msheng/yii2-jwt/src',
+    ),
+  ),
 );

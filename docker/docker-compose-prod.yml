@@ -4,4 +4,4 @@ services:
   gcb: 
    environment:
        RUNMODE: prod
-       SERVICIO_LUGAR: app\components\ServicioLugar
+       SERVICIO_REGISTRAL: app\components\ServicioRegistral

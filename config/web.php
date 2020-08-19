@@ -31,6 +31,12 @@ $config = [
             
         ],
         
+        /************** Componente interoperable *************/
+        'registral'=> [
+            'class' => $params['servicioRegistral'],//'app\components\ServicioLugar'
+        ],
+        /************* Fin Componente interoperable *************/
+        
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -64,6 +70,18 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                 ##### Interoperabilidad con Registral #####
+                [   #persona
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'persona', 
+                    'extraPatterns' => [
+                        'GET buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
+                        'OPTIONS buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
+                        'PUT contacto/{id}' => 'contacto',
+                        'OPTIONS contacto/{id}' => 'contacto',
+                    ],
+                    'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
+                ],
             ],
         ],
         
