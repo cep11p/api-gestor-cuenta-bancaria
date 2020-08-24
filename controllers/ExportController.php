@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\api\controllers;
+namespace app\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -7,10 +7,7 @@ use yii\web\Response;
 use Yii;
 use yii\base\Exception;
 
-use app\models\Recurso;
 
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 class ExportController extends ActiveController{
     
@@ -32,24 +29,24 @@ class ExportController extends ActiveController{
 
         $behaviors['authenticator'] = $auth;
 
-        $behaviors['authenticator'] = [
-            'class' => \yii\filters\auth\HttpBearerAuth::className(),
-        ];
+//        $behaviors['authenticator'] = [
+//            'class' => \yii\filters\auth\HttpBearerAuth::className(),
+//        ];
 
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
         $behaviors['authenticator']['except'] = ['options'];     
 
-        $behaviors['access'] = [
-            'class' => \yii\filters\AccessControl::className(),
-            'only' => ['exportar-prestaciones-xls'],
-            'rules' => [
-                [
-                    'allow' => true,
-                    'actions' => ['exportar-prestaciones-xls'],
-                    'roles' => ['exportar_prestacion'],
-                ],
-            ]
-        ];
+//        $behaviors['access'] = [
+//            'class' => \yii\filters\AccessControl::className(),
+//            'only' => ['exportar-prestaciones-xls'],
+//            'rules' => [
+//                [
+//                    'allow' => true,
+//                    'actions' => ['exportar-prestaciones-xls'],
+//                    'roles' => ['exportar_prestacion'],
+//                ],
+//            ]
+//        ];
 
 
 
@@ -83,32 +80,25 @@ class ExportController extends ActiveController{
 
     }
     
-//    public function actionExportarPrestacionesPdf()
-//    {
-//        $resultado['message']='Se exportan todas la prestaciones';
-//        $transaction = Yii::$app->db->beginTransaction();
-//        
-//        try{
-//            
-//
-//            $spreadsheet = new Spreadsheet();
-//            $sheet = $spreadsheet->getActiveSheet();
-//            $sheet->setCellValue('A1', 'Hello World !');
-//            
-//            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//            header('Content-Disposition: attachment;filename="hola.pdf"');
-//            header('Cache-Control: max-age=0');
-//            
-//            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
-//            
-//            $writer->save('php://output');
-//            exit();
-//        }catch (Exception $exc) {
-//            $transaction->rollBack();
-//            $mensaje =$exc->getMessage();
-//            throw new \yii\web\HttpException(400, $mensaje);
-//        }
-//
-//    }
+    public function actionExportarTxt()
+    {
+        $resultado['message']='Se exportan todas la prestaciones';
+        $transaction = Yii::$app->db->beginTransaction();
+        
+        try{
+
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="hola.txt"');
+            header('Cache-Control: max-age=0');
+                            
+            print_r('hola');
+            exit();
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+
+    }
     
 }

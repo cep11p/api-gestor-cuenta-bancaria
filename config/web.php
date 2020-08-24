@@ -82,6 +82,14 @@ $config = [
                     ],
                     'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
                 ],
+                [   #Export
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/export', 
+                    'extraPatterns' => [
+                        'GET exportarTxt' => 'exportar-txt',
+                        'OPTIONS exportarTxt' => 'exportar-txt',
+                    ], 
+                ],
             ],
         ],
         
