@@ -70,6 +70,10 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'tipo-cuenta', 
+                ],
                  ##### Interoperabilidad con Registral #####
                 [   #persona
                     'class' => 'yii\rest\UrlRule',

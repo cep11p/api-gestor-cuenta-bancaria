@@ -13,8 +13,10 @@ use Yii;
  * @property string $cbu
  * @property string $personaid
  * @property integer $bancoid
+ * @property integer $tipo_cuentaid
  *
  * @property \app\models\Banco $banco
+ * @property \app\models\TipoCuenta $tipoCuenta
  * @property string $aliasModel
  */
 abstract class Cuenta extends \yii\db\ActiveRecord
@@ -36,12 +38,13 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'cbu', 'bancoid'], 'required'],
-            [['id', 'bancoid'], 'integer'],
+            [['id', 'cbu', 'bancoid', 'tipo_cuentaid'], 'required'],
+            [['id', 'bancoid', 'tipo_cuentaid'], 'integer'],
             [['cbu', 'personaid'], 'string', 'max' => 45],
             [['cbu'], 'unique'],
             [['id'], 'unique'],
-            [['bancoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Banco::className(), 'targetAttribute' => ['bancoid' => 'id']]
+            [['bancoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Banco::className(), 'targetAttribute' => ['bancoid' => 'id']],
+            [['tipo_cuentaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoCuenta::className(), 'targetAttribute' => ['tipo_cuentaid' => 'id']]
         ];
     }
 
@@ -55,6 +58,7 @@ abstract class Cuenta extends \yii\db\ActiveRecord
             'cbu' => 'Cbu',
             'personaid' => 'Personaid',
             'bancoid' => 'Bancoid',
+            'tipo_cuentaid' => 'Tipo Cuentaid',
         ];
     }
 
@@ -64,6 +68,14 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     public function getBanco()
     {
         return $this->hasOne(\app\models\Banco::className(), ['id' => 'bancoid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoCuenta()
+    {
+        return $this->hasOne(\app\models\TipoCuenta::className(), ['id' => 'tipo_cuentaid']);
     }
 
 
