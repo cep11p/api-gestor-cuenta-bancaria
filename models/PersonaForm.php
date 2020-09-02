@@ -35,7 +35,7 @@ class PersonaForm extends Model
     {
         return [
                         
-            [['nombre', 'apellido','nro_documento','fecha_nacimiento'], 'required'],
+            [['nombre', 'apellido','nro_documento','fecha_nacimiento','cuil'], 'required'],
             [['estado_civilid', 'sexoid', 'tipo_documentoid', 'nucleoid', 'situacion_laboralid', 'generoid','id'], 'integer'],
             [['nombre', 'apellido', 'nro_documento', 'telefono', 'celular'], 'string', 'max' => 45],
             [['cuil'], 'string', 'max' => 20],
@@ -72,7 +72,7 @@ class PersonaForm extends Model
      * @param bool $safeOnly
      * @throws Exception
      */
-    public function setAttributes($param) {
+    public function setAttributes($param, $safeOnly = true) {
         /*** Persona ***/
         parent::setAttributes($param);
         
@@ -126,7 +126,7 @@ class PersonaForm extends Model
     }
     
     public function setAttributesAndSave($param = array()) {
-        
+        $arrayErrors = [];
         
         ####### Instanciamos atributos de PersonaForm #########
         $this->setAttributes($param);

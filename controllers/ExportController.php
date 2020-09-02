@@ -11,7 +11,7 @@ use yii\base\Exception;
 
 class ExportController extends ActiveController{
     
-    public $modelClass = 'app\models\Recurso';
+    public $modelClass = 'app\models\export';
     
     public function behaviors()
     {
@@ -64,35 +64,38 @@ class ExportController extends ActiveController{
     
     }
     
-    public function actionExportarPrestacionesXls()
-    {
-        $resultado['message']='Se exportan todas la prestaciones';
-        $params = \Yii::$app->request->queryParams;
-
-        $transaction = Yii::$app->db->beginTransaction();
-        
-        try{
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
-        }
-
-    }
+//    public function actionExportarPrestacionesXls()
+//    {
+//        $resultado['message']='Se exportan todas la prestaciones';
+//        $params = \Yii::$app->request->queryParams;
+//        
+//        $transaction = Yii::$app->db->beginTransaction();        
+//        try{
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(400, $mensaje);
+//        }
+//
+//    }
     
-    public function actionExportarTxt()
+    public function actionCtaSaldo()
     {
+        $params = \Yii::$app->request->post();
+        
         $resultado['message']='Se exportan todas la prestaciones';
         $transaction = Yii::$app->db->beginTransaction();
         
         try{
-
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="hola.txt"');
-            header('Cache-Control: max-age=0');
-                            
-            print_r('hola');
-            exit();
+            
+            
+            $ctaSaldo = \app\models\Cuenta::crearCtaSaldo($params);
+//            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+//            header('Content-Disposition: attachment;filename="hola.txt"');
+//            header('Cache-Control: max-age=0');
+//                            
+//            print_r('hola');
+//            exit();
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
