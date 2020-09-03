@@ -77,6 +77,14 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'tipo-cuenta', 
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'sucursal', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'sub-sucursal', 
+                ],
                  ##### Interoperabilidad con Registral #####
                 [   #persona
                     'class' => 'yii\rest\UrlRule',
