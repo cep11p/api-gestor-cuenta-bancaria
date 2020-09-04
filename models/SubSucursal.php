@@ -31,4 +31,14 @@ class SubSucursal extends BaseSubSucursal
             ]
         );
     }
+    
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'nombre'=> function($model){
+                return $model->localidad. ' (Suc. '.$this->sucursal->nombre.')';
+            }
+        ]);
+        
+    }
 }
