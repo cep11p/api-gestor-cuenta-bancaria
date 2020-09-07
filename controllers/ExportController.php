@@ -90,12 +90,12 @@ class ExportController extends ActiveController{
             
             
             $ctaSaldo = \app\models\Cuenta::crearCtaSaldo($params);
-//            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-//            header('Content-Disposition: attachment;filename="hola.txt"');
-//            header('Cache-Control: max-age=0');
+            header('Content-Type: txt');
+            header('Content-Disposition: attachment;filename="CTASLDO.txt"');
+            header('Cache-Control: max-age=0');
 //                            
 //            print_r('hola');
-//            exit();
+            exit();
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
