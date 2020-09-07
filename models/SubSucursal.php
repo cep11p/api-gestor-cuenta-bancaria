@@ -37,6 +37,9 @@ class SubSucursal extends BaseSubSucursal
         return ArrayHelper::merge(parent::fields(), [
             'nombre'=> function($model){
                 return $model->localidad. ' (Suc. '.$this->sucursal->nombre.')';
+            },
+            'sucursal_codigo'=> function($model){
+                return $this->sucursal->codigo;
             }
         ]);
         

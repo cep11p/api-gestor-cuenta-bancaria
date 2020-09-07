@@ -74,12 +74,13 @@ class Cuenta extends BaseCuenta
             $localidad = str_pad(strtoupper($value['lugar']['localidad']), 30);
             $codigo_postal = str_pad(str_pad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
             $cuil = str_pad('008'.$value['cuil'].str_pad($value['saldo'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
-            $cuil = str_pad('008'.$value['cuil'].str_pad($value['saldo'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
+            $sucursal = str_pad(date('dmY').$value['sucursal_codigo'], 23); //tipoincripcion.cuil.saldo
+            $sucursal_codigo_postal = str_pad(str_pad($value['sucursal_codigo_postal'], 5, "0", STR_PAD_LEFT), 30); //tipoincripcion.cuil.saldo
+            die();
             
         }
         
                 
-        print_r($cuil);die();
         return $resultado;
     }
 }
