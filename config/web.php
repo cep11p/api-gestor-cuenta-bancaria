@@ -16,7 +16,8 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '2MhN5oRwO3iz0AAq-FGXCQe-y_YsaMl6',
             'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
+//                'application/json' => 'yii\web\JsonParser',
+                'multipart/form-data' => 'yii\web\MultipartFormDataParser'
             ]
         ],
         
@@ -103,6 +104,14 @@ $config = [
                     'extraPatterns' => [
                         'POST CtaSaldo' => 'cta-saldo',
                         'OPTIONS CtaSaldo' => 'cta-saldo',
+                    ], 
+                ],
+                [   #Import
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/import', 
+                    'extraPatterns' => [
+                        'POST CtaSaldo' => 'cta-bps',
+                        'OPTIONS CtaSaldo' => 'cta-bps',
                     ], 
                 ],
             ],

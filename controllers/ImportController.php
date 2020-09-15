@@ -9,9 +9,9 @@ use yii\base\Exception;
 
 
 
-class ExportController extends ActiveController{
+class ImportController extends ActiveController{
     
-    public $modelClass = 'app\models\export';
+    public $modelClass = 'app\models\import';
     
     public function behaviors()
     {
@@ -64,26 +64,16 @@ class ExportController extends ActiveController{
     
     }
     
-    public function actionCtaSaldo()
+    public function actionCtaBps()
     {
-        $params = \Yii::$app->request->post();
+//        $file = Yii::$app->request->getBodyParams();        
+//        print_r($_FILES);die();
         
-        $resultado['message']='Se exportan todas la prestaciones';
-        $transaction = Yii::$app->db->beginTransaction();
+        $model = new \app\models\CtaBps();
+        $model->file = \yii\web\UploadedFile::getInstanceByName('ctabps');
+        $model->importar();
         
-        try{            
-            
-            $ctaSaldo = \app\models\Cuenta::crearCtaSaldo($params);
-            header('Content-Type: txt');
-            header('Content-Disposition: attachment;filename="CTASLDO.txt"');
-            header('Cache-Control: max-age=0');
-
-            exit();
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
-        }
+        exit();
 
     }
     
