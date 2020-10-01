@@ -48,9 +48,10 @@ class ServicioRegistral extends Component implements IServicioRegistral
             $response = $client->request('POST', 'http://registral/api/personas', ['json' => $data,'headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::error($respuesta);
-            return $respuesta['data']['id'];
+            return intval($respuesta['data']['id']);
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                 $resultado = json_decode($e->getResponse()->getBody()->getContents());
+                
                 \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
                 \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
                 return $resultado;

@@ -173,6 +173,49 @@ class PersonaForm extends Model
         }
         
     }
+    /**
+     * Se registra persona sin validaciones locales, es decir que, las validaciones son hechas por el sistema registral
+     * @param array $param
+     * @throws Exception
+     * @return id
+     */
+    static function registrarSinValidar($param = array()) {
+        $id = '';
+        
+        ####### Instanciamos atributos de PersonaForm #########
+        $this->setAttributes($param);
+        
+        ####### Instanciamos atributos de LugarForm #########
+        if(isset($param['lugar'])){
+            $lugarForm = new LugarForm();
+            $lugarForm->setAttributes($param['lugar']);
+        }        
+        
+        #Preparamos los parametros para interoperar con registral
+        $param_persona = $this->toArray();
+        $param_persona['estudios'] = (isset($param['estudios']))?$param['estudios']:array();
+        $param_persona['lista_red_social'] = (isset($param['lista_red_social']))?$param['lista_red_social']:array();
+        $param_persona['lugar'] = $lugarForm->toArray();
+        
+        /*************** Ejecutamos la interoperabilidad ************************/
+        //Si es una persona con id entonces ya existe en Registral
+        if(isset($this->id) && !empty($this->id)){
+            $resultado = \Yii::$app->registral->actualizarPersona($param_persona);
+            if(isset($resultado->message)){
+                throw new Exception($resultado->message);
+            }
+            $id = intval($resultado);
+            
+        }else{
+            $resultado = \Yii::$app->registral->crearPersona($param_persona);
+            if(isset($resultado->message)){
+                throw new Exception($resultado->message);
+            }
+            $id = intval($resultado);
+        }
+        
+        return $id;
+    }
     
     /**
      * Se instancia un estudio y se valida y luego se serializa como 
@@ -294,7 +337,12 @@ class PersonaForm extends Model
         }
     }
     
-    public function buscarPersonaEnRegistral($param){
+    /**
+     * 
+     * @param array $param
+     * @return array
+     */
+    static function buscarPersonaEnRegistral($param){
         $resultado = array();
         $response = \Yii::$app->registral->buscarPersona($param); 
         

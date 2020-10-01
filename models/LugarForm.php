@@ -76,7 +76,7 @@ class LugarForm extends Model
      * que vamos a chequear si coinciden los atributos
      * @return array $resultado se devuelve una coleccion de localidades;
      */
-    public function buscarLocalidadEnSistemaLugar($params = null) {
+    static function buscarLocalidadEnSistemaLugar($params = null) {
         
         $resultado = null;
         if(isset($params)){

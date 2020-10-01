@@ -11,11 +11,14 @@ use Yii;
  *
  * @property integer $id
  * @property string $cbu
- * @property string $personaid
+ * @property integer $personaid
  * @property integer $bancoid
  * @property integer $tipo_cuentaid
+ * @property integer $sub_sucursalid
+ * @property string $create_at
  *
  * @property \app\models\Banco $banco
+ * @property \app\models\SubSucursal $subSucursal
  * @property \app\models\TipoCuenta $tipoCuenta
  * @property string $aliasModel
  */
@@ -38,12 +41,13 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'cbu', 'bancoid', 'tipo_cuentaid'], 'required'],
-            [['id', 'bancoid', 'tipo_cuentaid'], 'integer'],
-            [['cbu', 'personaid'], 'string', 'max' => 45],
+            [['cbu', 'personaid', 'bancoid', 'tipo_cuentaid'], 'required'],
+            [['personaid', 'bancoid', 'tipo_cuentaid', 'sub_sucursalid'], 'integer'],
+            [['create_at'], 'safe'],
+            [['cbu'], 'string', 'max' => 45],
             [['cbu'], 'unique'],
-            [['id'], 'unique'],
             [['bancoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Banco::className(), 'targetAttribute' => ['bancoid' => 'id']],
+            [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']],
             [['tipo_cuentaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoCuenta::className(), 'targetAttribute' => ['tipo_cuentaid' => 'id']]
         ];
     }
@@ -59,7 +63,22 @@ abstract class Cuenta extends \yii\db\ActiveRecord
             'personaid' => 'Personaid',
             'bancoid' => 'Bancoid',
             'tipo_cuentaid' => 'Tipo Cuentaid',
+            'sub_sucursalid' => 'Sub Sucursalid',
+            'create_at' => 'Create At',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return array_merge(parent::attributeHints(), [
+            'sub_sucursalid' => ' Nos indica de donde fue dado de alta
+',
+            'create_at' => ' Nos indica de donde fue dado de alta
+',
+        ]);
     }
 
     /**
@@ -68,6 +87,14 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     public function getBanco()
     {
         return $this->hasOne(\app\models\Banco::className(), ['id' => 'bancoid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubSucursal()
+    {
+        return $this->hasOne(\app\models\SubSucursal::className(), ['id' => 'sub_sucursalid']);
     }
 
     /**

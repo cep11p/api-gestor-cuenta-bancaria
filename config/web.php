@@ -39,6 +39,9 @@ $config = [
         'registral'=> [
             'class' => $params['servicioRegistral'],//'app\components\ServicioLugar'
         ],
+        'lugar'=> [
+            'class' => $params['servicioLugar'],
+        ],
         /************* Fin Componente interoperable *************/
         
         'cache' => [
@@ -119,6 +122,19 @@ $config = [
         
     ],
     'params' => $params,
+    
+    'modules'=>[
+        
+        "audit"=>[
+            "class"=>"bedezign\yii2\audit\Audit",
+            "ignoreActions" =>['audit/*', 'debug/*'],
+            'userIdentifierCallback' => ['app\components\ServicioUsuarios', 'userIdentifierCallback'],
+            'userFilterCallback' => ['app\components\ServicioUsuarios', 'userFilterCallback'],
+            'accessIps'=>null,
+            'accessUsers'=>null,
+            'accessRoles'=>null
+            ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

@@ -28,13 +28,25 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
-    /*
-    'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
-        ],
+    
+    'modules' => [
+        "audit"=>[
+            "class"=>"bedezign\yii2\audit\Audit",
+        ]
     ],
-    */
+
+    'controllerMap' => [
+//        'fixture' => [ // Fixture generation command line.
+//            'class' => 'yii\faker\FixtureController',
+//        ],
+        'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationNamespaces' => [
+                'bedezign\yii2\audit\migrations',
+            ],
+        ]
+    ],
+    
 ];
 
 if (YII_ENV_DEV) {

@@ -21,7 +21,8 @@
         "schmunk42/yii2-giiant": "@stable",
         "guzzlehttp/guzzle": "^7.0",
         "msheng/yii2-jwt": "~1.0.0",
-        "phpoffice/phpspreadsheet": "^1.14"
+        "phpoffice/phpspreadsheet": "^1.14",
+        "bedezign/yii2-audit": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

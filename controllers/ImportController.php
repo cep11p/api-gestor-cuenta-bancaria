@@ -66,12 +66,20 @@ class ImportController extends ActiveController{
     
     public function actionCtaBps()
     {
-//        $file = Yii::$app->request->getBodyParams();        
-//        print_r($_FILES);die();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model = new \app\models\CtaBps();
+            $model->file = \yii\web\UploadedFile::getInstanceByName('ctabps');
+            $resultado = $model->importar();
+            $transaction->commit();
+            
+            return $resultado;
+           
+        }catch (Exception $exc) {
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
         
-        $model = new \app\models\CtaBps();
-        $model->file = \yii\web\UploadedFile::getInstanceByName('ctabps');
-        $model->importar();
         
         exit();
 
