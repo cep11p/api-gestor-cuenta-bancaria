@@ -16,8 +16,8 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '2MhN5oRwO3iz0AAq-FGXCQe-y_YsaMl6',
             'parsers' => [
-//                'application/json' => 'yii\web\JsonParser',
-                'multipart/form-data' => 'yii\web\MultipartFormDataParser'
+                'application/json' => 'yii\web\JsonParser',
+//                'multipart/form-data' => 'yii\web\MultipartFormDataParser'
             ]
         ],
         
@@ -48,8 +48,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'identityClass' => 'app\models\ApiUser',
+            'enableSession' => false,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -117,6 +117,16 @@ $config = [
                         'OPTIONS CtaSaldo' => 'cta-bps',
                     ], 
                 ],
+                /****** USUARIOS *******/
+                [   
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'usuario',   
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'OPTIONS login' => 'options'
+                        //'GET mostrar/{id}' => 'mostrar',
+                    ],          
+                ],
             ],
         ],
         
@@ -124,7 +134,6 @@ $config = [
     'params' => $params,
     
     'modules'=>[
-        
         "audit"=>[
             "class"=>"bedezign\yii2\audit\Audit",
             "ignoreActions" =>['audit/*', 'debug/*'],
@@ -133,7 +142,12 @@ $config = [
             'accessIps'=>null,
             'accessUsers'=>null,
             'accessRoles'=>null
-            ],
+        ],
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'enableConfirmation'=>false,
+            'admins'=>['admin']
+        ],
     ],
 ];
 
