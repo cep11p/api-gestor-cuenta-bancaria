@@ -12,9 +12,12 @@ use Yii;
  * @property integer $id
  * @property double $monto
  * @property string $create_at
- * @property integer $personaid
  * @property string $proposito
  * @property string $observacion
+ * @property integer $sub_sucursalid
+ * @property integer $personaid
+ *
+ * @property \app\models\SubSucursal $subSucursal
  * @property string $aliasModel
  */
 abstract class Prestacion extends \yii\db\ActiveRecord
@@ -36,11 +39,12 @@ abstract class Prestacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['monto', 'create_at', 'personaid'], 'required'],
+            [['monto', 'create_at', 'sub_sucursalid', 'personaid'], 'required'],
             [['monto'], 'number'],
             [['create_at'], 'safe'],
-            [['personaid'], 'integer'],
-            [['proposito', 'observacion'], 'string']
+            [['proposito', 'observacion'], 'string'],
+            [['sub_sucursalid', 'personaid'], 'integer'],
+            [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']]
         ];
     }
 
@@ -53,10 +57,19 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             'id' => 'ID',
             'monto' => 'Monto',
             'create_at' => 'Create At',
-            'personaid' => 'Personaid',
             'proposito' => 'Proposito',
             'observacion' => 'Observacion',
+            'sub_sucursalid' => 'Sub Sucursalid',
+            'personaid' => 'Personaid',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubSucursal()
+    {
+        return $this->hasOne(\app\models\SubSucursal::className(), ['id' => 'sub_sucursalid']);
     }
 
 
