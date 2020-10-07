@@ -16,6 +16,7 @@ use Yii;
  * @property string $observacion
  * @property integer $sub_sucursalid
  * @property integer $personaid
+ * @property integer $estado
  *
  * @property \app\models\SubSucursal $subSucursal
  * @property string $aliasModel
@@ -43,7 +44,7 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             [['monto'], 'number'],
             [['create_at'], 'safe'],
             [['proposito', 'observacion'], 'string'],
-            [['sub_sucursalid', 'personaid'], 'integer'],
+            [['sub_sucursalid', 'personaid', 'estado'], 'integer'],
             [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']]
         ];
     }
@@ -61,7 +62,20 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'sub_sucursalid' => 'Sub Sucursalid',
             'personaid' => 'Personaid',
+            'estado' => 'Estado',
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return array_merge(parent::attributeHints(), [
+            'estado' => '0 - Sin CBU
+1 - Con CBU
+2 - En tesoreria',
+        ]);
     }
 
     /**
