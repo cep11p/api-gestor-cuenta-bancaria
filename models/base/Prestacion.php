@@ -74,7 +74,8 @@ abstract class Prestacion extends \yii\db\ActiveRecord
         return array_merge(parent::attributeHints(), [
             'estado' => '0 - Sin CBU
 1 - Con CBU
-2 - En tesoreria',
+2 - En tesoreria
+3 - Preparado para exportar en Ctasldo.txt',
         ]);
     }
 
