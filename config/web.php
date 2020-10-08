@@ -83,6 +83,10 @@ $config = [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'prestacion', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'sucursal', 
                 ],
                 [

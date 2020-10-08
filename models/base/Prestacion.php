@@ -17,6 +17,7 @@ use Yii;
  * @property integer $sub_sucursalid
  * @property integer $personaid
  * @property integer $estado
+ * @property string $fecha_ingreso
  *
  * @property \app\models\SubSucursal $subSucursal
  * @property string $aliasModel
@@ -40,9 +41,9 @@ abstract class Prestacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['monto', 'create_at', 'sub_sucursalid', 'personaid'], 'required'],
+            [['monto', 'create_at', 'sub_sucursalid', 'personaid', 'fecha_ingreso'], 'required'],
             [['monto'], 'number'],
-            [['create_at'], 'safe'],
+            [['create_at', 'fecha_ingreso'], 'safe'],
             [['proposito', 'observacion'], 'string'],
             [['sub_sucursalid', 'personaid', 'estado'], 'integer'],
             [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']]
@@ -63,6 +64,7 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             'sub_sucursalid' => 'Sub Sucursalid',
             'personaid' => 'Personaid',
             'estado' => 'Estado',
+            'fecha_ingreso' => 'Fecha Ingreso',
         ];
     }
 
@@ -74,8 +76,9 @@ abstract class Prestacion extends \yii\db\ActiveRecord
         return array_merge(parent::attributeHints(), [
             'estado' => '0 - Sin CBU
 1 - Con CBU
-2 - En tesoreria
-3 - Preparado para exportar en Ctasldo.txt',
+2 - En tesoreria',
+            'fecha_ingreso' => 'Esta fecha nos indica cuando fue la solicitud de esta prestacion
+',
         ]);
     }
 
