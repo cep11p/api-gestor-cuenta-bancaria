@@ -1,8 +1,9 @@
 <?php
 
 /**** Para mostrar listado ****/
-/**
+/** Se muestra un listado de sub-sucursales, esta misma tambien puede filtrarse por todos sus parametros. Pero hay un filtrado especial, se puede filtrar por ids
 * @url http://api.gcb.local/sub-sucursales
+* @url http://api.gcb.local/sub-sucursales?ids='1,2,3,4'
 * @method GET
 * @arrayReturn
  * [
