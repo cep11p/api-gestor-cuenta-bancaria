@@ -74,6 +74,26 @@
         "sucursal_codigo_postal": "8500"
     }
 ]
+ * @return
+[ 
+    [cant_registros] => 3
+    [errors] => []
+]
+ * @return error
+[
+    [cant_registros] => 2
+    [errors] => [
+        [0] => [
+                [sub_sucursalid] => Array
+                    (
+                        [0] => Sub Sucursalid is invalid.
+                    )
+
+                [persona] => Victoria Margarita González cuil:20238512669
+            ]
+    ]
+
+]
 **/
 
 /**** Para modificar*****
