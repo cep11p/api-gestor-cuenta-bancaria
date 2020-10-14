@@ -73,12 +73,38 @@ class ExportController extends ActiveController{
         
         try{            
             
-            $ctaSaldo = \app\models\Cuenta::crearCtaSaldo($params);
+            $ctaSaldo = \app\models\Export::exportCtaSaldo($params);
             header('Content-Type: txt');
             header('Content-Disposition: attachment;filename="CTASLDO.txt"');
             header('Cache-Control: max-age=0');
 
-            exit();
+            if(!empty($ctaSaldo['ctasaldo'])){
+                print_r($ctaSaldo['ctasaldo']);
+                $transaction->commit();
+                exit();
+            }else{
+                throw new \yii\web\HttpException(400, 'Lista de personas vacia');
+            }
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+
+    }
+    
+    public function actionGuardarCtaSaldo()
+    {
+        $params = \Yii::$app->request->post();
+        $resultado['message']='Se guarda el documento ctasaldo';
+        $transaction = Yii::$app->db->beginTransaction();
+        
+        try{            
+            
+            $resultado = \app\models\Export::guardarCtaSaldo($params);
+            $transaction->commit();
+            
+            return $resultado;
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();

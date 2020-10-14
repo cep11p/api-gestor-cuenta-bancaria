@@ -25,6 +25,42 @@ class Prestacion extends BasePrestacion
             ]
         );
     }
+    
+    /**
+     * Se registraran en la bd una lista de prestaciones
+     * @param array $lista_prestaciones
+     * @return array $resultado['cant_registros'], $resultado['errors']
+     */
+    static function crearPrestaciones($lista_prestaciones) {
+        $cant_registros = 0;
+        $resultado = array();
+        $errors = array();
+        
+        foreach ($lista_prestaciones as $prestacion) {
+            $model = new Prestacion();
+            $model->personaid = intval($prestacion['personaid']);
+            $model->monto = $prestacion['monto'];
+            $model->create_at = date('Y-m-d H:m:i');
+            $model->observacion = $prestacion['observacion'];
+            $model->sub_sucursalid = $prestacion['sub_sucursalid'];
+            $model->estado = $prestacion['estado'];
+            $model->fecha_ingreso = $prestacion['fecha_ingreso'];
+            
+            if(!$model->save()){
+                $error = $model->errors;
+                $error['persona'] = $prestacion['nombre']." ".$prestacion['apellido']." cuil:".$prestacion['cuil'];
+                $errors[] = $error;
+            }else{
+                $cant_registros++;
+            }
+        }
+        
+        
+        $resultado['cant_registros'] = $cant_registros;
+        $resultado['errors'] = $errors;
+                
+        return $resultado;
+    }
 
     public function rules()
     {
