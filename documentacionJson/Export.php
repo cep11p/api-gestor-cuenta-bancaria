@@ -48,9 +48,32 @@
 */
 
 /*****Para crear****
-* @url http://api.gestor-inventario.local/proveedors 
+* @url http://api.gestor-inventario.local/export/guardar-cta-saldo
 * @method POST
 * @param arrayJson
+[
+    {
+    	"personaid":1,
+        "saldo": "5000",
+        "sub_sucursalid":99,
+        "sucursal_codigo": "250",
+        "sucursal_codigo_postal": "8500"
+    },
+    {
+    	"personaid":2,
+        "saldo": "5000",
+        "sub_sucursalid":2,
+        "sucursal_codigo": "250",
+        "sucursal_codigo_postal": "8500"
+    },
+    {
+    	"personaid":3,
+        "saldo": "5000",
+        "sub_sucursalid":2,
+        "sucursal_codigo": "250",
+        "sucursal_codigo_postal": "8500"
+    }
+]
 **/
 
 /**** Para modificar*****
