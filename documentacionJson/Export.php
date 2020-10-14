@@ -2,6 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
+* Se exporta CTASLDO.txt y se registran las prestaciones con estado = 0 (Prestaciones de personas sin CBU) 
 * @url http://api.gestor-inventario.local/export/cta-saldo
 * @method POST
 * @arrayReturn
@@ -48,6 +49,7 @@
 */
 
 /*****Para crear****
+* Se guarda las prestacion con estado=4 "preparado para exportar"
 * @url http://api.gestor-inventario.local/export/guardar-cta-saldo
 * @method POST
 * @param arrayJson
