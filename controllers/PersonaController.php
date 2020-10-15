@@ -71,19 +71,16 @@ class PersonaController extends ActiveController{
         $resultado = \Yii::$app->registral->buscarPersona($param);
         
         if($resultado['estado']!=true){
-            $data['success']=false;
-            $data['total_filtrado']=0;            
-            $data['resultado']=[];
-            $data['message']="No se encontró ninguna persona!";   
+            $resultado['success']=false;
+            $resultado['total_filtrado']=0;            
+            $resultado['resultado']=[];
+            $resultado['message']="No se encontró ninguna persona!";   
         }else{
-            $data['success']=true;            
-            $data['total_filtrado']=$resultado['total_filtrado'];
-            $data['pages']=$resultado['pages'];
-            $data['pagesize']=$resultado['pagesize'];
-            $data['resultado']=$resultado['resultado'];
+            $resultado['success']=true;
+//            $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
         }
         
-        return $data;
+        return $resultado;
 
     }
     
