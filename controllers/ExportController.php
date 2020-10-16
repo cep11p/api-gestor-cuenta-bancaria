@@ -113,4 +113,13 @@ class ExportController extends ActiveController{
 
     }
     
+    public function actionVerCtaSaldo()
+    {
+        $resultado = \app\models\Export::verCtaSaldo();
+
+        
+        return $resultado;
+
+    }
+    
 }

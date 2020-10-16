@@ -178,4 +178,64 @@ class Export
         
         return $resultado;
     }
+    
+    static function verCtaSaldo() {
+        $ids='';
+        $sub_sucursales_ids='';
+        $prestaciones = Prestacion::find()->asArray()->where(['estado'=> Prestacion::PREPARADO_A_EXPORTAR])->all();
+        
+        
+        /***************** Instancias con atributos externos ************/
+        /******** Instancia con Persona ***************************/
+        //hacemos instancia con todas las persoans
+        foreach ($prestaciones as $value) {
+            //nos comunicamos con registrar para obtener lista de personas
+            $ids .= (empty($ids))?$value['personaid']:','.$value['personaid'];
+        }
+        $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
+        //validamos si la lista tiene personas
+        if(count($lista_persona['resultado'])<1){
+            throw new \yii\web\HttpException(400,'Hubo problemas con obtener la lista de personas');
+        }
+        
+        /***** Instancia con Sub-Sucursales *****/
+        //hacemos instancia con todas las sub-sucursales
+        foreach ($prestaciones as $value) {
+            //nos comunicamos con registrar para obtener lista de personas
+            $sub_sucursales_ids .= (empty($sub_sucursales_ids))?$value['sub_sucursalid']:','.$value['sub_sucursalid'];
+        }
+        $subSucursalSearch = new SubSucursalSearch();
+        $lista_sub_sucursales = $subSucursalSearch->search(['ids' => $sub_sucursales_ids]);
+        //
+        if(count($lista_sub_sucursales)<1){
+            throw new \yii\web\HttpException(400,'Hubo problemas con obtener la lista de sub-sucursales');
+        }
+        
+        //vamos a vincular la lista de persona con sus prestaciones correspondientes
+        $i=0;
+        foreach ($prestaciones as $value) {
+            //Persona
+            foreach ($lista_persona['resultado'] as $persona) {
+                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                    $prestaciones[$i]['apellido'] = $persona['apellido'];
+                    $prestaciones[$i]['nombre'] = $persona['nombre'];
+                    $prestaciones[$i]['cuil'] = $persona['cuil'];
+                    break;
+                }
+            }
+            
+            //sub-sucursales
+            foreach ($lista_sub_sucursales as $sub_sucursal) {
+                if(isset($sub_sucursal['id']) && isset($value['sub_sucursalid']) && $sub_sucursal['id']==$value['sub_sucursalid']){
+                    $prestaciones[$i]['sub_sucursal'] = $sub_sucursal;
+                    break;
+                }
+            }
+            $i++;
+        }
+        
+        /**************Fin de instacia de atributos externos*****************/
+        
+        return $prestaciones;
+    }
 }

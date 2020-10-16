@@ -93,6 +93,24 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'sub-sucursal', 
                 ],
+                [   #Export
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/export', 
+                    'extraPatterns' => [
+                        'POST CtaSaldo' => 'cta-saldo',
+                        'OPTIONS CtaSaldo' => 'cta-saldo',
+                        'GET VerCtaSaldo' => 'ver-cta-saldo',
+                        'OPTIONS VerCtaSaldo' => 'ver-cta-saldo',
+                    ], 
+                ],
+                [   #Import
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/import', 
+                    'extraPatterns' => [
+                        'POST CtaSaldo' => 'cta-bps',
+                        'OPTIONS CtaSaldo' => 'cta-bps',
+                    ], 
+                ],
                  ##### Interoperabilidad con Registral #####
                 [   #persona
                     'class' => 'yii\rest\UrlRule',
@@ -104,22 +122,6 @@ $config = [
                         'OPTIONS contacto/{id}' => 'contacto',
                     ],
                     'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
-                ],
-                [   #Export
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/export', 
-                    'extraPatterns' => [
-                        'POST CtaSaldo' => 'cta-saldo',
-                        'OPTIONS CtaSaldo' => 'cta-saldo',
-                    ], 
-                ],
-                [   #Import
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/import', 
-                    'extraPatterns' => [
-                        'POST CtaSaldo' => 'cta-bps',
-                        'OPTIONS CtaSaldo' => 'cta-bps',
-                    ], 
                 ],
                 /****** USUARIOS *******/
                 [   
