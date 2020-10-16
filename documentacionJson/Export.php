@@ -98,17 +98,159 @@
 ]
 **/
 
+/****** Para visualizar*****
+* @url http://api.gcb.local/export/ver-cta-saldo
+* @method GET
+* @return arrayJson
+[
+    {
+        "id": "102",
+        "monto": "5000",
+        "create_at": "2020-10-14 18:10:08",
+        "proposito": null,
+        "observacion": "Se crea en exportacion de CtaSaldo",
+        "sub_sucursalid": "1",
+        "personaid": "1",
+        "estado": "4",
+        "fecha_ingreso": "2020-10-14",
+        "apellido": "González",
+        "nombre": "Victoria Margarita",
+        "cuil": "20238512669",
+        "sub_sucursal": {
+            "id": 1,
+            "localidad": "Allen",
+            "codigo_postal": "8328",
+            "codigo": "161014",
+            "sucursalid": 14,
+            "nombre": "Allen (Suc. Allen)",
+            "sucursal_codigo": "265"
+        }
+    },
+    {
+        "id": "103",
+        "monto": "5000",
+        "create_at": "2020-10-14 18:10:08",
+        "proposito": null,
+        "observacion": "Se crea en exportacion de CtaSaldo",
+        "sub_sucursalid": "2",
+        "personaid": "2",
+        "estado": "4",
+        "fecha_ingreso": "2020-10-14",
+        "apellido": "Rodríguez",
+        "nombre": "Isabel Sofía",
+        "cuil": "20320542389",
+        "sub_sucursal": {
+            "id": 2,
+            "localidad": "Bariloche",
+            "codigo_postal": "8400",
+            "codigo": "161399",
+            "sucursalid": 3,
+            "nombre": "Bariloche (Suc. Bariloche)",
+            "sucursal_codigo": "255"
+        }
+    },
+    {
+        "id": "104",
+        "monto": "5000",
+        "create_at": "2020-10-14 18:10:08",
+        "proposito": null,
+        "observacion": "Se crea en exportacion de CtaSaldo",
+        "sub_sucursalid": "2",
+        "personaid": "3",
+        "estado": "4",
+        "fecha_ingreso": "2020-10-14",
+        "apellido": "Gómez",
+        "nombre": "Dulce María",
+        "cuil": "20284145559",
+        "sub_sucursal": {
+            "id": 2,
+            "localidad": "Bariloche",
+            "codigo_postal": "8400",
+            "codigo": "161399",
+            "sucursalid": 3,
+            "nombre": "Bariloche (Suc. Bariloche)",
+            "sucursal_codigo": "255"
+        }
+    },
+    {
+        "id": "105",
+        "monto": "5000",
+        "create_at": "2020-10-14 18:10:08",
+        "proposito": null,
+        "observacion": "Se crea en exportacion de CtaSaldo",
+        "sub_sucursalid": "1",
+        "personaid": "1",
+        "estado": "4",
+        "fecha_ingreso": "2020-10-14",
+        "apellido": "González",
+        "nombre": "Victoria Margarita",
+        "cuil": "20238512669",
+        "sub_sucursal": {
+            "id": 1,
+            "localidad": "Allen",
+            "codigo_postal": "8328",
+            "codigo": "161014",
+            "sucursalid": 14,
+            "nombre": "Allen (Suc. Allen)",
+            "sucursal_codigo": "265"
+        }
+    },
+    {
+        "id": "106",
+        "monto": "5000",
+        "create_at": "2020-10-14 18:10:08",
+        "proposito": null,
+        "observacion": "Se crea en exportacion de CtaSaldo",
+        "sub_sucursalid": "2",
+        "personaid": "2",
+        "estado": "4",
+        "fecha_ingreso": "2020-10-14",
+        "apellido": "Rodríguez",
+        "nombre": "Isabel Sofía",
+        "cuil": "20320542389",
+        "sub_sucursal": {
+            "id": 2,
+            "localidad": "Bariloche",
+            "codigo_postal": "8400",
+            "codigo": "161399",
+            "sucursalid": 3,
+            "nombre": "Bariloche (Suc. Bariloche)",
+            "sucursal_codigo": "255"
+        }
+    },
+    {
+        "id": "107",
+        "monto": "5000",
+        "create_at": "2020-10-14 18:10:08",
+        "proposito": null,
+        "observacion": "Se crea en exportacion de CtaSaldo",
+        "sub_sucursalid": "2",
+        "personaid": "3",
+        "estado": "4",
+        "fecha_ingreso": "2020-10-14",
+        "apellido": "Gómez",
+        "nombre": "Dulce María",
+        "cuil": "20284145559",
+        "sub_sucursal": {
+            "id": 2,
+            "localidad": "Bariloche",
+            "codigo_postal": "8400",
+            "codigo": "161399",
+            "sucursalid": 3,
+            "nombre": "Bariloche (Suc. Bariloche)",
+            "sucursal_codigo": "255"
+        }
+    }
+]
+
+*/
+
 /**** Para modificar*****
 * @url http://api.gestor-inventario.local/proveedors/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
-/****** Para visualizar*****
-* @url http://api.gestor-inventario.local/proveedors/{$id} 
-* @method GET
-* @return arrayJson
-*/
 
 /****** Para borrar una localidad *****
 * @url http://api.gestor-inventario.local/proveedors/{$id} 
