@@ -2,7 +2,7 @@
 
 /**** Importacion de personas con cbu mediante el archivo CTABPS.TXT ****/
 /**
-* @url http://api.gcb.local/import/cta-bps
+* @url http://api.gcb.local/cuenta-bps/importar
 * @method POST
 * @arrayReturn
 {

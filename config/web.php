@@ -101,12 +101,12 @@ $config = [
                         'OPTIONS Exportar' => 'exportar',
                     ], 
                 ],
-                [   #Import
+                [   #CuentaBps
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/import', 
+                    'controller' => 'cuenta-bps', 
                     'extraPatterns' => [
-                        'POST CtaSaldo' => 'cta-bps',
-                        'OPTIONS CtaSaldo' => 'cta-bps',
+                        'POST Importar' => 'importar',
+                        'OPTIONS Importar' => 'importar',
                     ], 
                 ],
                  ##### Interoperabilidad con Registral #####

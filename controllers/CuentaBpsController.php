@@ -9,9 +9,9 @@ use yii\base\Exception;
 
 
 
-class ImportController extends ActiveController{
+class CuentaBpsController extends ActiveController{
     
-    public $modelClass = 'app\models\import';
+    public $modelClass = 'app\models\CuentaBps';
     
     public function behaviors()
     {
@@ -64,7 +64,7 @@ class ImportController extends ActiveController{
     
     }
     
-    public function actionCtaBps()
+    public function actionImportar()
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
