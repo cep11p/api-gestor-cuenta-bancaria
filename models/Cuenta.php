@@ -57,6 +57,16 @@ class Cuenta extends BaseCuenta
             $i++;
         }
         
+        //Vamos a chequear que persona no tiene una cuenta bancaria para crear un lista vacia
+        $i=0;
+        foreach ($lista_persona as $persona) {
+            if(!isset($persona['lista_cuenta'])){
+                $lista_persona[$i]['lista_cuenta'] = array();
+                break;
+            }
+            $i++;
+        }
+        
         return $lista_persona;
     }
 }
