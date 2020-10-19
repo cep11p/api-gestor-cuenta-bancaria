@@ -71,7 +71,7 @@ class SubSucursalSearch extends SubSucursal
                 ->andFilterWhere(['like', 'codigo', $this->codigo]);
         }
         
-        /******* Se obtiene la coleccion de personas filtradas ******/
+        /******* Se obtiene la coleccion******/
         $coleccion = array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();

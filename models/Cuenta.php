@@ -32,7 +32,31 @@ class Cuenta extends BaseCuenta
         );
     }
     
-    static function vincularCuenta($param) {
-        die('Vinculando cuenta a personas..');
+    static function vincularCuenta($lista_persona) {
+        $ids = '';
+        $CuentaSearch = new CuentaSearch();
+        /******** Instancia con Persona ***************************/
+        //hacemos instancia con todas las persoans
+        foreach ($lista_persona as $value) {
+            //nos comunicamos con registrar para obtener lista de personas
+            $ids .= (empty($ids))?$value['id']:','.$value['id'];
+        }
+        
+        $lista_cuenta = $CuentaSearch->search(['persona_ids'=>$ids]);
+        
+        //vamos a vincular cuentas a las personas correspondiente
+        $i=0;
+        foreach ($lista_cuenta as $value) {
+            foreach ($lista_persona as $persona) {
+                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                    $lista_persona[$i]['lista_cuenta'][] = $value;
+                    break;
+                }
+                
+            }
+            $i++;
+        }
+        
+        return $lista_persona;
     }
 }

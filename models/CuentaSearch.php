@@ -55,16 +55,33 @@ class CuentaSearch extends Cuenta
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'personaid' => $this->personaid,
-            'bancoid' => $this->bancoid,
-            'tipo_cuentaid' => $this->tipo_cuentaid,
-            'create_at' => $this->create_at,
-        ]);
+        //Filtrado por coleccion de ids
+        if(isset($params['ids']) && !empty($params['ids'])){
+            $lista_id = explode(",", $params['ids']);
+            $query->andWhere(array('in', 'id', $lista_id));
+        
+        }else if(isset($params['persona_ids']) && !empty($params['persona_ids'])){
+            $lista_id = explode(",", $params['persona_ids']);
+            $query->andWhere(array('in', 'personaid', $lista_id));
+        }else{
+            $query->andFilterWhere([
+                'id' => $this->id,
+                'personaid' => $this->personaid,
+                'bancoid' => $this->bancoid,
+                'tipo_cuentaid' => $this->tipo_cuentaid,
+                'create_at' => $this->create_at,
+            ]);
 
-        $query->andFilterWhere(['like', 'cbu', $this->cbu]);
+            $query->andFilterWhere(['like', 'cbu', $this->cbu]);
+        }
 
-        return $dataProvider;
+        /******* Se obtiene la coleccion******/
+        $coleccion = array();
+        foreach ($dataProvider->getModels() as $value) {
+            $coleccion[] = $value->toArray();
+        }
+
+
+        return $coleccion;
     }
 }

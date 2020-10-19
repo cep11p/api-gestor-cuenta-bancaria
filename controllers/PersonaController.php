@@ -77,7 +77,7 @@ class PersonaController extends ActiveController{
             $resultado['message']="No se encontró ninguna persona!";   
         }else{
             $resultado['success']=true;
-//            $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
+            $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
         }
         
         return $resultado;
