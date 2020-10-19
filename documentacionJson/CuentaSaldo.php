@@ -1,9 +1,9 @@
 <?php
 
-/**** Para mostrar listado ****/
+/**** Exportar txt CTASALDO ****/
 /**
 * Se exporta CTASLDO.txt y se registran las prestaciones con estado = 0 (Prestaciones de personas sin CBU) 
-* @url http://api.gestor-inventario.local/export/cta-saldo
+* @url http://api.gcb.local/cuenta-saldo/exportar
 * @method POST
 * @arrayReturn
  * [
@@ -50,7 +50,7 @@
 
 /*****Para crear****
 * Se guarda las prestacion con estado=4 "preparado para exportar"
-* @url http://api.gestor-inventario.local/export/guardar-cta-saldo
+* @url http://api.gestor-inventario.local/cuenta-saldos
 * @method POST
 * @param arrayJson
 [
@@ -98,8 +98,8 @@
 ]
 **/
 
-/****** Para visualizar*****
-* @url http://api.gcb.local/export/ver-cta-saldo
+/****** Para visualizar las prestaciones que aun no fueron exportadas*****
+* @url http://api.gcb.local/cuenta-saldos
 * @method GET
 * @return arrayJson
 [

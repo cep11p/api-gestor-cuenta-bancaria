@@ -9,9 +9,9 @@ use yii\base\Exception;
 
 
 
-class ExportController extends ActiveController{
+class CuentaSaldoController extends ActiveController{
     
-    public $modelClass = 'app\models\export';
+    public $modelClass = 'app\models\CuentaSaldo';
     
     public function behaviors()
     {
@@ -64,7 +64,7 @@ class ExportController extends ActiveController{
     
     }
     
-    public function actionCtaSaldo()
+    public function actionExportar()
     {
         $params = \Yii::$app->request->post();
         
@@ -93,8 +93,7 @@ class ExportController extends ActiveController{
 
     }
     
-    public function actionGuardarCtaSaldo()
-    {
+     public function actionCreate() {
         $params = \Yii::$app->request->post();
         $resultado['message']='Se guarda el documento ctasaldo';
         $transaction = Yii::$app->db->beginTransaction();
@@ -113,7 +112,7 @@ class ExportController extends ActiveController{
 
     }
     
-    public function actionVerCtaSaldo()
+    public function actionIndex()
     {
         $resultado = \app\models\Export::verCtaSaldo();
 
