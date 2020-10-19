@@ -32,6 +32,19 @@ class Cuenta extends BaseCuenta
         );
     }
     
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'banco'=> function($model){
+                return $model->banco->nombre;
+            },
+            'tipo_cuenta'=> function($model){
+                return $model->tipoCuenta->nombre;
+            }
+        ]);
+        
+    }
+    
     static function vincularCuenta($lista_persona) {
         $ids = '';
         $CuentaSearch = new CuentaSearch();
