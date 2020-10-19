@@ -78,7 +78,7 @@ class CtaBps extends Model
             $resultado = $this->registrarListaPersonaConCBU($listaPersona);
 //            
         } else {
-            return $resultado = false;
+            throw new \yii\web\HttpException(400, json_encode($this->errors));
         }
         
         return $resultado;
