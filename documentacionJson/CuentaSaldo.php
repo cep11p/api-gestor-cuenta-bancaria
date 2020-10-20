@@ -8,44 +8,30 @@
 * @arrayReturn
  * [
     {
-        "nacionalidad": argentino/a,
-        "apellido": "Lopez",
-        "nombre": "Gabriela"
-        "tipo_documentoid": 1
-        "nro_documento": "36849789"
-        "fecha_nacimiento": "25/06/1992"
-        "sexo": "Femenino"
-        "lugar": {
-            "calle":"Mata negra",
-            "altura":"327",
-            "localidad":Viedma
-            "codigo_postal":8500
-        }, 
-        "cuil": "20369874562"
-        "saldo": "5000"
-        "sucursal_codigo": "250"
-        "sucursal_codigo_postal": "8500"
+        "id":1,
+        "prestacion":{
+            "fecha_ingreso":"2020-03-03",
+            "monto": "5000",
+            "sub_sucursalid":1
+        }
     },
-    {...},
     {
-        "nacionalidad": argentino/a,
-        "apellido": "Lopez",
-        "nombre": "Gabriela"
-        "tipo_documentoid": 1
-        "nro_documento": "36849789"
-        "fecha_nacimiento": "25/06/1992"
-        "sexo": "Femenino"
-        "lugar": {
-            "calle":"Mata negra",
-            "altura":"327",
-            "localidad":Viedma
-            "codigo_postal":8500
-        }, 
-        "cuil": "20369874562"
-        "saldo": "5000"
-        "sucursal_codigo": "250"
-        "sucursal_codigo_postal": "8500"
+        "id":2,
+        "prestacion":{
+            "fecha_ingreso":"2020-03-03",
+            "monto": "5000",
+            "sub_sucursalid":1
+        }
     },
+    {
+        "id":3,
+        "prestacion":{
+            "fecha_ingreso":"2020-03-03",
+            "monto": "5000",
+            "sub_sucursalid":1
+        }
+    }
+ * ]
 */
 
 /*****Para crear****

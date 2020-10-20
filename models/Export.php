@@ -26,7 +26,7 @@ class Export
         //hacemos instancia con todas las persoans
         foreach ($params as $value) {
             //nos comunicamos con registrar para obtener lista de personas
-            $ids .= (empty($ids))?$value['personaid']:','.$value['personaid'];
+            $ids .= (empty($ids))?$value['id']:','.$value['id'];
         }
         $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
         //validamos si la lista tiene personas
@@ -38,7 +38,7 @@ class Export
         $i=0;
         foreach ($lista_persona['resultado'] as $persona) {
             foreach ($params as $value) {
-                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                if(isset($persona['id']) && isset($value['id']) && $persona['id']==$value['id']){
                     $params[$i]['apellido'] = $persona['apellido'];
                     $params[$i]['nombre'] = $persona['nombre'];
                     $params[$i]['nro_documento'] = $persona['nro_documento'];
@@ -61,7 +61,7 @@ class Export
         //hacemos instancia con todas las sub-sucursales
         foreach ($params as $value) {
             //nos comunicamos con registrar para obtener lista de personas
-            $sub_sucursalesids .= (empty($sub_sucursalesids))?$value['sub_sucursalid']:','.$value['sub_sucursalid'];
+            $sub_sucursalesids .= (empty($sub_sucursalesids))?$value['prestacion']['sub_sucursalid']:','.$value['prestacion']['sub_sucursalid'];
         }
         $lista_sub_sucursales = $subSucursalSearch->search(['ids' => $sub_sucursalesids]);
         
@@ -69,8 +69,8 @@ class Export
          $i=0;
         foreach ($params as $value) {
             foreach ($lista_sub_sucursales as $sub_sucursal) {
-                if(isset($sub_sucursal['id']) && isset($value['sub_sucursalid']) && $sub_sucursal['id']==$value['sub_sucursalid']){
-                    $params[$i]['sub_sucursal'] = $sub_sucursal;
+                if(isset($sub_sucursal['id']) && isset($value['prestacion']['sub_sucursalid']) && $sub_sucursal['id']==$value['prestacion']['sub_sucursalid']){
+                    $params[$i]['prestacion']=ArrayHelper::merge($params[$i]['prestacion'], $sub_sucursal);
                     break;
                 }
             }
@@ -85,13 +85,13 @@ class Export
             }else{
                 $nac = 'E';
             }
-            $prestacion['personaid'] = $value['personaid'];
-            $prestacion['monto'] = $value['saldo'];
-            $prestacion['proposito'] = (isset($value['proposito']) && !empty($value['proposito']))?$value['proposito']:'';
-            $prestacion['observacion'] = (isset($value['observacion']) && !empty($value['observacion']))?$value['observacion']:'Se crea en exportacion de CtaSaldo';;
-            $prestacion['sub_sucursalid'] = $value['sub_sucursal']['id'];
+            $prestacion['personaid'] = $value['id'];
+            $prestacion['monto'] = $value['prestacion']['monto'];
+            $prestacion['proposito'] = (isset($value['prestacion']['proposito']) && !empty($value['prestacion']['proposito']))?$value['prestacion']['proposito']:'';
+            $prestacion['observacion'] = (isset($value['prestacion']['observacion']) && !empty($value['prestacion']['observacion']))?$value['prestacion']['observacion']:'Se crea en exportacion de CtaSaldo';;
+            $prestacion['sub_sucursalid'] = $value['prestacion']['sub_sucursalid'];
             $prestacion['estado'] = Prestacion::SIN_CBU;
-            $prestacion['fecha_ingreso'] = (isset($value['fecha_ingreso']) && !empty($value['fecha_ingreso']))?$value['fecha_ingreso']:date('Y-m-d');
+            $prestacion['fecha_ingreso'] = (isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
             $lista_prestacion[] = $prestacion;
             
             //Estructura de CTASLDO.TXT
@@ -107,9 +107,9 @@ class Export
             $altura = str_pad((str_pad($value['lugar']['altura'], 5, "0", STR_PAD_LEFT)),9);
             $localidad = str_pad(strtoupper($value['lugar']['localidad']), 30);
             $codigo_postal = str_pad(str_pad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
-            $cuil = str_pad('008'.$value['cuil'].str_pad($value['saldo'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
-            $sucursal = str_pad(date('dmY').$value['sub_sucursal']['codigo'], 23); //tipoincripcion.cuil.saldo
-            $sucursal_codigo_postal = str_pad(str_pad($value['sub_sucursal']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //tipoincripcion.cuil.saldo
+            $cuil = str_pad('008'.$value['cuil'].str_pad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
+            $sucursal = str_pad(date('dmY').$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
+            $sucursal_codigo_postal = str_pad(str_pad($value['prestacion']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //sub_sucursal[codigo_postal]
 
             $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
             $ctasaldo .= (empty($ctasaldo))?$linea_ctasaldo:"\n".$linea_ctasaldo;
