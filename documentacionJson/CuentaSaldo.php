@@ -12,7 +12,9 @@
         "prestacion":{
             "fecha_ingreso":"2020-03-03",
             "monto": "5000",
-            "sub_sucursalid":1
+            "sub_sucursalid":1,
+            "observacion":"",
+            "proposito":""
         }
     },
     {
@@ -20,7 +22,9 @@
         "prestacion":{
             "fecha_ingreso":"2020-03-03",
             "monto": "5000",
-            "sub_sucursalid":1
+            "sub_sucursalid":1,
+            "observacion":"",
+            "proposito":""
         }
     },
     {
@@ -28,7 +32,9 @@
         "prestacion":{
             "fecha_ingreso":"2020-03-03",
             "monto": "5000",
-            "sub_sucursalid":1
+            "sub_sucursalid":1,
+            "observacion":"",
+            "proposito":""
         }
     }
  * ]
@@ -41,25 +47,34 @@
 * @param arrayJson
 [
     {
-    	"personaid":1,
-        "saldo": "5000",
-        "sub_sucursalid":99,
-        "sucursal_codigo": "250",
-        "sucursal_codigo_postal": "8500"
+        "id":1,
+        "prestacion":{
+            "fecha_ingreso":"2020-03-03",
+            "monto": "5000",
+            "sub_sucursalid":1,
+            "observacion":"",
+            "proposito":""
+        }
     },
     {
-    	"personaid":2,
-        "saldo": "5000",
-        "sub_sucursalid":2,
-        "sucursal_codigo": "250",
-        "sucursal_codigo_postal": "8500"
+        "id":2,
+        "prestacion":{
+            "fecha_ingreso":"2020-03-03",
+            "monto": "5000",
+            "sub_sucursalid":1,
+            "observacion":"",
+            "proposito":""
+        }
     },
     {
-    	"personaid":3,
-        "saldo": "5000",
-        "sub_sucursalid":2,
-        "sucursal_codigo": "250",
-        "sucursal_codigo_postal": "8500"
+        "id":3,
+        "prestacion":{
+            "fecha_ingreso":"2020-03-03",
+            "monto": "5000",
+            "sub_sucursalid":1,
+            "observacion":"",
+            "proposito":""
+        }
     }
 ]
  * @return

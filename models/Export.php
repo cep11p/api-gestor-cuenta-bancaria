@@ -137,7 +137,7 @@ class Export
         //hacemos instancia con todas las persoans
         foreach ($params as $value) {
             //nos comunicamos con registrar para obtener lista de personas
-            $ids .= (empty($ids))?$value['personaid']:','.$value['personaid'];
+            $ids .= (empty($ids))?$value['id']:','.$value['id'];
         }
         $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
         //validamos si la lista tiene personas
@@ -149,7 +149,7 @@ class Export
         $i=0;
         foreach ($lista_persona['resultado'] as $persona) {
             foreach ($params as $value) {
-                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                if(isset($persona['id']) && isset($value['id']) && $persona['id']==$value['id']){
                     $params[$i]['apellido'] = $persona['apellido'];
                     $params[$i]['nombre'] = $persona['nombre'];
                     $params[$i]['cuil'] = $persona['cuil'];
@@ -161,19 +161,18 @@ class Export
         
         
         foreach ($params as $value) {
-            $prestacion['personaid'] = $value['personaid'];
+            $prestacion['personaid'] = $value['id'];
             $prestacion['nombre'] = $value['nombre'];
             $prestacion['apellido'] = $value['apellido'];
             $prestacion['cuil'] = $value['cuil'];
-            $prestacion['monto'] = $value['saldo'];
-            $prestacion['proposito'] = (isset($value['proposito']) && !empty($value['proposito']))?$value['proposito']:'';
-            $prestacion['observacion'] = (isset($value['observacion']) && !empty($value['observacion']))?$value['observacion']:'Se crea en exportacion de CtaSaldo';;
-            $prestacion['sub_sucursalid'] = $value['sub_sucursalid'];
+            $prestacion['monto'] = $value['prestacion']['monto'];
+            $prestacion['proposito'] = (isset($value['prestacion']['proposito']) && !empty($value['prestacion']['proposito']))?$value['prestacion']['proposito']:'';
+            $prestacion['observacion'] = (isset($value['prestacion']['observacion']) && !empty($value['prestacion']['observacion']))?$value['prestacion']['observacion']:'Se crea en exportacion de CtaSaldo';;
+            $prestacion['sub_sucursalid'] = $value['prestacion']['sub_sucursalid'];
             $prestacion['estado'] = Prestacion::PREPARADO_A_EXPORTAR;
-            $prestacion['fecha_ingreso'] = (isset($value['fecha_ingreso']) && !empty($value['fecha_ingreso']))?$value['fecha_ingreso']:date('Y-m-d');
+            $prestacion['fecha_ingreso'] = (isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
             $lista_prestacion[] = $prestacion;
         }
-        
         $resultado = Prestacion::crearPrestaciones($lista_prestacion);
         
         return $resultado;
