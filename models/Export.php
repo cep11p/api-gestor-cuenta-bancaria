@@ -181,15 +181,22 @@ class Export
     static function verCtaSaldo() {
         $ids='';
         $sub_sucursales_ids='';
+        $cuentaSaldo = array();
         $prestaciones = Prestacion::find()->asArray()->where(['estado'=> Prestacion::PREPARADO_A_EXPORTAR])->all();
         
+        //armamos la estructura adecuada y coordinada con el frontend
+        $i=0;
+        foreach ($prestaciones as $value) {
+            $cuentaSaldo[$i]['prestacion'] = $value;
+            $i++;
+        }        
         
         /***************** Instancias con atributos externos ************/
         /******** Instancia con Persona ***************************/
         //hacemos instancia con todas las persoans
-        foreach ($prestaciones as $value) {
+        foreach ($cuentaSaldo as $value) {
             //nos comunicamos con registrar para obtener lista de personas
-            $ids .= (empty($ids))?$value['personaid']:','.$value['personaid'];
+            $ids .= (empty($ids))?$value['prestacion']['personaid']:','.$value['prestacion']['personaid'];
         }
         $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
         //validamos si la lista tiene personas
@@ -199,9 +206,9 @@ class Export
         
         /***** Instancia con Sub-Sucursales *****/
         //hacemos instancia con todas las sub-sucursales
-        foreach ($prestaciones as $value) {
+        foreach ($cuentaSaldo as $value) {
             //nos comunicamos con registrar para obtener lista de personas
-            $sub_sucursales_ids .= (empty($sub_sucursales_ids))?$value['sub_sucursalid']:','.$value['sub_sucursalid'];
+            $sub_sucursales_ids .= (empty($sub_sucursales_ids))?$value['prestacion']['sub_sucursalid']:','.$value['prestacion']['sub_sucursalid'];
         }
         $subSucursalSearch = new SubSucursalSearch();
         $lista_sub_sucursales = $subSucursalSearch->search(['ids' => $sub_sucursales_ids]);
@@ -212,14 +219,15 @@ class Export
         
         //vamos a vincular la lista de persona con sus prestaciones correspondientes
         $i=0;
-        foreach ($prestaciones as $value) {
+        foreach ($cuentaSaldo as $value) {
             //Persona
             foreach ($lista_persona['resultado'] as $persona) {
-                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
-                    $prestaciones[$i]['apellido'] = $persona['apellido'];
-                    $prestaciones[$i]['nombre'] = $persona['nombre'];
-                    $prestaciones[$i]['cuil'] = $persona['cuil'];
-                    $prestaciones[$i]['lugar'] = $persona['lugar'];
+                if(isset($persona['id']) && isset($value['prestacion']['personaid']) && $persona['id']==$value['prestacion']['personaid']){
+                    $cuentaSaldo[$i]['id'] = $persona['id'];
+                    $cuentaSaldo[$i]['apellido'] = $persona['apellido'];
+                    $cuentaSaldo[$i]['nombre'] = $persona['nombre'];
+                    $cuentaSaldo[$i]['cuil'] = $persona['cuil'];
+                    $cuentaSaldo[$i]['lugar'] = $persona['lugar'];
                     break;
                 }
             }
@@ -227,7 +235,7 @@ class Export
             //sub-sucursales
             foreach ($lista_sub_sucursales as $sub_sucursal) {
                 if(isset($sub_sucursal['id']) && isset($value['sub_sucursalid']) && $sub_sucursal['id']==$value['sub_sucursalid']){
-                    $prestaciones[$i]['sub_sucursal'] = $sub_sucursal;
+                    $cuentaSaldo[$i]['sub_sucursal'] = $sub_sucursal;
                     break;
                 }
             }
@@ -236,6 +244,6 @@ class Export
         
         /**************Fin de instacia de atributos externos*****************/
         
-        return $prestaciones;
+        return $cuentaSaldo;
     }
 }
