@@ -122,6 +122,35 @@ $config = [
                     ],
                     'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
                 ],
+                
+                [   #tipo-documento
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'tipo-documento', 
+                ],
+                [   #localidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'localidad', 
+                ],
+                [   #nacionalidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'nacionalidad', 
+                ],
+                [   #sexo
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'sexo', 
+                ],
+                [   #tipo-red-social
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'tipo-red-social', 
+                ],
+                [   #genero
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'genero', 
+                ],
+                [   #estado-civil
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'estado-civil', 
+                ],
                 /****** USUARIOS *******/
                 [   
                     'class' => 'yii\rest\UrlRule',

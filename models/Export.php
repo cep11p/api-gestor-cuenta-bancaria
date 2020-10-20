@@ -220,6 +220,7 @@ class Export
                     $prestaciones[$i]['apellido'] = $persona['apellido'];
                     $prestaciones[$i]['nombre'] = $persona['nombre'];
                     $prestaciones[$i]['cuil'] = $persona['cuil'];
+                    $prestaciones[$i]['lugar'] = $persona['lugar'];
                     break;
                 }
             }
