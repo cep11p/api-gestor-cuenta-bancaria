@@ -36,12 +36,11 @@ class TipoRedSocialController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['index'],
+            'only' => ['*'],
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['index'],
-                    'roles' => ['consultar_persona'],
+                    'roles' => ['@'],
                 ],
             ]
         ];

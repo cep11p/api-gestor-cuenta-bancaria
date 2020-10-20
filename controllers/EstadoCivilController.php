@@ -28,24 +28,23 @@ class EstadoCivilController extends ActiveController{
 
         $behaviors['authenticator'] = $auth;
 
-//        $behaviors['authenticator'] = [
-//            'class' => \yii\filters\auth\HttpBearerAuth::className(),
-//        ];
+        $behaviors['authenticator'] = [
+            'class' => \yii\filters\auth\HttpBearerAuth::className(),
+        ];
 
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
         $behaviors['authenticator']['except'] = ['options'];     
 
-//        $behaviors['access'] = [
-//            'class' => \yii\filters\AccessControl::className(),
-//            'only' => ['index'],
-//            'rules' => [
-//                [
-//                    'allow' => true,
-//                    'actions' => ['index'],
-//                    'roles' => ['consultar_persona'],
-//                ],
-//            ]
-//        ];
+        $behaviors['access'] = [
+            'class' => \yii\filters\AccessControl::className(),
+            'only' => ['*'],
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ]
+        ];
 
 
 

@@ -29,24 +29,23 @@ class CuentaSaldoController extends ActiveController{
 
         $behaviors['authenticator'] = $auth;
 
-//        $behaviors['authenticator'] = [
-//            'class' => \yii\filters\auth\HttpBearerAuth::className(),
-//        ];
+        $behaviors['authenticator'] = [
+            'class' => \yii\filters\auth\HttpBearerAuth::className(),
+        ];
 
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
         $behaviors['authenticator']['except'] = ['options'];     
 
-//        $behaviors['access'] = [
-//            'class' => \yii\filters\AccessControl::className(),
-//            'only' => ['exportar-prestaciones-xls'],
-//            'rules' => [
-//                [
-//                    'allow' => true,
-//                    'actions' => ['exportar-prestaciones-xls'],
-//                    'roles' => ['exportar_prestacion'],
-//                ],
-//            ]
-//        ];
+        $behaviors['access'] = [
+            'class' => \yii\filters\AccessControl::className(),
+            'only' => ['*'],
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ]
+        ];
 
 
 
