@@ -52,7 +52,7 @@ class Prestacion extends BasePrestacion
                 $errors[] = $error;
             }else{
                 $cant_registros++;
-            }
+            }            
         }
         
         

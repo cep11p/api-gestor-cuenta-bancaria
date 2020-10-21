@@ -72,13 +72,13 @@ class CuentaSaldoController extends ActiveController{
         
         try{            
             
-            $ctaSaldo = \app\models\Export::exportCtaSaldo($params);
+            $ctaSaldo = \app\models\CuentaSaldo::exportCtaSaldo($params);
             header('Content-Type: txt');
             header('Content-Disposition: attachment;filename="CTASLDO.txt"');
             header('Cache-Control: max-age=0');
 
-            if(!empty($ctaSaldo['ctasaldo'])){
-                print_r($ctaSaldo['ctasaldo']);
+            if(!empty($ctaSaldo['cuenta_saldo_txt'])){
+                print_r($ctaSaldo['cuenta_saldo_txt']);
                 $transaction->commit();
                 exit();
             }else{
@@ -99,7 +99,7 @@ class CuentaSaldoController extends ActiveController{
         
         try{            
             
-            $resultado = \app\models\Export::guardarCtaSaldo($params);
+            $resultado = \app\models\CuentaSaldo::guardarCtaSaldo($params);
             $transaction->commit();
             
             return $resultado;
@@ -113,7 +113,7 @@ class CuentaSaldoController extends ActiveController{
     
     public function actionIndex()
     {
-        $resultado = \app\models\Export::verCtaSaldo();
+        $resultado = \app\models\CuentaSaldo::verCtaSaldo();
 
         
         return $resultado;
