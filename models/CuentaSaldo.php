@@ -29,7 +29,7 @@ class CuentaSaldo
         $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($params);
         
         /***** Se validan y se registran las prestaciones *********/
-        foreach ($lista_persona_prestacion as $value) {       
+        foreach ($lista_persona_prestacion as $value) {    
             //Registramos la prestacion
             $model = new Prestacion();
             $model->personaid = (isset($value['id']))?$value['id']:null;
@@ -39,23 +39,23 @@ class CuentaSaldo
             $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
             $model->estado = Prestacion::SIN_CBU;
             $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
-
+            
             if(!$model->save()){
                 $error = $model->errors;
                 $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
                 $errors[] = $error;
-            }else{
-                $lista_prestacion_correcta[] = $value;
             }
+        }
+        //si hay errores notificamos
+        if(!empty($errors)){
+            throw new \yii\web\HttpException(400, json_encode($errors));
         }
         
         //Seteamos el txt a exportar
-        $resultado['cuenta_saldo_txt'] = self::setCuentaSaldoTxt($lista_prestacion_correcta);
-        $resultado['errors'] = $errors;
+        $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
         
-        if(empty($resultado['cuenta_saldo_txt'])){
-            throw new \yii\web\HttpException(400, json_encode($resultado['errors']));
-        }
+        print_r($resultado);die();
+        
         
         return $resultado;
     }
@@ -67,7 +67,18 @@ class CuentaSaldo
      */
     static function setCuentaSaldoTxt($lista_prestacion) {
         $ctasaldo = '';
+        $errors = [];
         foreach ($lista_prestacion as $value) {
+            
+            /*********** Validamos CtaSldo ***********/
+            //La longitud de la calle no puede ser mayor a 19
+            if(strlen($value['lugar']['calle'])>19){
+                $error['calle'] = 'La calle no puede superar los 19 caracteres.';
+                $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
+                $errors[] = $error;
+            }
+            
+            /************* Fin de validacion CtaSldo ***************/
             
             //Estructura de CTASLDO.TXT
             $convenio_apellido = str_pad('8180'.strtoupper($value['apellido']), 34);
@@ -89,6 +100,11 @@ class CuentaSaldo
             $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
             $ctasaldo .= (empty($ctasaldo))?$linea_ctasaldo:"\n".$linea_ctasaldo;
             
+        }
+        
+        //si hay errores notificamos
+        if(!empty($errors)){
+            throw new \yii\web\HttpException(400, json_encode($errors));
         }
         
         return $ctasaldo;

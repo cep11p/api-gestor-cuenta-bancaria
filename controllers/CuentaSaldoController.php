@@ -73,12 +73,12 @@ class CuentaSaldoController extends ActiveController{
         try{            
             
             $ctaSaldo = \app\models\CuentaSaldo::exportCtaSaldo($params);
-            header('Content-Type: txt');
-            header('Content-Disposition: attachment;filename="CTASLDO.txt"');
-            header('Cache-Control: max-age=0');
+                header('Content-Type: txt');
+                header('Content-Disposition: attachment;filename="CTASLDO.txt"');
+                header('Cache-Control: max-age=0');
 
-            if(!empty($ctaSaldo['cuenta_saldo_txt'])){
-                print_r($ctaSaldo['cuenta_saldo_txt']);
+            if(!empty($ctaSaldo)){
+                print_r($ctaSaldo);
                 $transaction->commit();
                 exit();
             }else{
