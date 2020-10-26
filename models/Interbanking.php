@@ -54,6 +54,8 @@ class CuentaSaldo
         //Seteamos el txt a exportar
         $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
         
+        print_r($resultado);die();
+        
         
         return $resultado;
     }
