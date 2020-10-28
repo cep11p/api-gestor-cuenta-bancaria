@@ -94,6 +94,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'sub-sucursal', 
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'cuenta', 
+                ],
                 [   #CTASLDO
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta-saldo', 
