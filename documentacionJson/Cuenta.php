@@ -13,7 +13,9 @@
         "personaid": 1,
         "bancoid": 1,
         "tipo_cuentaid": 1,
-        "create_at": "2020-10-16 16:10:43"
+        "create_at": "2020-10-16 16:10:43",
+        "banco": "Patagonia",
+        "tipo_cuenta": "cuenta corriente"
     },
     {
         "id": 2,
@@ -21,7 +23,9 @@
         "personaid": 2,
         "bancoid": 1,
         "tipo_cuentaid": 1,
-        "create_at": "2020-10-16 16:10:43"
+        "create_at": "2020-10-16 16:10:43",
+        "banco": "Patagonia",
+        "tipo_cuenta": "cuenta corriente"
     },
     {
         "id": 3,
@@ -29,15 +33,9 @@
         "personaid": 3,
         "bancoid": 1,
         "tipo_cuentaid": 1,
-        "create_at": "2020-10-16 16:10:43"
-    },
-    {
-        "id": 4,
-        "cbu": "340250608122040842018",
-        "personaid": 105,
-        "bancoid": 1,
-        "tipo_cuentaid": 1,
-        "create_at": "2020-10-16 16:10:43"
+        "create_at": "2020-10-16 16:10:43",
+        "banco": "Patagonia",
+        "tipo_cuenta": "cuenta corriente"
     }
 ]
 */
