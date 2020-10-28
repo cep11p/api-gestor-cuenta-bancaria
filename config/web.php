@@ -102,6 +102,14 @@ $config = [
                         'OPTIONS Exportar' => 'exportar',
                     ], 
                 ],
+                [   #INTERBANKING
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'interbanking', 
+                    'extraPatterns' => [
+                        'POST Exportar' => 'exportar',
+                        'OPTIONS Exportar' => 'exportar',
+                    ], 
+                ],
                 [   #CuentaBps
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta-bps', 

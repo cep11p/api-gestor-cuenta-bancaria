@@ -9,9 +9,9 @@ use yii\base\Exception;
 
 
 
-class CuentaSaldoController extends ActiveController{
+class InterbankingController extends ActiveController{
     
-    public $modelClass = 'app\models\CuentaSaldo';
+    public $modelClass = 'app\models\Interbanking';
     
     public function behaviors()
     {
@@ -67,56 +67,28 @@ class CuentaSaldoController extends ActiveController{
     {
         $params = \Yii::$app->request->post();
         
-        $resultado['message']='Se exportan todas la prestaciones';
+        $resultado['message']='Se exportan el archivo interbanking';
         $transaction = Yii::$app->db->beginTransaction();
         
         try{            
             
-            $ctaSaldo = \app\models\CuentaSaldo::exportCtaSaldo($params);
-                header('Content-Type: txt');
-                header('Content-Disposition: attachment;filename="CTASLDO.txt"');
-                header('Cache-Control: max-age=0');
+            $interbanking = \app\models\Interbanking::exportar($params);
+            header('Content-Type: txt');
+            header('Content-Disposition: attachment;filename="CTASLDO.txt"');
+            header('Cache-Control: max-age=0');
 
-            if(!empty($ctaSaldo)){
-                print_r($ctaSaldo);
+            if(!empty($interbanking)){
+                print_r($interbanking);
                 $transaction->commit();
                 exit();
             }else{
-                throw new \yii\web\HttpException(400, 'Lista de personas vacia');
+                throw new \yii\web\HttpException(400, 'No hay prestaciones para exportar a tesoreria');
             }
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
             throw new \yii\web\HttpException(400, $mensaje);
         }
-
-    }
-    
-     public function actionCreate() {
-        $params = \Yii::$app->request->post();
-        $resultado['message']='Se guarda el documento ctasaldo';
-        $transaction = Yii::$app->db->beginTransaction();
-        
-        try{            
-            
-            $resultado = \app\models\CuentaSaldo::guardarCtaSaldo($params);
-            $transaction->commit();
-            
-            return $resultado;
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
-        }
-
-    }
-    
-    public function actionIndex()
-    {
-        $resultado = \app\models\CuentaSaldo::verCtaSaldo();
-
-        
-        return $resultado;
 
     }
     
