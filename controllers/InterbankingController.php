@@ -74,7 +74,7 @@ class InterbankingController extends ActiveController{
             
             $interbanking = \app\models\Interbanking::exportar($params);
             header('Content-Type: txt');
-            header('Content-Disposition: attachment;filename="CTASLDO.txt"');
+            header('Content-Disposition: attachment;filename="Interbanking.txt"');
             header('Cache-Control: max-age=0');
 
             if(!empty($interbanking)){
