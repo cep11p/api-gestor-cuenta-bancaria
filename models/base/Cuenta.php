@@ -15,6 +15,7 @@ use Yii;
  * @property integer $bancoid
  * @property integer $tipo_cuentaid
  * @property string $create_at
+ * @property integer $tesoreria_alta
  *
  * @property \app\models\Banco $banco
  * @property \app\models\TipoCuenta $tipoCuenta
@@ -40,7 +41,7 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     {
         return [
             [['cbu', 'personaid', 'bancoid', 'tipo_cuentaid'], 'required'],
-            [['personaid', 'bancoid', 'tipo_cuentaid'], 'integer'],
+            [['personaid', 'bancoid', 'tipo_cuentaid', 'tesoreria_alta'], 'integer'],
             [['create_at'], 'safe'],
             [['cbu'], 'string', 'max' => 45],
             [['cbu'], 'unique'],
@@ -61,6 +62,7 @@ abstract class Cuenta extends \yii\db\ActiveRecord
             'bancoid' => 'Bancoid',
             'tipo_cuentaid' => 'Tipo Cuentaid',
             'create_at' => 'Create At',
+            'tesoreria_alta' => 'Tesoreria Alta',
         ];
     }
 
