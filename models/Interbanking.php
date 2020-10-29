@@ -30,36 +30,31 @@ class Interbanking extends Model
      * @throws \yii\web\HttpException
      */
     public static function exportar($params){
-        $cuentas = [
-                ['id'=>1],
-                ['id'=>2],
-                ['id'=>3],
-                ['id'=>5],
-            ];
+        $cuentas = (!empty($params['lista_cuenta']))?$params['lista_cuenta']:[];
         $model = new Interbanking();
         $model->setAttributes($params);
-        $model->getInterbakingTxt($cuentas);
-        
+        $resultado = $model->getInterbakingTxt($cuentas);
          
-        die();
+        return $resultado;
     }
     
     public function getInterbakingTxt($params) {
+        $this->codigo_cliente = 'CLIENTE';
         $interbankin_txt = '1'.$this->codigo_cliente."\n";
         $final_txt = '3'.$this->codigo_cliente.str_pad(count($params), 6, "0", STR_PAD_LEFT);
         
         //obtenemos los datos del propietario de cada cuenta
         $datos = $this->getDatosCuentas($params);
         
-        print_r($datos);
-        die();
-        
-        foreach ($params as $value) {
-            $interbankin_txt .=$value."\n";
+        foreach ($datos as $value) {
+            $interbankin_txt .="2".str_pad("", 51, " ", STR_PAD_LEFT)."SNN".$value['cuil'].$value['cbu']."\n";
+            $cuenta = Cuenta::findOne(["id"=>$value['id']]);
+            $cuenta->tesoreria_alta = 1;
+            $cuenta->save();
         }
         $interbankin_txt .= $final_txt;
         
-        print_r($interbankin_txt);die();
+        return $interbankin_txt;
     }
     
     /**
