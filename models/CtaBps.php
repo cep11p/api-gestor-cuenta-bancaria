@@ -70,7 +70,7 @@ class CtaBps extends Model
                 $row['prestacion']['fecha'] = trim(substr($value, 216, 8));
                 $row['cuenta']['tipo_inscripcionid'] = trim(substr($value, 179, 3));
                 $row['cuenta']['tipo_cuentaid'] = trim(utf8_encode(substr($value, 50, 3)));
-                $row['cuenta']['cbu'] = trim(substr($value, 245, 27));
+                $row['cuenta']['cbu'] = trim(substr($value, 244, 27));
                 $row['cuenta']['sub_sucursalid'] = trim(substr($value, 149, 3));
                 $listaPersona[] = $row;
             }
