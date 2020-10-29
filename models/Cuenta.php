@@ -32,18 +32,18 @@ class Cuenta extends BaseCuenta
         );
     }
     
-//    public function fields()
-//    {
-//        return ArrayHelper::merge(parent::fields(), [
-//            'banco'=> function($model){
-//                return $model->banco->nombre;
-//            },
-//            'tipo_cuenta'=> function($model){
-//                return $model->tipoCuenta->nombre;
-//            }
-//        ]);
-//        
-//    }
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'banco'=> function($model){
+                return $model->banco->nombre;
+            },
+            'tipo_cuenta'=> function($model){
+                return $model->tipoCuenta->nombre;
+            }
+        ]);
+        
+    }
     
     static function vincularCuenta($lista_persona) {
         $ids = '';
@@ -81,5 +81,64 @@ class Cuenta extends BaseCuenta
         }
         
         return $lista_persona;
+    }
+    
+    /**
+     * 
+     * @param array $lista_cuenta lista de cuentas
+     */
+    public static function getPersonasConSusCuentas($lista_cuenta) {
+        $persona_ids = '';
+        //obtenemos la lista de personas con su datos
+        foreach ($lista_cuenta as $value) {
+            //buscamos persona por lista de ids
+            $persona_ids .= (empty($persona_ids))?$value['personaid']:','.$value['personaid'];
+        }
+        
+        $lista_persona = PersonaForm::buscarPersonaEnRegistral(['ids'=>$persona_ids]);
+        $lista_persona = self::vincularCuenta($lista_persona);
+        
+        return $lista_persona;
+    }
+    
+    /**
+     * Desde una lista de cuentas vinculamos los datos del propietario (persona)
+     * @param array $lista_cuenta
+     * @return array
+     */
+    public static function getCuentaYCuil($lista_cuenta) {
+        $lista_cuil = [];
+        $persona_ids = '';
+        //obtenemos la lista de personas con su datos
+        foreach ($lista_cuenta as $value) {
+            //buscamos persona por lista de ids
+            $persona_ids .= (empty($persona_ids))?$value['personaid']:','.$value['personaid'];
+        }
+        
+        //obtenemos lista de persona con su id
+        $lista_persona = PersonaForm::buscarPersonaEnRegistral(['ids'=>$persona_ids]);        
+        foreach ($lista_persona as $persona) {
+            $array['id'] = $persona['id'];
+            $array['cuil'] = $persona['cuil'];
+            $array['apellido'] = $persona['apellido'];
+            $array['nombre'] = $persona['nombre'];
+            $lista_cuil[] = $array;
+        }
+        
+        //vinculamos el cuil en cada cuenta
+        $i=0;
+        foreach ($lista_cuenta as $value) {
+            foreach ($lista_cuil as $persona) {
+                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                    $lista_cuenta[$i]['cuil'] = $persona['cuil'];
+                    $lista_cuenta[$i]['apellido'] = $persona['apellido'];
+                    $lista_cuenta[$i]['nombre'] = $persona['nombre'];
+                    break;
+                }
+            }
+            $i++;
+        }
+        
+        return $lista_cuenta;
     }
 }

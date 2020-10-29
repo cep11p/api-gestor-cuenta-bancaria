@@ -80,8 +80,9 @@ class CuentaSearch extends Cuenta
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();
         }
+        
+        $resultado = Cuenta::getCuentaYCuil($coleccion);
 
-
-        return $coleccion;
+        return $resultado;
     }
 }

@@ -15,7 +15,10 @@
         "tipo_cuentaid": 1,
         "create_at": "2020-10-16 16:10:43",
         "banco": "Patagonia",
-        "tipo_cuenta": "cuenta corriente"
+        "tipo_cuenta": "cuenta corriente",
+        "cuil": "20238512669",
+        "apellido": "González",
+        "nombre": "Victoria Margarita"
     },
     {
         "id": 2,
@@ -25,7 +28,10 @@
         "tipo_cuentaid": 1,
         "create_at": "2020-10-16 16:10:43",
         "banco": "Patagonia",
-        "tipo_cuenta": "cuenta corriente"
+        "tipo_cuenta": "cuenta corriente",
+        "cuil": "20320542389",
+        "apellido": "Rodríguez",
+        "nombre": "Isabel Sofía"
     },
     {
         "id": 3,
@@ -35,7 +41,10 @@
         "tipo_cuentaid": 1,
         "create_at": "2020-10-16 16:10:43",
         "banco": "Patagonia",
-        "tipo_cuenta": "cuenta corriente"
+        "tipo_cuenta": "cuenta corriente",
+        "cuil": "20284145559",
+        "apellido": "Gómez",
+        "nombre": "Dulce María"
     }
 ]
 */
