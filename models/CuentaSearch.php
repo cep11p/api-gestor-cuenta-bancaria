@@ -81,7 +81,7 @@ class CuentaSearch extends Cuenta
             $coleccion[] = $value->toArray();
         }
         
-        $resultado = Cuenta::getCuentaYCuil($coleccion);
+        $resultado = Cuenta::vincularPropietario($coleccion);
 
         return $resultado;
     }

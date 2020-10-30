@@ -108,7 +108,7 @@ class Cuenta extends BaseCuenta
      * @param array $lista_cuenta
      * @return array
      */
-    public static function getCuentaYCuil($lista_cuenta) {
+    public static function vincularPropietario($lista_cuenta) {
         $lista_cuil = [];
         $persona_ids = '';
         //obtenemos la lista de personas con su datos
@@ -118,23 +118,19 @@ class Cuenta extends BaseCuenta
         }
         
         //obtenemos lista de persona con su id
-        $lista_persona = PersonaForm::buscarPersonaEnRegistral(['ids'=>$persona_ids]);        
-        foreach ($lista_persona as $persona) {
-            $array['id'] = $persona['id'];
-            $array['cuil'] = $persona['cuil'];
-            $array['apellido'] = $persona['apellido'];
-            $array['nombre'] = $persona['nombre'];
-            $lista_cuil[] = $array;
-        }
+        $lista_persona = PersonaForm::buscarPersonaEnRegistral(['ids'=>$persona_ids]);      
         
         //vinculamos el cuil en cada cuenta
         $i=0;
         foreach ($lista_cuenta as $value) {
-            foreach ($lista_cuil as $persona) {
+            foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
                     $lista_cuenta[$i]['cuil'] = $persona['cuil'];
                     $lista_cuenta[$i]['apellido'] = $persona['apellido'];
                     $lista_cuenta[$i]['nombre'] = $persona['nombre'];
+                    $lista_cuenta[$i]['telefono'] = $persona['telefono'];
+                    $lista_cuenta[$i]['celular'] = $persona['celular'];
+                    $lista_cuenta[$i]['lugar'] = (!empty($persona['lugar']))?$persona['lugar']:[];;
                     break;
                 }
             }
