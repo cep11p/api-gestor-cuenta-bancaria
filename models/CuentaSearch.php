@@ -42,9 +42,14 @@ class CuentaSearch extends Cuenta
     public function search($params)
     {
         $query = Cuenta::find();
+        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => $pagesize,
+                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
+            ]
         ]);
 
         $this->load($params,'');
@@ -81,7 +86,13 @@ class CuentaSearch extends Cuenta
             $coleccion[] = $value->toArray();
         }
         
-        $resultado = Cuenta::vincularPropietario($coleccion);
+        $coleccion = Cuenta::vincularPropietario($coleccion);
+        
+        $paginas = ceil($dataProvider->totalCount/$pagesize);           
+        $resultado['pagesize']=$pagesize;            
+        $resultado['pages']=$paginas;            
+        $resultado['total_filtrado']=$dataProvider->totalCount;
+        $resultado['resultado']=$coleccion;
 
         return $resultado;
     }
