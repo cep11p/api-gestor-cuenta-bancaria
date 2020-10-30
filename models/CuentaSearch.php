@@ -59,6 +59,39 @@ class CuentaSearch extends Cuenta
             // $query->where('0=1');
             return $dataProvider;
         }
+        
+         ############ Buscamos por datos de persona ############
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
+        
+        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
+            $persona_params['localidadid'] = $params['persona']['localidadid'];    
+        }
+        
+        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
+            $persona_params['direccion'] = $params['persona']['direccion'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
+        
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
+        ############ Fin filtrado por Persona ############
 
         //Filtrado por coleccion de ids
         if(isset($params['ids']) && !empty($params['ids'])){
@@ -95,5 +128,20 @@ class CuentaSearch extends Cuenta
         $resultado['resultado']=$coleccion;
 
         return $resultado;
+    }
+    
+    /**
+     * De una coleccion de persona, se obtienen una lista de ids
+     * @param array $coleccion lista de personas
+     * @return array
+     */
+    private function obtenerListaIds($coleccion = array()) {
+        
+        $lista_ids = array();
+        foreach ($coleccion as $col) {
+            $lista_ids[] = $col['id'];
+        }
+        
+        return $lista_ids;    
     }
 }
