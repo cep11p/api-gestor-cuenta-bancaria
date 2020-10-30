@@ -125,9 +125,10 @@ class Cuenta extends BaseCuenta
         foreach ($lista_cuenta as $value) {
             foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
-                    $lista_cuenta[$i]['cuil'] = $persona['cuil'];
                     $lista_cuenta[$i]['apellido'] = $persona['apellido'];
                     $lista_cuenta[$i]['nombre'] = $persona['nombre'];
+                    $lista_cuenta[$i]['cuil'] = $persona['cuil'];
+                    $lista_cuenta[$i]['nro_documento'] = $persona['nro_documento'];
                     $lista_cuenta[$i]['telefono'] = $persona['telefono'];
                     $lista_cuenta[$i]['celular'] = $persona['celular'];
                     $lista_cuenta[$i]['lugar'] = (!empty($persona['lugar']))?$persona['lugar']:[];;
