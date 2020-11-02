@@ -129,6 +129,9 @@ class Cuenta extends BaseCuenta
                     $lista_cuenta[$i]['nombre'] = $persona['nombre'];
                     $lista_cuenta[$i]['cuil'] = $persona['cuil'];
                     $lista_cuenta[$i]['nro_documento'] = $persona['nro_documento'];
+                    $lista_cuenta[$i]['fecha_nacimiento'] = $persona['fecha_nacimiento'];
+                    $lista_cuenta[$i]['estado_civil'] = $persona['estado_civil'];
+                    $lista_cuenta[$i]['sexo'] = $persona['sexo'];
                     $lista_cuenta[$i]['telefono'] = $persona['telefono'];
                     $lista_cuenta[$i]['celular'] = $persona['celular'];
                     $lista_cuenta[$i]['lugar'] = (!empty($persona['lugar']))?$persona['lugar']:[];;
