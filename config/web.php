@@ -163,6 +163,45 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'estado-civil', 
                 ],
+                [   #estado-civil
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/estado-civil', 
+                ],
+                [   #persona
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/persona',
+                    'extraPatterns' => [
+                        'GET buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
+                        'OPTIONS buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
+                        'PUT contacto/{id}' => 'contacto',
+                        'OPTIONS contacto/{id}' => 'contacto',
+                    ],
+                    'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
+                ],
+                [   #sexo
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/sexo', 
+                ],
+                [   #genero
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/genero', 
+                ],
+                [   #nacionalidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/nacionalidad', 
+                ],
+                [   #tipo-red-social
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/tipo-red-social', 
+                ],
+                [   #localidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/localidad', 
+                ],
+                [   #tipo-documento
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'registral/tipo-documento', 
+                ],
                 /****** USUARIOS *******/
                 [   
                     'class' => 'yii\rest\UrlRule',
@@ -193,6 +232,9 @@ $config = [
             'class' => 'dektrium\user\Module',
             'enableConfirmation'=>false,
             'admins'=>['admin']
+        ],
+        'registral' => [
+            'class' => 'app\modules\registral\Registral',
         ],
     ],
 ];
