@@ -1,7 +1,7 @@
 <?php
 
 /**** obtener lista de Personas ***
-@url ejemplo http://gcb.local/personas?global_param=gonzalez
+@url ejemplo http://gcb.local/registral/personas?global_param=gonzalez
 @Method GET
 {
     "success": true,
@@ -248,7 +248,7 @@
  * Esto registra una persona nueva en el sistema registral (interoperabilidad)
  * En el caso de que vaya id como parametro, el sistema aplica un actualizacion 
  * sobre la persona que tenga ese id
- * @url http://gcb.local/personas
+ * @url http://gcb.local/registral/personas
  * @method POST
  * @param
  
@@ -303,7 +303,7 @@
 /***** Para Modificar/Actualizar Persona****
  * Esta funcion actualiza/modifica una persona que ya existe en el sistema registral (interoperabilidad)
  * Es obligatorio que el parametro id vaya en la url
- * @url http://gcb.local/personas/1
+ * @url http://gcb.local/registral/personas/1
  * @method PUT
  * @param
  
@@ -357,7 +357,7 @@
 /***** Para Modificar/Actualizar el contacto de la Persona****
  * Esta funcion actualiza/modifica los datos de contacto de una persona que ya existe en el sistema registral (interoperabilidad)
  * Es obligatorio que el parametro id vaya en la url
- * @url http://gcb.local/personas/contacto/1
+ * @url http://gcb.local/registral/personas/contacto/1
  * @method PUT
  * @param
  
@@ -379,7 +379,7 @@
 **/
 
 /**** obtener Persona por nro_documento ***
-@url ejemplo http://gcb.local/personas/buscar-por-documento/29800100
+@url ejemplo http://gcb.local/registral/personas/buscar-por-documento/29800100
 @Method GET
 {
     "success": true,
@@ -408,7 +408,7 @@
 **/
 
 /**** obtener Persona por id ***
-@url ejemplo http://gcb.local/personas/1
+@url ejemplo http://gcb.local/registral/personas/1
 @Method GET
 {
     "id": 1,
