@@ -4,6 +4,7 @@
 /**
 * @url http://api.gcb.local/cuenta-bps/importar
 * @method POST
+* @Key Content-Type null
 * @arrayReturn
 {
     "cuenta": {
