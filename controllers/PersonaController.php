@@ -92,8 +92,7 @@ class PersonaController extends ActiveController{
     public function actionView($id)
     {
         $resultado = \Yii::$app->registral->viewPersona($id);
-                
-        if($resultado['estado']!=true){
+        if(!empty($resultado)){
             $data = $resultado;       
         }else{
             $data = $resultado;  
