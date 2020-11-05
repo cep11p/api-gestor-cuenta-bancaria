@@ -238,6 +238,8 @@ class CuentaSaldo
         /******** Instancia con Persona ************/
         $params = self::setInstanciaSubSucursalYPersona($params);
         
+        /**** Se borra el listado de prestacion con estado preparado a exportar ****/
+        Prestacion::deleteAll(['estado'=> Prestacion::PREPARADO_A_EXPORTAR]);        
         
         /***** Se validan y se registran las prestaciones *********/
         foreach ($params as $value) {       
