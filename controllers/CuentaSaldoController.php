@@ -67,20 +67,17 @@ class CuentaSaldoController extends ActiveController{
     {
         $params = \Yii::$app->request->post();
         
-        $resultado['message']='Se exportan todas la prestaciones';
+        $resultado['message']='Se crea el archivo CTASLDO.txt';
         $transaction = Yii::$app->db->beginTransaction();
         
         try{            
             
             $ctaSaldo = \app\models\CuentaSaldo::exportCtaSaldo($params);
-                header('Content-Type: txt');
-                header('Content-Disposition: attachment;filename="CTASLDO.txt"');
-                header('Cache-Control: max-age=0');
-
+        
             if(!empty($ctaSaldo)){
-                print_r($ctaSaldo);
+                $resultado['cuenta_saldo'] = $ctaSaldo;
                 $transaction->commit();
-                exit();
+                return $resultado;
             }else{
                 throw new \yii\web\HttpException(400, 'Lista de personas vacia');
             }
@@ -89,7 +86,7 @@ class CuentaSaldoController extends ActiveController{
             $mensaje =$exc->getMessage();
             throw new \yii\web\HttpException(400, $mensaje);
         }
-
+        
     }
     
      public function actionCreate() {

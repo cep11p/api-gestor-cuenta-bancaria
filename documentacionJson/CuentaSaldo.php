@@ -6,38 +6,10 @@
 * @url http://api.gcb.local/cuenta-saldo/exportar
 * @method POST
 * @arrayReturn
- * [
     {
-        "id":1,
-        "prestacion":{
-            "fecha_ingreso":"2020-03-03",
-            "monto": "5000",
-            "sub_sucursalid":1,
-            "observacion":"",
-            "proposito":""
-        }
-    },
-    {
-        "id":2,
-        "prestacion":{
-            "fecha_ingreso":"2020-03-03",
-            "monto": "5000",
-            "sub_sucursalid":1,
-            "observacion":"",
-            "proposito":""
-        }
-    },
-    {
-        "id":3,
-        "prestacion":{
-            "fecha_ingreso":"2020-03-03",
-            "monto": "5000",
-            "sub_sucursalid":1,
-            "observacion":"",
-            "proposito":""
-        }
+        "message": "Se crea el archivo CTASLDO.txt",
+        "cuenta_saldo": "8180GONZáLEZ                     8180VICTORIA MARGARITA0010000000002385126600A30121982FSCALLE              00327    VIEDMA                        08500162                              0082023851266905000                  05112020265            08328                         000000000                       "
     }
- * ]
 */
 
 /*****Para crear****
