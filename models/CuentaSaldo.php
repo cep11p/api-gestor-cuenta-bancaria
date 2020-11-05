@@ -65,28 +65,30 @@ class CuentaSaldo
      */
     static function setCuentaSaldoTxt($lista_prestacion) {
         $ctasaldo = '';
-        $errors = [];
+        $error = [];
         foreach ($lista_prestacion as $value) {
-            
+            $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
+
             /*********** Validamos CtaSldo ***********/
             //La longitud de la calle no puede ser mayor a 19
             if(strlen($value['lugar']['calle'])>19){
                 $error['calle'] = 'La calle no puede superar los 19 caracteres.';
-                $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
-                $errors[] = $error;
             }
             
             if(!isset($value['lugar']['altura']) || empty($value['lugar']['altura'])){
                 $error['altura'] = 'El campo número se encuentra vacio';
-                $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
-                $errors[] = $error;
+            }
+            
+            //si hay errores notificamos
+            if(count($error)>1){
+                throw new \yii\web\HttpException(400, json_encode(array($error)));
             }
             
             /************* Fin de validacion CtaSldo ***************/
             
             //Estructura de CTASLDO.TXT
             $convenio_apellido = str_pad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
-            $nombre = str_pad(strtoupper(\app\components\Help::quitar_tildes($value['nombre'])), 16);
+            $nombre = str_pad(strtoupper(substr(\app\components\Help::quitar_tildes($value['nombre']), 0, 16)), 16);
             $tipo_documento = str_pad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
             $nro_documento = str_pad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
             $nacionalidad = str_pad($value['nacionalidad'], 3, "0", STR_PAD_LEFT);
@@ -104,11 +106,6 @@ class CuentaSaldo
             $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
             $ctasaldo .= (empty($ctasaldo))?$linea_ctasaldo:"\n".$linea_ctasaldo;
             
-        }
-        
-        //si hay errores notificamos
-        if(!empty($errors)){
-            throw new \yii\web\HttpException(400, json_encode($errors));
         }
         
         return $ctasaldo;
