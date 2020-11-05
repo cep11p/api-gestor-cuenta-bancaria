@@ -76,18 +76,24 @@ class CuentaSaldo
                 $errors[] = $error;
             }
             
+            if(!isset($value['lugar']['altura']) || empty($value['lugar']['altura'])){
+                $error['altura'] = 'El campo número se encuentra vacio';
+                $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
+                $errors[] = $error;
+            }
+            
             /************* Fin de validacion CtaSldo ***************/
             
             //Estructura de CTASLDO.TXT
-            $convenio_apellido = str_pad('8180'.strtoupper($value['apellido']), 34);
-            $nombre = str_pad('8180'.strtoupper($value['nombre']), 16);
+            $convenio_apellido = str_pad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
+            $nombre = str_pad(strtoupper(\app\components\Help::quitar_tildes($value['nombre'])), 16);
             $tipo_documento = str_pad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
             $nro_documento = str_pad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
             $nacionalidad = str_pad($value['nacionalidad'], 3, "0", STR_PAD_LEFT);
             $fecha_nacimiento = \DateTime::createFromFormat('Y-m-d', $value['fecha_nacimiento'])->format('dmY');
             $sexo = ($value['sexo']=='Masculino')?'M':'F';
             $estado_civil = 'S';
-            $calle = str_pad(strtoupper($value['lugar']['calle']), 19);
+            $calle = str_pad(strtoupper(\app\components\Help::quitar_tildes($value['lugar']['calle'])), 19);
             $altura = str_pad((str_pad($value['lugar']['altura'], 5, "0", STR_PAD_LEFT)),9);
             $localidad = str_pad(strtoupper($value['lugar']['localidad']), 30);
             $codigo_postal = str_pad(str_pad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
@@ -158,10 +164,10 @@ class CuentaSaldo
         //hacemos instancia con todas las persoans
         foreach ($params as $value) {
             //nos comunicamos con registrar para obtener lista de personas
-            if(isset($value['id']) && is_int($value['id'])){
+            if(isset($value['id'])){
                 $ids .= (empty($ids))?$value['id']:','.$value['id'];
             }else{
-                throw new \yii\web\HttpException(400,'No se permite una prestacion sin id de una persona');
+                throw new \yii\web\HttpException(400,'No se permite una persona sin id de una persona');
             }
         }
         $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
