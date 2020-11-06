@@ -131,7 +131,6 @@ class CtaBps extends Model
         
         //registramos la cuenta bancaria de la persona
         $resultado['cuenta'] = $this->crearCuentas($lista_persona_encontrada);
-        $resultado['prestacion'] = $this->registrarPrestacion($lista_persona_encontrada);
         
         //Se notifican las personas que aun no estan registradas
         $error_persona = array();
