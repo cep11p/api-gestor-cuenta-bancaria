@@ -77,18 +77,9 @@
             },
             "lista_cuenta": [
                 {
-                    "id": 1,
-                    "cbu": "340220908126708871006",
-                    "personaid": 102,
-                    "bancoid": 1,
-                    "tipo_cuentaid": 1,
-                    "create_at": "2020-10-29 03:10:52",
-                    "tesoreria_alta": 0,
+                    "cbu": "0340220908730032794010",
                     "banco": "Patagonia",
-                    "tipo_cuenta": "Cuenta Corriente",
-                    "cuil": "27351545475",
-                    "apellido": "Marileo",
-                    "nombre": "Romina Azucena"
+                    "tesoreria_alta": 0
                 }
             ],
             "tiene_cbu": true

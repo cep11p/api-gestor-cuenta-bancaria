@@ -56,13 +56,18 @@ class Cuenta extends BaseCuenta
         }
         
         $lista_cuenta = $CuentaSearch->search(['persona_ids'=>$ids]);
+//        print_r($lista_cuenta);die();
+        $lista_cuenta = (!empty($lista_cuenta['resultado']))?$lista_cuenta['resultado']:[];
         
         //vamos a vincular cuentas a las personas correspondiente
         $i=0;
         foreach ($lista_cuenta as $value) {
             foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
-                    $lista_persona[$i]['lista_cuenta'][] = $value;
+                    $cuenta['cbu'] = $value['cbu'];
+                    $cuenta['banco'] = $value['banco'];
+                    $cuenta['tesoreria_alta'] = $value['tesoreria_alta'];
+                    $lista_persona[$i]['lista_cuenta'][] = $cuenta;
                     $lista_persona[$i]['tiene_cbu'] = true;
                     break;
                 }
@@ -70,7 +75,6 @@ class Cuenta extends BaseCuenta
             }
             $i++;
         }
-        
         //Vamos a chequear que persona no tiene una cuenta bancaria para crear un lista vacia
         $i=0;
         foreach ($lista_persona as $persona) {
@@ -82,6 +86,8 @@ class Cuenta extends BaseCuenta
             $i++;
         }
         
+//        print_r($lista_persona);
+//        die('termina');
         return $lista_persona;
     }
     
