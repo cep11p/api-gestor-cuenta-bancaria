@@ -31,7 +31,7 @@ class Cuenta extends BaseCuenta
             ]
         );
     }
-    
+        
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(), [

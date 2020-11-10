@@ -205,6 +205,8 @@ class Html extends BaseReader
      *
      * @param string $pFilename
      *
+     * @throws Exception
+     *
      * @return Spreadsheet
      */
     public function load($pFilename)
@@ -221,7 +223,7 @@ class Html extends BaseReader
      *
      * @param string $pValue Input encoding, eg: 'ANSI'
      *
-     * @return $this
+     * @return Html
      */
     public function setInputEncoding($pValue)
     {
@@ -270,7 +272,7 @@ class Html extends BaseReader
         return array_pop($this->nestedColumn);
     }
 
-    protected function flushCell(Worksheet $sheet, $column, $row, &$cellContent): void
+    protected function flushCell(Worksheet $sheet, $column, $row, &$cellContent)
     {
         if (is_string($cellContent)) {
             //    Simple String content
@@ -290,11 +292,13 @@ class Html extends BaseReader
     }
 
     /**
+     * @param DOMNode $element
+     * @param Worksheet $sheet
      * @param int $row
      * @param string $column
      * @param string $cellContent
      */
-    protected function processDomElement(DOMNode $element, Worksheet $sheet, &$row, &$column, &$cellContent): void
+    protected function processDomElement(DOMNode $element, Worksheet $sheet, &$row, &$column, &$cellContent)
     {
         foreach ($element->childNodes as $child) {
             if ($child instanceof DOMText) {
@@ -486,12 +490,12 @@ class Html extends BaseReader
                     case 'td':
                         $this->processDomElement($child, $sheet, $row, $column, $cellContent);
 
+                        // apply inline style
+                        $this->applyInlineStyle($sheet, $row, $column, $attributeArray);
+
                         while (isset($this->rowspan[$column . $row])) {
                             ++$column;
                         }
-
-                        // apply inline style
-                        $this->applyInlineStyle($sheet, $row, $column, $attributeArray);
 
                         $this->flushCell($sheet, $column, $row, $cellContent);
 
@@ -575,6 +579,9 @@ class Html extends BaseReader
      * Loads PhpSpreadsheet from file into PhpSpreadsheet instance.
      *
      * @param string $pFilename
+     * @param Spreadsheet $spreadsheet
+     *
+     * @throws Exception
      *
      * @return Spreadsheet
      */
@@ -600,8 +607,12 @@ class Html extends BaseReader
      * Spreadsheet from content.
      *
      * @param string $content
+     *
+     * @throws Exception
+     *
+     * @return Spreadsheet
      */
-    public function loadFromString($content, ?Spreadsheet $spreadsheet = null): Spreadsheet
+    public function loadFromString($content): Spreadsheet
     {
         //    Create a new DOM object
         $dom = new DOMDocument();
@@ -611,11 +622,18 @@ class Html extends BaseReader
             throw new Exception('Failed to load content as a DOM Document');
         }
 
-        return $this->loadDocument($dom, $spreadsheet ?? new Spreadsheet());
+        return $this->loadDocument($dom, new Spreadsheet());
     }
 
     /**
      * Loads PhpSpreadsheet from DOMDocument into PhpSpreadsheet instance.
+     *
+     * @param DOMDocument $document
+     * @param Spreadsheet $spreadsheet
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     *
+     * @return Spreadsheet
      */
     private function loadDocument(DOMDocument $document, Spreadsheet $spreadsheet): Spreadsheet
     {
@@ -652,7 +670,7 @@ class Html extends BaseReader
      *
      * @param int $pValue Sheet index
      *
-     * @return $this
+     * @return HTML
      */
     public function setSheetIndex($pValue)
     {
@@ -676,32 +694,13 @@ class Html extends BaseReader
      * @param string $column
      * @param array $attributeArray
      */
-    private function applyInlineStyle(&$sheet, $row, $column, $attributeArray): void
+    private function applyInlineStyle(&$sheet, $row, $column, $attributeArray)
     {
         if (!isset($attributeArray['style'])) {
             return;
         }
 
-        if (isset($attributeArray['rowspan'], $attributeArray['colspan'])) {
-            $columnTo = $column;
-            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-                ++$columnTo;
-            }
-            $range = $column . $row . ':' . $columnTo . ($row + (int) $attributeArray['rowspan'] - 1);
-            $cellStyle = $sheet->getStyle($range);
-        } elseif (isset($attributeArray['rowspan'])) {
-            $range = $column . $row . ':' . $column . ($row + (int) $attributeArray['rowspan'] - 1);
-            $cellStyle = $sheet->getStyle($range);
-        } elseif (isset($attributeArray['colspan'])) {
-            $columnTo = $column;
-            for ($i = 0; $i < (int) $attributeArray['colspan'] - 1; ++$i) {
-                ++$columnTo;
-            }
-            $range = $column . $row . ':' . $columnTo . $row;
-            $cellStyle = $sheet->getStyle($range);
-        } else {
-            $cellStyle = $sheet->getStyle($column . $row);
-        }
+        $cellStyle = $sheet->getStyle($column . $row);
 
         // add color styles (background & text) from dom element,currently support : td & th, using ONLY inline css style with RGB color
         $styles = explode(';', $attributeArray['style']);
@@ -860,10 +859,14 @@ class Html extends BaseReader
     }
 
     /**
+     * @param Worksheet $sheet
      * @param string    $column
      * @param int       $row
+     * @param array     $attributes
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    private function insertImage(Worksheet $sheet, $column, $row, array $attributes): void
+    private function insertImage(Worksheet $sheet, $column, $row, array $attributes)
     {
         if (!isset($attributes['src'])) {
             return;
@@ -947,17 +950,13 @@ class Html extends BaseReader
     }
 
     /**
+     * @param Style  $cellStyle
      * @param string $styleValue
      * @param string $type
      */
-    private function setBorderStyle(Style $cellStyle, $styleValue, $type): void
+    private function setBorderStyle(Style $cellStyle, $styleValue, $type)
     {
-        if (trim($styleValue) === Border::BORDER_NONE) {
-            $borderStyle = Border::BORDER_NONE;
-            $color = null;
-        } else {
-            [, $borderStyle, $color] = explode(' ', $styleValue);
-        }
+        [, $borderStyle, $color] = explode(' ', $styleValue);
 
         $cellStyle->applyFromArray([
             'borders' => [

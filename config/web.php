@@ -97,7 +97,7 @@ $config = [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta', 
-                ],
+                ], 
                 [   #CTASLDO
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta-saldo', 
@@ -117,6 +117,14 @@ $config = [
                 [   #CuentaBps
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta-bps', 
+                    'extraPatterns' => [
+                        'POST Importar' => 'importar',
+                        'OPTIONS Importar' => 'importar',
+                    ], 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'herramienta', 
                     'extraPatterns' => [
                         'POST Importar' => 'importar',
                         'OPTIONS Importar' => 'importar',
