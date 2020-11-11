@@ -7,10 +7,6 @@
 * @method POST
 * @arrayReturn
 {
-    "lista_cuenta":[
-        {"id":1},
-        {"id":2},
-        {"id":3}
-    ]
+    *No se necesita parametros, ya que se busca un listado de cuentas que aun no fueron dadas de altas en tesoreria (exportado a interbankin)
 }
 */
