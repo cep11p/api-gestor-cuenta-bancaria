@@ -43,17 +43,12 @@ class CuentaSearch extends Cuenta
     {
         $query = Cuenta::find();
         $paginacion = [
-            "pageSize"=>$pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']),
+            "pageSize"=>$pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?500:intval($params['pagesize']),
             "page"=>(isset($params['page']) && is_numeric($params['page']))?$params['page']:0
         ];
-        $paginacion_max = [
-            "pageSize"=>1000,
-            "page"=>(isset($params['page']) && is_numeric($params['page']))?$params['page']:0
-        ];
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => (!isset($params['pagesize']) && !isset($params['page']))?$paginacion_max:$paginacion
+            'pagination' => $paginacion
         ]);
 
         $this->load($params,'');
@@ -71,14 +66,10 @@ class CuentaSearch extends Cuenta
             $persona_params["global_param"] = $params['global_param'];
         }
         
-        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
-            $persona_params['localidadid'] = $params['persona']['localidadid'];    
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $persona_params['localidadid'] = $params['localidadid'];    
         }
-        
-        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
-            $persona_params['direccion'] = $params['persona']['direccion'];    
-        }
-        
+                
         $coleccion_persona = array();
         $lista_personaid = array();
         if (isset($persona_params)) {
@@ -123,7 +114,6 @@ class CuentaSearch extends Cuenta
             $coleccion[] = $value->toArray();
         }
         
-        $coleccion = Cuenta::vincularPropietario($coleccion);
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);           
         $resultado['pagesize']=$pagesize;            

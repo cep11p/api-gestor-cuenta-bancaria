@@ -62,6 +62,10 @@ class CuentaController extends ActiveController{
         $searchModel = new \app\models\CuentaSearch();
         $params = \Yii::$app->request->queryParams;
         $resultado = $searchModel->search($params);
+        
+        if(!empty($resultado['resultado'])){
+            $resultado['resultado'] = \app\models\Cuenta::vincularPropietario($resultado['resultado']);
+        }
 
         return $resultado;
     }

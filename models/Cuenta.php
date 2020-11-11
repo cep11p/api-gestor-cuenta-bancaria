@@ -56,7 +56,6 @@ class Cuenta extends BaseCuenta
         }
         
         $lista_cuenta = $CuentaSearch->search(['persona_ids'=>$ids]);
-//        print_r($lista_cuenta);die();
         $lista_cuenta = (!empty($lista_cuenta['resultado']))?$lista_cuenta['resultado']:[];
         
         //vamos a vincular cuentas a las personas correspondiente
@@ -86,8 +85,6 @@ class Cuenta extends BaseCuenta
             $i++;
         }
         
-//        print_r($lista_persona);
-//        die('termina');
         return $lista_persona;
     }
     
