@@ -140,7 +140,11 @@ class Cuenta extends BaseCuenta
                     $lista_cuenta[$i]['sexo'] = $persona['sexo'];
                     $lista_cuenta[$i]['telefono'] = $persona['telefono'];
                     $lista_cuenta[$i]['celular'] = $persona['celular'];
-                    $lista_cuenta[$i]['lugar'] = (!empty($persona['lugar']))?$persona['lugar']:[];;
+                    $lista_cuenta[$i]['email'] = $persona['email'];
+                    
+                    if(!empty($persona['lugar'])){
+                        $lista_cuenta[$i]['lugar'] = $persona['lugar'];
+                    }
                     break;
                 }
             }
