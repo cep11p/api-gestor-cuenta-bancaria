@@ -73,17 +73,15 @@ class InterbankingController extends ActiveController{
         try{            
             
             $interbanking = \app\models\Interbanking::exportar($params);
-            header('Content-Type: txt');
-            header('Content-Disposition: attachment;filename="Interbanking.txt"');
-            header('Cache-Control: max-age=0');
 
             if(!empty($interbanking)){
-                print_r($interbanking);
+                $resultado['interbanking'] = $interbanking;
                 $transaction->commit();
-                exit();
             }else{
                 throw new \yii\web\HttpException(400, 'No hay prestaciones para exportar a tesoreria');
             }
+            
+            return $resultado;
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();

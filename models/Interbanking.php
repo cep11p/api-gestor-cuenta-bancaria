@@ -64,7 +64,7 @@ class Interbanking extends Model
      * @return array Se devuelve una lista de cuenta con los datos del propietario
      */
     public function getDatosCuentas($params) {
-        $resultado = [];
+        $resultado['resultado'] = [];
         $cuentaSearch = new CuentaSearch();
         $cuenta_ids='';
         foreach ($params as $value) {
@@ -73,16 +73,14 @@ class Interbanking extends Model
         }
         
         
-        //obtenemos la lista de cuentas con sus datos
-        $lista_cuenta = $cuentaSearch->search(['ids'=>$cuenta_ids]);
+        //obtenemos la lista de cuentas que no fueron dadas de alta en tesoreria
+        $lista_cuenta = $cuentaSearch->search(['tesoreria_alta'=>0]);
         
-        if(empty($lista_cuenta)){
-            throw new \yii\web\HttpException(400, 'Lista de cuenta vacia');
+        if(empty($lista_cuenta['resultado'])){
+            throw new \yii\web\HttpException(400, 'No se encontraron cuentas para exportar a tesoreria');
         }
         
-        $resultado = Cuenta::getCuentaYCuil($lista_cuenta);
-        
-        return $resultado;
+        return $lista_cuenta['resultado'];
     }
     
     
