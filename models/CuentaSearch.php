@@ -42,14 +42,18 @@ class CuentaSearch extends Cuenta
     public function search($params)
     {
         $query = Cuenta::find();
-        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
+        $paginacion = [
+            "pageSize"=>$pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']),
+            "page"=>(isset($params['page']) && is_numeric($params['page']))?$params['page']:0
+        ];
+        $paginacion_max = [
+            "pageSize"=>1000,
+            "page"=>(isset($params['page']) && is_numeric($params['page']))?$params['page']:0
+        ];
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => $pagesize,
-                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
-            ]
+            'pagination' => (!isset($params['pagesize']) && !isset($params['page']))?$paginacion_max:$paginacion
         ]);
 
         $this->load($params,'');
