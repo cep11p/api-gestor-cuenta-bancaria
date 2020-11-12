@@ -37,6 +37,7 @@ class CtaBps extends Model
     }
     
     public function importar() {
+        $resultado = array();
         if ($this->validate()) {
             $content = file_get_contents($this->file->tempName);
             $ctaBps_array = preg_split('/\n|\r\n?/', $content); 
@@ -130,15 +131,12 @@ class CtaBps extends Model
         }
         
         //registramos la cuenta bancaria de la persona
-        $resultado['cuenta'] = $this->crearCuentas($lista_persona_encontrada);
+        $resultado = $this->crearCuentas($lista_persona_encontrada);
         
         //Se notifican las personas que aun no estan registradas
         $error_persona = array();
         foreach ($lista_persona_bps as $persona) {
-            $error_persona[] = "No se encuentra registrada la persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
-        }
-        if(!empty($error_persona)){
-            $resultado['importacion_error'] = $error_persona;
+            $resultado['errors'][] = "No se encuentra registrada la persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
         }
                 
         return $resultado;
@@ -173,7 +171,7 @@ class CtaBps extends Model
         
         
         $resultado['creadas'] = $cant_registros;
-        $resultado['errors'] = $errors;
+        $resultado['existen'] = count($errors);
                 
         return $resultado;
     }

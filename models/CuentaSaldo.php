@@ -30,15 +30,21 @@ class CuentaSaldo
         
         /***** Se validan y se registran las prestaciones *********/
         foreach ($lista_persona_prestacion as $value) {    
-            //Registramos la prestacion
-            $model = new Prestacion();
-            $model->personaid = (isset($value['id']))?$value['id']:null;
-            $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
-            $model->create_at = date('Y-m-d H:m:i');
-            $model->observacion = 'Se crea en exportacion de CtaSaldo';
-            $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
-            $model->estado = Prestacion::SIN_CBU;
-            $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
+            
+            if(empty($value['prestacion']['id'])){
+                //Registramos la prestacion
+                $model = new Prestacion();
+                $model->personaid = (isset($value['id']))?$value['id']:null;
+                $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
+                $model->create_at = date('Y-m-d H:m:i');
+                $model->observacion = 'Se crea en exportacion de CtaSaldo';
+                $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
+                $model->estado = Prestacion::SIN_CBU;
+                $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
+            }else{
+                $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
+                $model->estado = Prestacion::SIN_CBU;
+            }
             
             if(!$model->save()){
                 $error = $model->errors;
@@ -187,11 +193,14 @@ class CuentaSaldo
                     $lista_persona_prestacion[$i]['sexo'] = $persona['sexo'];
                     $lista_persona_prestacion[$i]['nacionalidadid'] = $persona['nacionalidadid'];
                     $lista_persona_prestacion[$i]['nacionalidad'] = ($persona['nacionalidadid']==self::NACIONALIDAD_ARGENTINA)?'A':'E';
-                    $lista_persona_prestacion[$i]['lugar']['calle'] = $persona['lugar']['calle'];
-                    $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
-                    $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
-                    $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
                     $lista_persona_prestacion[$i]['cuil'] = $persona['cuil'];
+                    
+                    if(!empty($persona['lugar'])){
+                        $lista_persona_prestacion[$i]['lugar']['calle'] = $persona['lugar']['calle'];
+                        $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
+                        $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
+                        $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
+                    }
                     break;
                 }
             }

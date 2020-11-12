@@ -30,21 +30,20 @@ class Interbanking extends Model
      * @throws \yii\web\HttpException
      */
     public static function exportar($params){
-        $cuentas = (!empty($params['lista_cuenta']))?$params['lista_cuenta']:[];
         $model = new Interbanking();
         $model->setAttributes($params);
-        $resultado = $model->getInterbakingTxt($cuentas);
+        $resultado = $model->getInterbakingTxt();
          
         return $resultado;
     }
     
-    public function getInterbakingTxt($params) {
+    public function getInterbakingTxt() {
         $this->codigo_cliente = 'CLIENTE';
         $interbankin_txt = '1'.$this->codigo_cliente."\n";
-        $final_txt = '3'.$this->codigo_cliente.str_pad(count($params), 6, "0", STR_PAD_LEFT);
         
         //obtenemos los datos del propietario de cada cuenta
-        $datos = $this->getDatosCuentas($params);
+        $datos = $this->getDatosCuentas();
+        $final_txt = '3'.$this->codigo_cliente.str_pad(count($datos), 6, "0", STR_PAD_LEFT);
         
         foreach ($datos as $value) {
             $interbankin_txt .="2".str_pad("", 51, " ", STR_PAD_LEFT)."SNN".$value['cuil'].$value['cbu']."\n";
@@ -63,24 +62,16 @@ class Interbanking extends Model
      * @throws \yii\web\HttpException
      * @return array Se devuelve una lista de cuenta con los datos del propietario
      */
-    public function getDatosCuentas($params) {
-        $resultado['resultado'] = [];
-        $cuentaSearch = new CuentaSearch();
-        $cuenta_ids='';
-        foreach ($params as $value) {
-            //buscamos cuentas por lista de ids
-            $cuenta_ids .= (empty($cuenta_ids))?$value['id']:','.$value['id'];
-        }
-        
-        
+    public function getDatosCuentas() {
         //obtenemos la lista de cuentas que no fueron dadas de alta en tesoreria
-        $lista_cuenta = $cuentaSearch->search(['tesoreria_alta'=>0]);
+        $lista_cuenta = Cuenta::find()->limit(500)->asArray()->where(['tesoreria_alta'=>0])->all();
+        $lista_cuenta = Cuenta::vincularPropietario($lista_cuenta);
         
-        if(empty($lista_cuenta['resultado'])){
+        if(empty($lista_cuenta)){
             throw new \yii\web\HttpException(400, 'No se encontraron cuentas para exportar a tesoreria');
         }
         
-        return $lista_cuenta['resultado'];
+        return $lista_cuenta;
     }
     
     

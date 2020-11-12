@@ -18,7 +18,7 @@ class CuentaSearch extends Cuenta
     public function rules()
     {
         return [
-            [['id', 'personaid', 'bancoid', 'tipo_cuentaid'], 'integer'],
+            [['id', 'personaid', 'bancoid', 'tipo_cuentaid','tesoreria_alta'], 'integer'],
             [['cbu', 'create_at'], 'safe'],
         ];
     }
@@ -103,6 +103,7 @@ class CuentaSearch extends Cuenta
                 'bancoid' => $this->bancoid,
                 'tipo_cuentaid' => $this->tipo_cuentaid,
                 'create_at' => $this->create_at,
+                'tesoreria_alta' => $this->tesoreria_alta,
             ]);
 
             $query->andFilterWhere(['like', 'cbu', $this->cbu]);

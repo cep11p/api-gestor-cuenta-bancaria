@@ -30,13 +30,14 @@ class PersonaForm extends Model
     public $email;
     public $red_social;
     public $cuil;
+    public $nacionalidadid;
 
     public function rules()
     {
         return [
                         
             [['nombre', 'apellido','nro_documento','fecha_nacimiento','cuil'], 'required'],
-            [['estado_civilid', 'sexoid', 'tipo_documentoid', 'nucleoid', 'situacion_laboralid', 'generoid','id'], 'integer'],
+            [['estado_civilid', 'sexoid', 'tipo_documentoid', 'nucleoid', 'situacion_laboralid', 'generoid','id','nacionalidadid'], 'integer'],
             [['nombre', 'apellido', 'nro_documento', 'telefono', 'celular'], 'string', 'max' => 45],
             [['cuil'], 'string', 'max' => 20],
             [['email','red_social'], 'string', 'max' => 200],            
