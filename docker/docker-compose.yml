@@ -2,7 +2,7 @@ version: '2'
 
 services:
   gcb:
-    image: local/yiisoftware/yii2-php:7.3-apache
+    image: yiisoftware/yii2-php:7.3-apache
     volumes:
       - ../:/app
     ports:
