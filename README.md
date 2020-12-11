@@ -82,23 +82,34 @@ http://localhost/basic/web/
 ~~~
 
 
-### Install with Docker
+INSTALLATION
+------------
+Para el despliegue de la aplicacion vamos a la carpeta docker/ y corremos el sieguiente comando (esto mismo crea la bd)
+		
+		-ambiente prod
+		docker-compose -p app -f docker-compose.yml -f docker-compose-prod.yml up -d 
+		
+		-ambiente dev
+		docker-compose -p app -f docker-compose.yml -f docker-compose-dev.yml up -d 
 
-Update your vendor packages
+	*Borramos los contenedores (borra los contenedores)
 
-    docker-compose run --rm php composer update --prefer-dist
-    
-Run the installation triggers (creating cookie validation code)
+		docker-compose -p app down
 
-    docker-compose run --rm php composer install    
-    
-Start the container
+******************Para importar la bd manualmente******************
+Creamos el esquema de la bd desde docker
+        docker exec -i app_gcb_db_1 mysql -u root -proot --execute 'create database gcb DEFAULT CHARACTER SET utf8'
 
-    docker-compose up -d
-    
-You can then access the application through the following URL:
+Importamos el sql inicial que se encuentra en bd_inicial/
+	    docker exec -i app_gcb_db_1 mysql -u root -proot gcb < bd_inicial.sql
 
-    http://127.0.0.1:8000
+Realizar los pasos en el siguiente orden:
+
+    1- Ahora debemos ejecutar el comando composer install. Como tenemos php en un contenedor debemos ejecutar el mismo comando dentro del contenedor. Para ello debemos 
+    entrar al contenedor con el siguiente comando: 
+        docker exec -ti app_gcb_1 bash. 
+    y corremos el siguiente comando
+        composer install
 
 **NOTES:** 
 - Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
