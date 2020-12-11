@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Gestor de cuentas bancarias',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -240,7 +241,9 @@ $config = [
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
-            'enableConfirmation'=>false,
+            'enableConfirmation'=> false,
+            'enableRegistration'=> false,
+            'enablePasswordRecovery'=> false,
             'admins'=>['admin']
         ],
         'registral' => [
