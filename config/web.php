@@ -259,6 +259,7 @@ $config = [
         'registral' => [
             'class' => 'app\modules\registral\Registral',
         ],
+        'rbac' => 'dektrium\rbac\RbacWebModule',
     ],
 ];
 
