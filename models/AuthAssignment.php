@@ -3,13 +3,13 @@
 namespace app\models;
 
 use Yii;
-use \app\models\base\TipoCuenta as BaseTipoCuenta;
+use \app\models\base\AuthAssignment as BaseAuthAssignment;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "tipo_cuenta".
+ * This is the model class for table "auth_assignment".
  */
-class TipoCuenta extends BaseTipoCuenta
+class AuthAssignment extends BaseAuthAssignment
 {
 
     public function behaviors()

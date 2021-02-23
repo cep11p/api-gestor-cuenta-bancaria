@@ -42,7 +42,7 @@ class ServicioLugar extends Component
 //                'Content-Type'=>'application/json'
             ];          
             
-            $response = $client->request('GET', 'http://lugar/api/localidad?id='.$id, ['headers' => $headers]);
+            $response = $client->request('GET', 'http://lugar/api/localidads/'.$id, ['headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::info($respuesta);
             

@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\components\VinculoInteroperableHelp;
+use app\models\User;
 use yii\rest\ActiveController;
 use Yii;
 use yii\web\Response;
@@ -9,7 +11,7 @@ use dektrium\user\Finder;
 use dektrium\user\helpers\Password;
 use dektrium\user\Module;
 use yii\base\Exception;
-
+use yii\helpers\ArrayHelper;
 
 class UsuarioController extends ActiveController
 {
@@ -55,11 +57,6 @@ class UsuarioController extends ActiveController
         $behaviors['authenticator']['except'] = [
             'options',
             'login',
-//            'signup',
-//            'confirm',
-//            'password-reset-request',
-//            'password-reset-token-verification',
-//            'password-reset'
         ];     
 
         $behaviors['access'] = [
@@ -73,9 +70,9 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index','create'],
+                    'actions' => ['index','create','view','buscar-persona-por-cuil'],
                     'roles' => ['@'],
-                ],
+                ]
             ]
         ];
 
@@ -90,7 +87,20 @@ class UsuarioController extends ActiveController
         unset($actions['create']);
         unset($actions['update']);
         unset($actions['view']);
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
+    }
+
+    public function prepareDataProvider() 
+    {
+        $searchModel = new \app\models\UserSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->search($params);
+
+        $resultado['resultado'] = VinculoInteroperableHelp::vincularDatosLocalidad($resultado['resultado']);
+        $resultado['resultado'] = VinculoInteroperableHelp::vincularDatosPersona($resultado['resultado'],['nombre','apellido','nro_documento','cuil']);
+
+        return $resultado;
     }
     
         /**
@@ -123,34 +133,61 @@ class UsuarioController extends ActiveController
         
     }
     
-    public function actionCreate() {
-        $param = Yii::$app->request->post(); 
+    /**
+     * Se registra un usuario con rol, personaid y localidadid
+     *
+     * @return void
+     */
+    public function actionCreate(){
+        $resultado['message']='Se crea un usuario';
+        $params = Yii::$app->request->post();
+
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            
-            $model = new \app\models\ApiUser();
-            $model->setScenario('register');
-            $model->setAttributes($param);
-            
-            
-            if(!$model->register()){
-                throw new Exception(json_encode($model->getErrors()));
-            }
-            
-            $transaction->commit();
-            $resultado['success'] =  true;
-            $resultado['data']['id'] =  $model->id;
+       
+            $resultado['data']['id'] = User::registrarUsuario($params);
 
+            $transaction->commit();
             return $resultado;
-           
-        }catch (Exception $exc) {
+        }catch (\yii\web\HttpException $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
+            $statuCode =$exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
         }
     }
 
-    
-    
-    
+    public function actionView($id){
+        $model = User::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
+        }
+        
+        $resultado = ArrayHelper::merge($model->toArray(),$model->userPersona->persona);
+        $resultado['localidad'] = $model->userPersona->localidad;
+        
+        return $resultado;
+    }
+
+    /**
+     * Esta funcionalidad realiza la busqueda de una persona, si la persona tiene un usuario le vinculamos el usuario, 
+     * sino tiene un usuario solo se devolvera la persona, en todo caso si no se encuenta ninguna 
+     * de las dos cosas se devuelve success=false
+     *
+     * @param [int] $cuil
+     * @return array
+     */
+    public function actionBuscarPersonaPorCuil($cuil){
+
+        $data = User::buscarPersonaPorCuil($cuil);
+        if($data!=false){
+            $resultado['success'] = true;
+            $resultado['resultado'] = $data;
+        }else{
+            $resultado['success'] = false;
+        }        
+
+        return $resultado;
+    }
+
 }

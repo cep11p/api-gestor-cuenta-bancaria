@@ -70,6 +70,12 @@ class DummyServicioRegistral extends Component implements IServicioRegistral
         
        
     }
+
+    public function buscarPersonaPorCuil($cuil)
+    {
+        return ['servicio dummy'];
+       
+    }
     
     public function buscarPersonaPorId($id)
     {

@@ -214,15 +214,25 @@ $config = [
                 ],
                 /*************** Fin de Ruteo Registral *****************/
                 /****** USUARIOS *******/
-                [   
+                [   #Usuario
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'usuario',   
                     'extraPatterns' => [
                         'POST login' => 'login',
-                        'OPTIONS login' => 'options'
-                        //'GET mostrar/{id}' => 'mostrar',
-                    ],          
-                ],
+                        'OPTIONS login' => 'options',
+                        'OPTIONS listar-asignacion/{id}' => 'listar-asignacion',
+                        'GET listar-asignacion/{id}' => 'listar-asignacion',
+                        'OPTIONS crear-asignacion' => 'crear-asignacion',
+                        'POST crear-asignacion' => 'crear-asignacion',
+                        'OPTIONS borrar-asignacion' => 'borrar-asignacion',
+                        'POST borrar-asignacion' => 'borrar-asignacion',
+                        'OPTIONS baja/{id}' => 'baja',
+                        'PUT baja/{id}' => 'baja',
+                        'OPTIONS buscar-persona-por-cuil/{cuil}' => 'buscar-persona-por-cuil',
+                        'GET buscar-persona-por-cuil/{cuil}' => 'buscar-persona-por-cuil',
+                    ],
+                    'tokens' => ['{id}'=>'<id:\\w+>', '{cuil}'=>'<cuil:\\w+>'],                       
+                ],  
             ],
         ],
         

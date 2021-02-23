@@ -117,6 +117,37 @@ class ServicioRegistral extends Component implements IServicioRegistral
         }
        
     }
+
+    public function buscarPersonaPorCuil($cuil)
+    {
+        $client =   $this->_client;
+        try{
+            $headers = [
+                'Authorization' => 'Bearer ' .$this->crearToken(),
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://registral/api/personas/buscar-por-cuil/'.$cuil, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::error($respuesta);
+            
+            foreach ($respuesta as $value) {
+                $respuesta = $value;
+                break;
+            }
+
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
     
     public function buscarPersonaPorId($id)
     {
@@ -156,12 +187,13 @@ class ServicioRegistral extends Component implements IServicioRegistral
             $response = $client->request('GET', 'http://registral/api/personas/'.$id, ['headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::info($respuesta);
-            
             return $respuesta;
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
-                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
-                return false;
+            $resultado = json_decode($e->getResponse()->getBody()->getContents());
+            \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+            print_r($resultado);die();
+            \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+            return false;
         } catch (Exception $e) {
                 \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
                 \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
@@ -588,7 +620,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
 //            'usuario_real'=>\Yii::$app->user->identity->username //comentado para DEV
         ];
         
-        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);   
+        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['REGISTRAL_JWT_SECRET']);   
             
         return  $token;
     }

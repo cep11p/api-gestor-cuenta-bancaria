@@ -3,13 +3,13 @@
 namespace app\models;
 
 use Yii;
-use \app\models\base\TipoCuenta as BaseTipoCuenta;
+use \app\models\base\AuthItemChild as BaseAuthItemChild;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "tipo_cuenta".
+ * This is the model class for table "auth_item_child".
  */
-class TipoCuenta extends BaseTipoCuenta
+class AuthItemChild extends BaseAuthItemChild
 {
 
     public function behaviors()
