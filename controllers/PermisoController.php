@@ -1,12 +1,17 @@
 <?php
 namespace app\controllers;
 
+use app\models\AuthItem;
+use app\models\AuthItemSearch;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
-class CuentaController extends ActiveController{
+use Yii;
+
+
+class PermisoController extends ActiveController{
     
-    public $modelClass = 'app\models\Cuenta';
+    public $modelClass = 'app\models\AuthItem';
     
     public function behaviors()
     {
@@ -33,11 +38,12 @@ class CuentaController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['usuario'],
+                    'actions' => ['index'],
+                    'roles' => ['soporte'],
                 ],
             ]
         ];
@@ -50,24 +56,30 @@ class CuentaController extends ActiveController{
     public function actions()
     {
         $actions = parent::actions();
-//        unset($actions['create']);
-//        unset($actions['update']);
-//        unset($actions['delete']);
-        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        unset($actions['index']);
+        unset($actions['view']);
+        unset($actions['create']);
+        unset($actions['update']);
         return $actions;
+    
     }
     
-    public function prepareDataProvider() 
+    /**
+     * Se listan todos los permisos
+     * @return array()
+     */
+    public function actionIndex()
     {
-        $searchModel = new \app\models\CuentaSearch();
-        $params = \Yii::$app->request->queryParams;
+        $params = Yii::$app->request->queryParams;
+        $params['type'] = AuthItem::PERMISO;
+        $searchModel = new AuthItemSearch();
+
         $resultado = $searchModel->search($params);
         
-        if(!empty($resultado['resultado'])){
-            $resultado['resultado'] = \app\models\Cuenta::vincularPropietario($resultado['resultado']);
-        }
-
         return $resultado;
+
     }
+    
+    
     
 }

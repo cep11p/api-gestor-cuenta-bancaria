@@ -172,6 +172,11 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'estado-civil', 
                 ],
+
+                [   #Permiso
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'permiso', 
+                ],
                 /******************** Ruteo con el Modulo Registral (Servicio de interoperable) ***********/
                 [   #estado-civil
                     'class' => 'yii\rest\UrlRule',
@@ -212,6 +217,7 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'registral/tipo-documento', 
                 ],
+                
                 /*************** Fin de Ruteo Registral *****************/
                 /****** USUARIOS *******/
                 [   #Usuario
