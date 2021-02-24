@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\VinculoInteroperableHelp;
 use app\models\User;
+use app\models\UserPersona;
 use yii\rest\ActiveController;
 use Yii;
 use yii\web\Response;
@@ -103,34 +104,62 @@ class UsuarioController extends ActiveController
         return $resultado;
     }
     
-        /**
+    /**
      * Login action.
      *
-     * @return Response|string
+     * @return Response|array
      */
     public function actionLogin()
     {
         $parametros = Yii::$app->getRequest()->getBodyParams();
-        
+
         $usuario = $this->finder->findUserByUsernameOrEmail($parametros['username']);       
         
         if(!($usuario !== null && Password::validate($parametros['password_hash'],$usuario->password_hash))){
-            throw new \yii\web\HttpException(500, 'usuario o contraseña inválido');
+            throw new \yii\web\HttpException(401, 'usuario o contraseña inválido');
         }
-        
+        $userPersona = UserPersona::findOne(['userid'=>$usuario->id]);
+        if($userPersona->fecha_baja != null){
+            throw new \yii\web\HttpException(401, 'El usuario se encuentra inhabilitado');
+        }
+
         $payload = [
-            'exp'=>time()+3600,
+            'exp'=>time()+3600*8,
             'usuario'=>$usuario->username,
             'uid' => $usuario->id  
         ];
+
+        #Registramos el horario de ingreso
+        $usuario->last_login_at = time();
+        $usuario->save();
+
+        #Registramos la ip del ingreso
+        $userPersona = UserPersona::findOne(['userid'=>$usuario->id]);
+
+        if($userPersona == null){
+            throw new \yii\web\HttpException(401, 'El usuario '.$usuario->id.' tiene una inconsitencia con la tabla user_persona');
+        }
+
+        $userPersona->last_login_ip = Yii::$app->getRequest()->getUserIP();
+        $userPersona->save();
         
-        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);   
-            
-        return [
+        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);
+
+        $rol = '';
+        $roles = \Yii::$app->authManager->getRolesByUser($usuario->id);
+        foreach($roles as $value){
+            $rol = $value->name;
+            break;
+        }
+        $resultado = ArrayHelper::merge($userPersona->persona, 
+        [
             'access_token' => $token,
-            'username' => $usuario->username
-        ];
-        
+            'username' => $usuario->username,
+            'rol' => $rol
+        ]);
+
+
+        return $resultado;
     }
     
     /**
@@ -198,7 +227,7 @@ class UsuarioController extends ActiveController
      */
     public function actionBaja($id){
         $params = Yii::$app->request->post();
-        
+
         $model = User::findOne(['id'=>$id]);            
         if($model==NULL){
             throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');

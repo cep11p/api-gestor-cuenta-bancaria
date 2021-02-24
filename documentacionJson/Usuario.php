@@ -17,8 +17,13 @@
 }
 * @return
 {
-    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDE5MjkzNTQsInVzdWFyaW8iOiJhZG1pbiIsInVpZCI6MX0.tH8DHH8vRTjPyNPHiv5zFkXOey_TVARO8NBA1YSkB04",
-    "username": "admin"
+    "nombre": "Victoria Margarita",
+    "apellido": "González",
+    "nro_documento": "23851266",
+    "cuil": "20068512669",
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQyMDYwMjMsInVzdWFyaW8iOiJhZG1pbiIsInVpZCI6MX0.gB1lraNxeF-6wsBpf4X0VA2Y8AypQKdkPk-9dxdupWA",
+    "username": "admin",
+    "rol": "soporte"
 }
 **/
 
