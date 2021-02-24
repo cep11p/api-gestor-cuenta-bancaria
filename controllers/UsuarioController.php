@@ -70,8 +70,8 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index','create','view','buscar-persona-por-cuil'],
-                    'roles' => ['@'],
+                    'actions' => ['index','create','view','buscar-persona-por-cuil','baja'],
+                    'roles' => ['soporte'],
                 ]
             ]
         ];
@@ -187,6 +187,35 @@ class UsuarioController extends ActiveController
             $resultado['success'] = false;
         }        
 
+        return $resultado;
+    }
+
+    /**
+     * Esta funcion habilita y deshabilita un usuario
+     *
+     * @param [int] $id
+     * @return void
+     */
+    public function actionBaja($id){
+        $params = Yii::$app->request->post();
+        
+        $model = User::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
+        }
+        
+        if($params['baja']===true){
+            $resultado['message'] = 'Se inhabilita el usuario correctamente.';
+            if(!$model->setBaja($params)){
+                $resultado['message'] = 'No se pudo inhabilitar el usuario correctamente';
+            }
+        }else if($params['baja']===false){
+            $resultado['message'] = 'Se Habilita el usuario correctamente.';
+            if(!$model->unSetBaja($params)){
+                $resultado['message'] = 'No se pudo habilitar el usuario correctamente';
+            }
+        }
+        
         return $resultado;
     }
 
