@@ -71,7 +71,7 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index','create','view','buscar-persona-por-cuil','baja'],
+                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja'],
                     'roles' => ['soporte'],
                 ]
             ]
@@ -175,6 +175,30 @@ class UsuarioController extends ActiveController
         try {
        
             $resultado['data']['id'] = User::registrarUsuario($params);
+
+            $transaction->commit();
+            return $resultado;
+        }catch (\yii\web\HttpException $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            $statuCode =$exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
+        }
+    }
+
+    public function actionUpdate($id){
+        $resultado['message']='Se modifica un usuario';
+        $params = Yii::$app->request->post();
+
+        $model = User::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+       
+            $resultado['data']['id'] = $model->modificarUsuario($params);
 
             $transaction->commit();
             return $resultado;

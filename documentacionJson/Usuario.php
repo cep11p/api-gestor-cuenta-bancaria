@@ -90,6 +90,18 @@
 }
 */
 
+/**** Para modificar*****
+* @url http://api.gps.local/usuarios/{$id} 
+* @method PUT
+* @param arrayJson
+{
+    "username": "andres",
+    "email": "uncorreo1@correo.com",
+    "password": "newpass",
+    "localidadid": 2626
+}
+**/
+
 /**** Dar de baja un Usuarios*****
 * @url http://api.gcb.local/usuarios/baja/47 
 * @method PUT
