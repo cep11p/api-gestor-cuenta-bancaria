@@ -70,20 +70,6 @@ class User extends ModelsUser
             throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta el programa']]));
         }
 
-
-        #Buscamos el permiso distinto a borrar
-        $permisos = ProgramaHasUsuario::find()->select('permiso')->where(['userid'=>$params['usuarioid']])->andWhere(['!=','programaid',$params['programaid']])->distinct()->asArray()->all();
-        
-        $i=0;
-        foreach ($params['lista_permiso'] as $permiso_borrar) {
-            foreach ($permisos as $permiso_bd) {
-                if($permiso_borrar == $permiso_bd['permiso']){
-                    unset($params['lista_permiso'][$i]);
-                }
-            }
-            $i++;
-        }
-        
         #Borramos los permisos (auth_assigment)
         if(!empty($params['lista_permiso'])){
             AuthAssignment::deleteAll([
@@ -91,12 +77,6 @@ class User extends ModelsUser
                 'item_name'=>$params['lista_permiso']
             ]);
         }
-
-        #Borramos la regla (programa_has_usuario)
-        ProgramaHasUsuario::deleteAll([
-            'userid'=>$params['usuarioid'],
-            'programaid'=>$params['programaid']
-        ]);
     }
 
     public static function setAsignacion($params){
@@ -119,20 +99,7 @@ class User extends ModelsUser
                     }
                 }
             }
-
-            #Asociamos el programa (vinculacion de programa, permiso y usuario)
-            foreach ($params['lista_permiso'] as $value) {
-                $programaHasUsuario = new ProgramaHasUsuario();
-                $programaHasUsuario->setAttributes([
-                    'userid'=>$params['usuarioid'],
-                    'programaid'=>$params['programaid'],
-                    'permiso'=>$value['name']
-                ]);
-
-                if(!$programaHasUsuario->save()){
-                    throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
-                }
-            }
+            
             $transaction->commit();
 
             return true;
@@ -239,7 +206,7 @@ class User extends ModelsUser
         
         // die('aca');
         #Registamos Nueva Persona
-        if(!isset($params['personaid']) || empty($params['personaid'])){
+        if(!isset($params['usuario']['personaid']) || empty($params['usuario']['personaid'])){
             $params['usuario']['personaid'] = $user->registrarPersona($params);
         }
 
