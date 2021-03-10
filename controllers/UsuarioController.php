@@ -71,7 +71,7 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja', 'crear-asignacion', 'listar-asignacion'],
+                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja', 'crear-asignacion', 'listar-asignacion','borrar-asignacion'],
                     'roles' => ['soporte'],
                 ]
             ]
@@ -303,5 +303,22 @@ class UsuarioController extends ActiveController
 
         return $resultado;
     }
+
+    /**
+     * Se borran los permisos por programa asignado a un usuario
+     *
+     * @return void
+     */
+    public function actionBorrarAsignacion(){
+        $params = Yii::$app->request->post();
+        $resultado['success'] = false;
+        if(User::borrarAsignaciones($params)){
+            $resultado['success'] = true;
+            $resultado['mensaje'] = 'Se borraron asignaciones correctamente!';
+        }
+
+        return $resultado;
+    }
+
 
 }

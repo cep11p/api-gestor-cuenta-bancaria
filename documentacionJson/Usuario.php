@@ -168,3 +168,16 @@
         "cuenta_ver"
   ],
 }
+
+/**** Borrar Asignaciones a Usuarios*****
+* @url http://api.gcb.local/usuarios/borrar-asignacion 
+* @method POST
+* @param arrayJson
+{
+    "lista_permiso": [
+        "cuenta_saldo_exportar",
+        "cuenta_ver"
+    ],
+    "usuarioid": 2
+}
+**/
