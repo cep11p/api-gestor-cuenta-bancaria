@@ -71,7 +71,7 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja'],
+                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja', 'crear-asignacion'],
                     'roles' => ['soporte'],
                 ]
             ]
@@ -269,6 +269,22 @@ class UsuarioController extends ActiveController
             }
         }
         
+        return $resultado;
+    }
+
+    /**
+     * Se asignan permisos por programa a un usuario
+     *
+     * @return void
+     */
+    public function actionCrearAsignacion(){
+        $params = Yii::$app->request->post();
+        $resultado['success'] = false;
+        if(User::setAsignacion($params)){
+            $resultado['success'] = true;
+            $resultado['mensaje'] = 'Asignaciones guardadas exitosamente!';
+        }
+
         return $resultado;
     }
 

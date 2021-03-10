@@ -144,3 +144,15 @@
     }
   }
  **/
+
+/**** Crear Asignaciones a Usuarios*****
+* @url http://api.gcb.local/usuarios/crear-asignacion/
+* @method POST
+* @param arrayJson
+{
+	"usuarioid": 15,
+	"lista_permiso":[
+		{"name":"cuenta_bps_importar"},
+		{"name":"cuenta_ver"}
+    ]
+}

@@ -65,11 +65,6 @@ class User extends ModelsUser
             throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta la lista de permisos']]));
         }
 
-        #Chequeamos el programa
-        if(!isset($params['programaid']) || empty($params['programaid'])){
-            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta el programa']]));
-        }
-
         #Borramos los permisos (auth_assigment)
         if(!empty($params['lista_permiso'])){
             AuthAssignment::deleteAll([
@@ -84,7 +79,7 @@ class User extends ModelsUser
         if(User::findOne(['id'=>$params['usuarioid']])==NULL){
             throw new \yii\web\HttpException(400, 'El usuario con el id '.$params['usuarioid'].' no existe!');
         }
-
+        
         $transaction = Yii::$app->db->beginTransaction();
         try {
             SELF::limpiarPermisos($params);
