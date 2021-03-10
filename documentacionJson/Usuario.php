@@ -156,3 +156,15 @@
 		{"name":"cuenta_ver"}
     ]
 }
+
+/**** Listar Asignaciones a Usuarios*****
+* @url http://api.gcb.local/usuarios/listar-asignacion/14
+* @method GET
+* @param arrayJson
+{
+	"usuarioid": 14,
+	"lista_permiso": [
+        "cuenta_saldo_exportar",
+        "cuenta_ver"
+  ],
+}

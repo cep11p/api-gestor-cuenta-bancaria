@@ -71,7 +71,7 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja', 'crear-asignacion'],
+                    'actions' => ['index','create','update','view','buscar-persona-por-cuil','baja', 'crear-asignacion', 'listar-asignacion'],
                     'roles' => ['soporte'],
                 ]
             ]
@@ -284,6 +284,22 @@ class UsuarioController extends ActiveController
             $resultado['success'] = true;
             $resultado['mensaje'] = 'Asignaciones guardadas exitosamente!';
         }
+
+        return $resultado;
+    }
+
+    /**
+     * Listamos todos los permisos asignados a un usuario, Este listado esta agrupado
+     *
+     * @param [int] $id
+     * @return void
+     */
+    public function actionListarAsignacion($id){
+        $model = User::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
+        }
+        $resultado = $model->getAsignaciones();
 
         return $resultado;
     }

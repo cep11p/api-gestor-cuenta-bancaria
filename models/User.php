@@ -33,25 +33,6 @@ class User extends ModelsUser
             ]
         );
     }
-
-    public function getProgramasAsociados(){
-        $query = new Query();
-        
-        $query->select([
-            'programa'=>'prog.nombre',
-            'programaid',
-        ]);
-
-        $query->from('programa_has_usuario phu1');
-        $query->leftJoin("programa as prog", "programaid=prog.id");
-        $query->where(['userid'=>$this->id]);
-        $query->groupBy('programa');
-        
-        $command = $query->createCommand();
-        $rows = $command->queryAll();
-
-        return $rows;
-    }
     
     static function limpiarPermisos($params){
 
@@ -108,33 +89,27 @@ class User extends ModelsUser
     
 
     public function getAsignaciones(){
-        $lista_programa = $this->getProgramasAsociados();
 
-        $i=0;
-        foreach ($lista_programa as $value) {
-            $query = new Query();        
-            $query->select([
-                'permiso'
-            ]);
-            $query->from('programa_has_usuario');
-            $query->where([
-                'userid'=>$this->id,
-                'programaid'=>$value['programaid']
-            ]);
-            
-            $command = $query->createCommand();
-            $rows = $command->queryAll();
-            
-            $permisos = array();
-            foreach ($rows as $value) {
-                $permisos[] = $value['permiso'];
-            }
-            $lista_programa[$i]['lista_permiso'] = $permisos;
-            $lista_programa[$i]['usuarioid'] = $this->id;
-            $i++;
+        $query = new Query();      
+        $query->select('item_name as permiso');
+        $query->from('auth_assignment');
+        $query->leftJoin('auth_item ai', 'item_name = ai.name');
+        $query->where([
+            'user_id'=>$this->id,
+            'type'=>AuthItem::PERMISO
+        ]);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $permisos = array();
+        foreach ($rows as $value) {
+            $permisos[] = $value['permiso'];
         }
-                
-        return $lista_programa;
+        $resultado['lista_permiso'] = $permisos;
+        $resultado['usuarioid'] = $this->id;
+        
+        return $resultado;
     }
 
     /**
