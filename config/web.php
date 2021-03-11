@@ -177,6 +177,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'permiso', 
                 ],
+                [   #Rol
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'rol', 
+                ],
                 /******************** Ruteo con el Modulo Registral (Servicio de interoperable) ***********/
                 [   #estado-civil
                     'class' => 'yii\rest\UrlRule',
