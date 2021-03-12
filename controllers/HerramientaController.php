@@ -41,7 +41,7 @@ class HerramientaController extends ActiveController{
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['admin'],
                 ],
             ]
         ];
