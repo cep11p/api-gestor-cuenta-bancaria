@@ -42,7 +42,7 @@ class PersonaController extends ActiveController{
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];
