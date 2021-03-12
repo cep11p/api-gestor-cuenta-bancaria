@@ -83,6 +83,12 @@ class UserSearch extends User
             $query->andWhere(array('in', 'user_persona.personaid', $lista_personaid));
         }
 
+        #Nombre de usuario
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $query->orFilterWhere(['or',['like','username',$params['global_param']]]);
+        }
+       
+        #Vinculamos los permisos asociados
         $query->leftJoin("auth_assignment as assig", "id=assig.user_id");
         $query->leftJoin("auth_item as item", "name=assig.item_name");
         $query->leftJoin("user_persona", "id=user_persona.userid");
