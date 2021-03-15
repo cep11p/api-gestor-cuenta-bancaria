@@ -65,6 +65,11 @@ class InterbankingController extends ActiveController{
     
     public function actionExportar()
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('interbanking_exportar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        } 
+
         $params = \Yii::$app->request->post();
         
         $resultado['message']='Se exportan el archivo interbanking';

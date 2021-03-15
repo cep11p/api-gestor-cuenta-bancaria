@@ -69,6 +69,11 @@ class PersonaController extends ActiveController{
      */
     public function actionIndex()
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
         
@@ -91,6 +96,11 @@ class PersonaController extends ActiveController{
     
     public function actionView($id)
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado = \Yii::$app->registral->viewPersona($id);
         if(!empty($resultado)){
             $data = $resultado;       
@@ -109,6 +119,11 @@ class PersonaController extends ActiveController{
      */
     public function actionCreate()
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado['message']='Se registró una nueva persona';
         $param = Yii::$app->request->post();
         
@@ -137,6 +152,11 @@ class PersonaController extends ActiveController{
      */
     public function actionUpdate($id)
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_modificar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado['message']='Se modifica una Persona';
         $param = Yii::$app->request->post();
         try {   
@@ -170,6 +190,10 @@ class PersonaController extends ActiveController{
      */
     public function actionContacto($id)
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         $resultado['message']='Se modifica los datos de contacto de una Persona';
         $param = Yii::$app->request->post();
         try {   
@@ -200,11 +224,15 @@ class PersonaController extends ActiveController{
      * Se busca una persona por numero documento
      * @param type $nro_documento
      * @Method GET
-     * @url ejemplo http://api.pril.local/api/personas/buscar-por-documento/29800100
+     * @url ejemplo http://api.gcb.local/personas/buscar-por-documento/29800100
      * @return array
      */
     public function actionBuscarPorDocumento($nro_documento)
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         $resultado['estado']=false;   
         $resultado = \Yii::$app->registral->buscarPersonaPorNroDocumento($nro_documento);
         

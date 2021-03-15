@@ -65,6 +65,10 @@ class CuentaBpsController extends ActiveController{
     
     public function actionImportar()
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_bps_importar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $model = new \app\models\CtaBps();

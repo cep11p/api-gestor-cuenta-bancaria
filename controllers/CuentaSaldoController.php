@@ -69,6 +69,11 @@ class CuentaSaldoController extends ActiveController{
         
         $resultado['message']='Se crea el archivo CTASLDO.txt';
         $transaction = Yii::$app->db->beginTransaction();
+
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_saldo_exportar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         
         try{            
             
@@ -94,6 +99,11 @@ class CuentaSaldoController extends ActiveController{
         $resultado['message']='Se guarda el documento ctasaldo';
         $transaction = Yii::$app->db->beginTransaction();
         
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_saldo_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         try{            
             
             $resultado = \app\models\CuentaSaldo::guardarCtaSaldo($params);
@@ -110,6 +120,10 @@ class CuentaSaldoController extends ActiveController{
     
     public function actionIndex()
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_ver')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         $resultado = \app\models\CuentaSaldo::verCtaSaldo();
 
         

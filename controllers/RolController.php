@@ -80,6 +80,4 @@ class RolController extends ActiveController{
 
     }
     
-    
-    
 }

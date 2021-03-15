@@ -59,6 +59,11 @@ class CuentaController extends ActiveController{
     
     public function prepareDataProvider() 
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_ver')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $searchModel = new \app\models\CuentaSearch();
         $params = \Yii::$app->request->queryParams;
         $resultado = $searchModel->search($params);
