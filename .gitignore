@@ -2,3 +2,6 @@
 
 # composer vendor dir
 /vendor
+
+#Dockerfile para construir una imagen del codigo
+Dockerfile

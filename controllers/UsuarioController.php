@@ -113,51 +113,61 @@ class UsuarioController extends ActiveController
     {
         $parametros = Yii::$app->getRequest()->getBodyParams();
 
+        #Intancia de ActiveRecord
         $usuario = $this->finder->findUserByUsernameOrEmail($parametros['username']);       
         
         if(!($usuario !== null && Password::validate($parametros['password_hash'],$usuario->password_hash))){
             throw new \yii\web\HttpException(401, 'usuario o contraseña inválido');
         }
+        
+        #Buscamos la tabla relacional user_persona
         $userPersona = UserPersona::findOne(['userid'=>$usuario->id]);
+        
+        #Chequeamos si exite el userpersona
+        if($userPersona == null){
+            throw new \yii\web\HttpException(401, 'El usuario '.$usuario->id.' tiene una inconsitencia con la tabla user_persona');
+        }
+        
+        #Validamos si el usuario esta habilitado
         if($userPersona->fecha_baja != null){
             throw new \yii\web\HttpException(401, 'El usuario se encuentra inhabilitado');
         }
+        
+        #Registramos el horario de ingreso
+        $usuario->last_login_at = time();
+        $usuario->save();
 
+        #Registramos la ip de ingreso
+        $userPersona->last_login_ip = Yii::$app->getRequest()->getUserIP();
+        $userPersona->save();
+
+        #Generamos el Token
         $payload = [
             'exp'=>time()+3600*8,
             'usuario'=>$usuario->username,
             'uid' => $usuario->id  
         ];
-
-        #Registramos el horario de ingreso
-        $usuario->last_login_at = time();
-        $usuario->save();
-
-        #Registramos la ip del ingreso
-        $userPersona = UserPersona::findOne(['userid'=>$usuario->id]);
-
-        if($userPersona == null){
-            throw new \yii\web\HttpException(401, 'El usuario '.$usuario->id.' tiene una inconsitencia con la tabla user_persona');
-        }
-
-        $userPersona->last_login_ip = Yii::$app->getRequest()->getUserIP();
-        $userPersona->save();
-        
         $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);
 
+        #Obtenemos el Rol
         $rol = '';
         $roles = \Yii::$app->authManager->getRolesByUser($usuario->id);
         foreach($roles as $value){
             $rol = $value->name;
             break;
         }
-        $resultado = ArrayHelper::merge($userPersona->persona, 
-        [
+        
+        #Seteamos principales datos del resultado
+        $resultado = [
             'access_token' => $token,
             'username' => $usuario->username,
             'rol' => $rol
-        ]);
-
+        ];
+        
+        #Si es diferente de admin
+        if($rol != 'admin'){
+            $resultado = ArrayHelper::merge($userPersona->persona, $resultado);
+        }
 
         return $resultado;
     }
