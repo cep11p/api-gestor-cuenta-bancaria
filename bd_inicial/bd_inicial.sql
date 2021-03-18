@@ -31,7 +31,7 @@ CREATE TABLE `audit_data` (
   PRIMARY KEY (`id`),
   KEY `fk_audit_data_entry_id` (`entry_id`),
   CONSTRAINT `fk_audit_data_entry_id` FOREIGN KEY (`entry_id`) REFERENCES `audit_entry` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6495 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12256 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `audit_entry` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_route` (`route`)
-) ENGINE=InnoDB AUTO_INCREMENT=1378 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2529 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +235,7 @@ CREATE TABLE `auth_assignment` (
 
 LOCK TABLES `auth_assignment` WRITE;
 /*!40000 ALTER TABLE `auth_assignment` DISABLE KEYS */;
-INSERT INTO `auth_assignment` VALUES ('admin','1',1614092528),('cuenta_bps_importar','1',NULL),('cuenta_bps_importar','14',1615563311),('cuenta_saldo_crear','1',NULL),('cuenta_saldo_exportar','1',NULL),('cuenta_ver','1',NULL),('cuenta_ver','14',1615563328),('cuenta_ver','15',1615565511),('interbanking_exportar','1',NULL),('interbanking_exportar','14',1615563311),('persona_crear','1',NULL),('persona_crear','15',1615564107),('persona_modificar','1',NULL),('soporte','13',1614092528),('usuario','14',1615468625),('usuario','15',1615564082),('usuario','16',1615818136);
+INSERT INTO `auth_assignment` VALUES ('admin','1',1614092528),('cuenta_bps_importar','1',NULL),('cuenta_saldo_crear','1',NULL),('cuenta_saldo_exportar','1',NULL),('cuenta_ver','1',NULL),('interbanking_exportar','1',NULL),('persona_crear','1',NULL),('persona_modificar','1',NULL);
 /*!40000 ALTER TABLE `auth_assignment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -424,7 +424,7 @@ CREATE TABLE `prestacion` (
   PRIMARY KEY (`id`),
   KEY `fk_prestacion_sub_sucursal1_idx` (`sub_sucursalid`),
   CONSTRAINT `fk_prestacion_sub_sucursal1` FOREIGN KEY (`sub_sucursalid`) REFERENCES `sub_sucursal` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -433,7 +433,6 @@ CREATE TABLE `prestacion` (
 
 LOCK TABLES `prestacion` WRITE;
 /*!40000 ALTER TABLE `prestacion` DISABLE KEYS */;
-INSERT INTO `prestacion` VALUES (2,1000,'2021-03-15 14:03:39',NULL,NULL,2,1,0,'2021-03-18'),(3,5000,'2021-03-15 14:03:39',NULL,NULL,29,101,0,'2021-03-15'),(6,8000,'2021-03-15 14:03:44',NULL,'Se crea en exportacion de CtaSaldo',13,8,0,'2021-03-15'),(7,25000,'2021-03-15 14:03:52',NULL,NULL,2,6,4,'2021-03-15'),(8,25000,'2021-03-15 14:03:52',NULL,NULL,2,1,4,'2021-03-15'),(9,25000,'2021-03-15 14:03:52',NULL,NULL,2,8,4,'2021-03-15'),(10,25000,'2021-03-15 14:03:52',NULL,NULL,2,7,4,'2021-03-15');
 /*!40000 ALTER TABLE `prestacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -465,7 +464,7 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-INSERT INTO `profile` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(15,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(16,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `profile` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -631,7 +630,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_unique_username` (`username`),
   UNIQUE KEY `user_unique_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -640,7 +639,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin@correo.com','$2y$10$MjbC0Kz/xjyO0.aHr2kKDeMrVMx5q1iXpfUqbH0YzgggsCHNfrGGC','sbkJe8GTYk9a8y_F52gvKHSN2_j83bQC',1604425496,NULL,NULL,'172.20.0.2',1604425496,1615815652,0,1615815809),(13,'cep11p','cep11p@correo.com','$2y$10$awyRQ7ktK1ddvTLq2hrzO.9TVtnv0DJiFFVJsrfuMMOlf9XpBpqf6','aN1ar_QzmaG90RK8vGo3IQdwI6ylIPo3',1614092528,NULL,NULL,'172.20.0.8',1614092528,1615467817,0,1615467817),(14,'andres','uncorreo1@modificado.com','$2y$10$13Fn0RU7LxqhXSPi/bwb7e.PfDa4gccS2F0GBvWJDvFtJuOEXULim','_H9x6u2wfRGD-eRgpZcLXEEdrP876Tc6',1614174724,NULL,NULL,'172.20.0.8',1614174724,1615468652,0,1615468652),(15,'agonzalez','agonzalez@correo.com.ar','$2y$10$Zx2jwNF9QqBoU0kE6sIbguJzSaqXTgSBIWujvzT3Vk8xAsYyosIfS','-IXNsRYeGa5WtlV-GTCqXsdP7ikk97xG',1615564081,NULL,NULL,'172.18.0.3',1615564081,1615564132,0,1615564132),(16,'robert','robert@correo.com','$2y$10$GCzItMtUQGsT2oNqQybW0uiYIw31BYqYdMSVP0bY7yiNljeA1VKL.','wEuhUb4x-G4NWFfMrS4pPFnYQYNa9n5t',1615818135,NULL,NULL,'172.18.0.3',1615818134,1615818134,0,NULL);
+INSERT INTO `user` VALUES (1,'admin','admin@correo.com','$2y$10$MjbC0Kz/xjyO0.aHr2kKDeMrVMx5q1iXpfUqbH0YzgggsCHNfrGGC','sbkJe8GTYk9a8y_F52gvKHSN2_j83bQC',1604425496,NULL,NULL,'172.20.0.2',1604425496,1616070969,0,1616070969);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -660,7 +659,7 @@ CREATE TABLE `user_persona` (
   `last_login_ip` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`userid`),
   CONSTRAINT `fk_user_persona` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -669,7 +668,7 @@ CREATE TABLE `user_persona` (
 
 LOCK TABLES `user_persona` WRITE;
 /*!40000 ALTER TABLE `user_persona` DISABLE KEYS */;
-INSERT INTO `user_persona` VALUES (1,1,2626,NULL,NULL,'172.18.0.3'),(13,2,2626,NULL,NULL,'172.18.0.3'),(14,101,2640,'2021-03-12','probando bajaaaaaa','172.18.0.3'),(15,104,2640,NULL,NULL,'172.18.0.3'),(16,105,2640,NULL,NULL,NULL);
+INSERT INTO `user_persona` VALUES (1,0,2626,NULL,NULL,'172.18.0.8');
 /*!40000 ALTER TABLE `user_persona` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -682,4 +681,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-15 15:38:35
+-- Dump completed on 2021-03-18 12:55:59
