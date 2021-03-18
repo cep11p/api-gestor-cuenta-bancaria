@@ -162,7 +162,8 @@ class User extends ModelsUser
         
         #Chequeamos si la contraseña esta vacia
         if(!isset($params['usuario']['password']) || empty($params['usuario']['password'])){
-            $lista_error['password'] = ['La contraseña no debe estar vacia.'];
+            $user->addError('password','La contraseña no debe estar vacia.');
+
         }
         
         #Registramos el usuario
@@ -172,7 +173,7 @@ class User extends ModelsUser
 
         #Chequeamos que venga el rol
         if(!isset($params['usuario']['rol'])){
-            $user->addError('rol','Falta asiganar un rol');
+            $user->addError('rol','Falta asiganar un rol1');
         }
         
         #Chequeamos si se puede regitrar el usuario
@@ -191,8 +192,11 @@ class User extends ModelsUser
         $userPersona->setAttributes($params['usuario']);
         $userPersona->userid = $id;
 
+        $userPersona->addError('pepe','esto es un error1');
+        $userPersona->addError('pepe2','esto es un error2');
+
         if(!$userPersona->save()){
-            throw new \yii\web\HttpException(400, json_encode($userPersona->errors));
+            throw new \yii\web\HttpException(400, json_encode(array($userPersona->errors)));
         }
         
         $user->setRol($params['usuario']['rol']);
@@ -209,16 +213,20 @@ class User extends ModelsUser
     private function registrarPersona($params){
         $errors = [];
         if(!isset($params['nro_documento']) || empty($params['nro_documento'])){
-            $errors['nro_documento'] = 'Se requiere nro de documento'; 
+            $errors['nro_documento'] = ['Se requiere nro de documento']; 
         }
         if(!isset($params['cuil']) || empty($params['cuil'])){
-            $errors['cuil'] = 'Se requiere cuil'; 
+            $errors['cuil'] = ['Se requiere cuil']; 
         }
         if(!isset($params['apellido']) || empty($params['apellido'])){
-            $errors['apellido'] = 'Se requiere apellido'; 
+            $errors['apellido'] = ['Se requiere apellido']; 
         }
         if(!isset($params['nombre']) || empty($params['nombre'])){
-            $errors['nombre'] = 'Se requiere nombre'; 
+            $errors['nombre'] = ['Se requiere nombre']; 
+        }
+
+        if(count($errors)>0){
+            throw new \yii\web\HttpException(400, json_encode([$errors]));
         }
 
         $personaid = intval(\Yii::$app->registral->crearPersona($params));
