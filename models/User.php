@@ -149,14 +149,20 @@ class User extends ModelsUser
         $id = '';
         $user = new Self();
         $user->scenario = 'create';
+        $lista_error = [];
         #Chequeamos si la persona tiene usuario
         if(!empty($params['personaid']) && UserPersona::findOne(['personaid'=>$params['personaid']])!=NULL){
             throw new \yii\web\HttpException(400, 'La persona ya tiene un usuario');
         }
+
+        #Chequeamos si el parametro usuario esta seteado
+        if(!isset($params['usuario']) || empty($params['usuario'])){
+            throw new \yii\web\HttpException(400, 'Falta el campo usuario con sus campos');
+        }
         
         #Chequeamos si la contraseña esta vacia
         if(!isset($params['usuario']['password']) || empty($params['usuario']['password'])){
-            throw new \yii\web\HttpException(400, json_encode(['password'=>'La contraseña no debe estar vacia.']));
+            $lista_error['password'] = ['La contraseña no debe estar vacia.'];
         }
         
         #Registramos el usuario
@@ -170,11 +176,11 @@ class User extends ModelsUser
         }
         
         #Chequeamos si se puede regitrar el usuario
-        if($user->hasErrors()){
-            throw new \yii\web\HttpException(400, json_encode($user->errors));
+        if($user->hasErrors() || count($lista_error)>0){
+            $lista_error = ArrayHelper::merge($lista_error, $user->errors);
+            throw new \yii\web\HttpException(400, json_encode(array($lista_error)));
         }
         
-        // die('aca');
         #Registamos Nueva Persona
         if(!isset($params['usuario']['personaid']) || empty($params['usuario']['personaid'])){
             $params['usuario']['personaid'] = $user->registrarPersona($params);
