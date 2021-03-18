@@ -38,12 +38,12 @@ class User extends ModelsUser
 
         #Chequeamos que exista el usuario
         if(!isset($params['usuarioid']) || empty($params['usuarioid'])){
-            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta el usuario']]));
+            throw new \yii\web\HttpException(400, json_encode([['error'=>['Falta el usuario']]]));
         }
 
         #Chequeamos la lista de permisos
         if(!isset($params['lista_permiso']) || empty($params['lista_permiso'])){
-            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta la lista de permisos (lista_permiso)']]));
+            throw new \yii\web\HttpException(400, json_encode([['error'=>['Falta la lista de permisos (lista_permiso)']]]));
         }
 
         #Borramos los permisos (auth_assigment)
@@ -71,7 +71,7 @@ class User extends ModelsUser
                     $auth_assignment = new AuthAssignment();
                     $auth_assignment->setAttributes(['item_name'=>$value['name'],'user_id'=>strval($params['usuarioid'])]);
                     if(!$auth_assignment->save()){
-                        throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                        throw new \yii\web\HttpException(400, json_encode([$auth_assignment->errors]));
                     }
                 }
             }
@@ -245,7 +245,7 @@ class User extends ModelsUser
 
         #Chequeamos si al modificar usuario hay errores
         if($this->hasErrors()){
-            throw new \yii\web\HttpException(400, json_encode($this->errors));
+            throw new \yii\web\HttpException(400, json_encode([$this->errors]));
         }
 
         #Vinculamos la persona
@@ -253,7 +253,7 @@ class User extends ModelsUser
         $userPersona->setAttributes($params);
 
         if(!$userPersona->save()){
-            throw new \yii\web\HttpException(400, json_encode($userPersona->errors));
+            throw new \yii\web\HttpException(400, json_encode([$userPersona->errors]));
         }
 
         if(isset($params['rol']) && (Yii::$app->user->can('admin'))){
@@ -267,7 +267,7 @@ class User extends ModelsUser
     {
         #Chequeamos si el rol existe
         if(AuthItem::findOne(['name'=>$rol,'type'=>AuthItem::ROLE])==NULL){
-            throw new \yii\web\HttpException(400, json_encode(['rol'=>'El rol '.$rol.' no existe']));
+            throw new \yii\web\HttpException(400, json_encode([['rol'=>'El rol '.$rol.' no existe']]));
         }
 
         ######### Asignamos el Rol ###########
@@ -280,7 +280,7 @@ class User extends ModelsUser
         $auth_assignment = new AuthAssignment();
         $auth_assignment->setAttributes(['item_name'=>$rol,'user_id'=>strval($this->id)]);
         if(!$auth_assignment->save()){
-            throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+            throw new \yii\web\HttpException(400, json_encode([$auth_assignment->errors]));
         }
 
         ######### Fin de asignacion de Rol ###########
@@ -297,7 +297,7 @@ class User extends ModelsUser
         }
 
         if(strlen($params['descripcion_baja'])<15){
-            throw new \yii\web\HttpException(400, json_encode(['error'=>['La descripcion debe tener 10 caracteres como minimo']]));
+            throw new \yii\web\HttpException(400, json_encode([['descripcion_baja'=>['La descripcion debe tener 10 caracteres como minimo']]]));
         }
         $userPersona->fecha_baja = date('Y-m-d');
         $userPersona->descripcion_baja = $params['descripcion_baja'];
