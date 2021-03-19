@@ -11,7 +11,7 @@ use \app\models\PersonaForm;
 
 class PersonaController extends ActiveController{
     
-    public $modelClass = 'app\models\Programa';
+    public $modelClass = 'app\models\Persona';
     
     public function behaviors()
     {
@@ -77,18 +77,7 @@ class PersonaController extends ActiveController{
         $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
         
-        
-        $resultado = \Yii::$app->registral->buscarPersona($param);
-        
-        if($resultado['estado']!=true){
-            $resultado['success']=false;
-            $resultado['total_filtrado']=0;            
-            $resultado['resultado']=[];
-            $resultado['message']="No se encontró ninguna persona!";   
-        }else{
-            $resultado['success']=true;
-            $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
-        }
+        $resultado = PersonaForm::buscarPersonaEnRegistralConPaginacion($param);
         
         return $resultado;
 
