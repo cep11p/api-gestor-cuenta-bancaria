@@ -203,6 +203,10 @@ class CuentaSaldo
                         $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
                         $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
                         $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
+                        $lista_persona_prestacion[$i]['lugar']['barrio'] = $persona['lugar']['barrio'];
+                        $lista_persona_prestacion[$i]['lugar']['depto'] = $persona['lugar']['depto'];
+                        $lista_persona_prestacion[$i]['lugar']['piso'] = $persona['lugar']['piso'];
+                        $lista_persona_prestacion[$i]['lugar']['escalera'] = $persona['lugar']['escalera'];
                     }else{
                         unset($lista_persona_prestacion[$i]['lugar']);
                     }
