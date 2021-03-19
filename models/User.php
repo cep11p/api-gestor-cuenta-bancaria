@@ -3,6 +3,7 @@
 namespace app\models;
 
 use dektrium\user\models\User as ModelsUser;
+use Exception;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -30,6 +31,7 @@ class User extends ModelsUser
             parent::behaviors(),
             [
                 # custom behaviors
+                'bedezign\yii2\audit\AuditTrailBehavior',
             ]
         );
     }
@@ -229,7 +231,11 @@ class User extends ModelsUser
             throw new \yii\web\HttpException(400, json_encode([$errors]));
         }
 
-        $personaid = intval(\Yii::$app->registral->crearPersona($params));
+        $resultado = \Yii::$app->registral->crearPersona($params);
+        if(isset($resultado->message)){
+            throw new \yii\web\HttpException(400, json_encode([$resultado->message]));
+        }
+        $personaid = intval($resultado);
 
         return $personaid;
     }
