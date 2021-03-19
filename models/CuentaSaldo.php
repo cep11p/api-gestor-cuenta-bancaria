@@ -194,12 +194,17 @@ class CuentaSaldo
                     $lista_persona_prestacion[$i]['nacionalidadid'] = $persona['nacionalidadid'];
                     $lista_persona_prestacion[$i]['nacionalidad'] = ($persona['nacionalidadid']==self::NACIONALIDAD_ARGENTINA)?'A':'E';
                     $lista_persona_prestacion[$i]['cuil'] = $persona['cuil'];
+                    $lista_persona_prestacion[$i]['telefono'] = $persona['telefono'];
+                    $lista_persona_prestacion[$i]['celular'] = $persona['celular'];
+                    $lista_persona_prestacion[$i]['email'] = $persona['email'];
                     
                     if(!empty($persona['lugar'])){
                         $lista_persona_prestacion[$i]['lugar']['calle'] = $persona['lugar']['calle'];
                         $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
                         $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
                         $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
+                    }else{
+                        unset($lista_persona_prestacion[$i]['lugar']);
                     }
                     break;
                 }
