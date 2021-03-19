@@ -70,7 +70,7 @@ class PersonaController extends ActiveController{
     public function actionIndex()
     {
         #Chequeamos el permiso
-        if (!\Yii::$app->user->can('persona_crear')) {
+        if (!\Yii::$app->user->can('persona_ver')) {
             throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
         }
 
@@ -97,7 +97,7 @@ class PersonaController extends ActiveController{
     public function actionView($id)
     {
         #Chequeamos el permiso
-        if (!\Yii::$app->user->can('persona_crear')) {
+        if (!\Yii::$app->user->can('persona_ver')) {
             throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
         }
 
@@ -230,7 +230,7 @@ class PersonaController extends ActiveController{
     public function actionBuscarPorDocumento($nro_documento)
     {
         #Chequeamos el permiso
-        if (!\Yii::$app->user->can('persona_crear')) {
+        if (!\Yii::$app->user->can('persona_ver')) {
             throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
         }
         $resultado['estado']=false;   

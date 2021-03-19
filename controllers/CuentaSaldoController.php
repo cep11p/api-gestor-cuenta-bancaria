@@ -121,7 +121,7 @@ class CuentaSaldoController extends ActiveController{
     public function actionIndex()
     {
         #Chequeamos el permiso
-        if (!\Yii::$app->user->can('cuenta_ver')) {
+        if (!\Yii::$app->user->can('persona_crear')) {
             throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
         }
         $resultado = \app\models\CuentaSaldo::verCtaSaldo();
