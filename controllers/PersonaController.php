@@ -78,6 +78,16 @@ class PersonaController extends ActiveController{
         $param = Yii::$app->request->queryParams;
         
         $resultado = PersonaForm::buscarPersonaEnRegistralConPaginacion($param);
+
+        if($resultado['estado']!=true){
+            $resultado['success']=false;
+            $resultado['total_filtrado']=0;            
+            $resultado['resultado']=[];
+            $resultado['message']="No se encontró ninguna persona!";   
+        }else{
+            $resultado['success']=true;
+            $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
+        }
         
         return $resultado;
 
