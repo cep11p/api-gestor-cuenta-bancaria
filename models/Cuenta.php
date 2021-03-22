@@ -48,6 +48,8 @@ class Cuenta extends BaseCuenta
     static function vincularCuenta($lista_persona) {
         $ids = '';
         $CuentaSearch = new CuentaSearch();
+
+        
         /******** Instancia con Persona ***************************/
         //hacemos instancia con todas las persoans
         foreach ($lista_persona as $value) {
@@ -59,8 +61,8 @@ class Cuenta extends BaseCuenta
         $lista_cuenta = (!empty($lista_cuenta['resultado']))?$lista_cuenta['resultado']:[];
         
         //vamos a vincular cuentas a las personas correspondiente
-        $i=0;
         foreach ($lista_cuenta as $value) {
+            $i=0;
             foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
                     $cuenta['cbu'] = $value['cbu'];
@@ -70,9 +72,8 @@ class Cuenta extends BaseCuenta
                     $lista_persona[$i]['tiene_cbu'] = true;
                     break;
                 }
-                
+                $i++;
             }
-            $i++;
         }
         //Vamos a chequear que persona no tiene una cuenta bancaria para crear un lista vacia
         $i=0;

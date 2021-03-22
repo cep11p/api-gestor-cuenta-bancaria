@@ -1,0 +1,28 @@
+{
+    "name": "msheng/yii2-jwt",
+    "keywords": ["yii", "jwt"],
+    "description": "Trait for easier JWT integration",
+    "homepage": "https://github.com/Yemsheng/yii2-jwt",
+    "minimum-stability": "stable",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Damir Shamanaev",
+            "email": "damirka.ru@gmail.com",
+            "homepage": "https://github.com/damirka"
+        },
+        {
+            "name": "msheng",
+            "email": "msheng.ye@foxmail.com",
+            "homepage": "https://github.com/Yemsheng"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"msheng\\JWT\\": "src/"}
+    },
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "firebase/php-jwt": "~4.0.0"
+    }
+}
