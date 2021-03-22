@@ -76,12 +76,16 @@ class CuentaSaldo
             $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
 
             /*********** Validamos CtaSldo ***********/
+            if(!isset($value['lugar']) || empty($value['lugar'])){
+                $error['direccion'] = 'Faltan los datos de direccion.';
+            }
+
             //La longitud de la calle no puede ser mayor a 19
-            if(strlen($value['lugar']['calle'])>19){
+            if(isset($value['lugar']['calle']) && strlen($value['lugar']['calle'])>19){
                 $error['calle'] = 'La calle no puede superar los 19 caracteres.';
             }
             
-            if(!isset($value['lugar']['altura']) || empty($value['lugar']['altura'])){
+            if(isset($value['lugar']['altura']) && empty($value['lugar']['altura'])){
                 $error['altura'] = 'El campo número se encuentra vacio';
             }
             

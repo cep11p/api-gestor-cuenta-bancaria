@@ -237,107 +237,21 @@ class PersonaForm extends Model
         return $estudioForm->toArray();
     }
     
-    /**
-     * Se instancian los atributos de la persona encontrada
-     * @param int $id
-     * Del sistema registral obtenemos un array con datos, y de lo obtenido manipulamos los atributos relevantes para instanciar un persona PersonaForm, 
-     * El array obtenido es como el siguiente ejemplo
-     * 
-        {
-            "estado": true,
-            "resultado": [
-                {
-                    "id": 1,
-                    "nombre": "Alejandra",
-                    "apellido": "Rodríguez",
-                    "apodo": "rominochi",
-                    "nro_documento": "29890010",
-                    "fecha_nacimiento": "1980-12-12",
-                    "estado_civilid": 1,
-                    "telefono": "2920430690",
-                    "celular": "2920412127",
-                    "sexoid": 2,
-                    "tipo_documentoid": 1,
-                    "nucleoid": 1,
-                    "situacion_laboralid": 1,
-                    "generoid": 1,
-                    "email": "algo@correo.com.ar",
-                    "cuil": "20367655678",
-                    "hogar": {
-                        "id": 1,
-                        "tiene_gas": 0,
-                        "tiene_luz": 0,
-                        "tiene_agua": 0,
-                        "condicion_ocupacionid": 1,
-                        "obtencion_aguaid": 1,
-                        "tipo_desagueid": 1,
-                        "cocina_combustibleid": 1,
-                        "tipo_viviendaid": 1,
-                        "jefeid": null,
-                        "habitacion_dormir": 2,
-                        "banioid": 1,
-                        "lugarid": 1,
-                        "observacion": null,
-                        "nucleos": [
-                            {
-                                "id": 1,
-                                "hogarid": 1,
-                                "jefeid": null,
-                                "nombre": "Familia Rodriguez"
-                            }
-                        ]
-                    },
-                    "estudios": [
-                        {
-                            "id": 7,
-                            "titulo": "tecnico en desarrollo web",
-                            "completo": 1,
-                            "en_curso": 0,
-                            "nivel_educativoid": 4,
-                            "nivel_educativo": "Terciario",
-                            "anio": "2014"
-                        },
-                        {
-                            "id": 8,
-                            "titulo": "nutricionista",
-                            "completo": 1,
-                            "en_curso": 0,
-                            "nivel_educativoid": 4,
-                            "nivel_educativo": "Terciario",
-                            "anio": "2014"
-                        }
-                    ],
-                    "sexo": "Mujer",
-                    "genero": "Masculino",
-                    "estado_civil": "Soltero/a",
-                    "lugar": {
-                        "id": 1,
-                        "nombre": null,
-                        "calle": "Mitre",
-                        "altura": "123",
-                        "localidadid": 1,
-                        "latitud": null,
-                        "longitud": null,
-                        "barrio": "Inalauquen",
-                        "piso": "",
-                        "depto": "",
-                        "escalera": "",
-                        "localidad": "Capital Federal"
-                    }
-                }
-            ]
-        }
-     * 
-     */
-    public function buscarPersonaPorIdEnRegistral($id){
+    
+    static function buscarPersonaPorIdEnRegistral($id){
         $response = \Yii::$app->registral->buscarPersonaPorId($id); 
         
-        if(isset($response['estado']) && $response['estado']==true){
-            $this->setAttributes(array_shift($response['resultado']));
-            
+        if(count($response['lugar'])<1){
+            unset($response['lugar']);
         }
+
+        if(count($response['hogar'])<1){
+            unset($response['hogar']);
+        }
+
+        return $response;
     }
-    
+     
     /**
      * 
      * @param array $param
