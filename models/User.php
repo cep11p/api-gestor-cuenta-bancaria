@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use dektrium\user\models\User as ModelsUser;
+use app\models\ApiUser;
 use Exception;
 use Yii;
 use yii\db\Query;
@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "user".
  */
-class User extends ModelsUser
+class User extends ApiUser
 {    
     const ADMIN = 'admin';
     const SOPORTE = 'soporte';

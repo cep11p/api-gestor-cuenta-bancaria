@@ -49,7 +49,12 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
+        // 'user' => [
+        //     'identityClass' => 'app\models\User',
+        //     'enableSession' => false,
+        // ],
+        'user-two' => [
+            'class'=> 'app\components\UserTwo',
             'identityClass' => 'app\models\ApiUser',
             'enableSession' => false,
         ],
@@ -257,7 +262,7 @@ $config = [
             'userFilterCallback' => ['app\components\ServicioUsuarios', 'userFilterCallback'],
             'accessIps'=>null,
             'accessUsers'=>null,
-            'accessRoles'=>null
+            'accessRoles'=>['admin']
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
