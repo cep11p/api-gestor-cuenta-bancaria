@@ -257,7 +257,7 @@ $config = [
             'userFilterCallback' => ['app\components\ServicioUsuarios', 'userFilterCallback'],
             'accessIps'=>null,
             'accessUsers'=>null,
-            'accessRoles'=>['admin']
+            // 'accessRoles'=>['admin']
         ],
         'user' => [
             'class' => 'dektrium\user\Module',
