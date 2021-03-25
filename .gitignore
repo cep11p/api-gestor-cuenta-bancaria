@@ -5,3 +5,6 @@
 
 #Dockerfile para construir una imagen del codigo
 Dockerfile
+
+# Refenrecia del ultimo commit que quedo para produccion
+commit-production.md
