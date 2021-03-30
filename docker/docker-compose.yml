@@ -12,6 +12,7 @@ services:
     environment:
       DB_HOST: 'gcb_db'
       DB_NAME: 'gcb'
+      DB_PASS: root
     labels:
      - "traefik.backend=gcb"
      - "traefik.frontend.rule=Host:api.gcb.local"

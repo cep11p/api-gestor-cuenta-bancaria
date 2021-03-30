@@ -40,7 +40,8 @@ class UserPersona extends BaseUserPersona
         return ArrayHelper::merge(
             parent::behaviors(),
             [
-                # custom behaviors
+                # vinculamos el audit
+                'bedezign\yii2\audit\AuditTrailBehavior',
             ]
         );
     }

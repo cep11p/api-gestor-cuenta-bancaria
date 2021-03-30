@@ -280,7 +280,9 @@ class PersonaForm extends Model
      * @return void
      */
     static function buscarPersonaEnRegistralConPaginacion($param){
+        $param['sort']='-id';
         $response = \Yii::$app->registral->buscarPersona($param); 
+        $response['success'] = true;
         
         if(isset($response['estado']) && $response['estado']==true){
             $i=0;
@@ -293,6 +295,7 @@ class PersonaForm extends Model
                 $response['resultado'][$i] = $persona;
                 $i++;
             }
+            unset($response['estado']);
         }else{
             $response['success']=false;
             $response['total_filtrado']=0;            

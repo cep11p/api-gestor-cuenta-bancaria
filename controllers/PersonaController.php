@@ -74,21 +74,14 @@ class PersonaController extends ActiveController{
             throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
         }
 
-        $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
         
         $resultado = PersonaForm::buscarPersonaEnRegistralConPaginacion($param);
 
-        if($resultado['estado']!=true){
-            $resultado['success']=false;
-            $resultado['total_filtrado']=0;            
-            $resultado['resultado']=[];
-            $resultado['message']="No se encontró ninguna persona!";   
-        }else{
-            $resultado['success']=true;
+        if($resultado['success']==true){
             $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
         }
-        
+
         return $resultado;
 
     }
