@@ -299,17 +299,20 @@ class CuentaSaldo
         $cuentaSaldo = array();
         $prestaciones = Prestacion::find()->asArray()->where(['estado'=> Prestacion::PREPARADO_A_EXPORTAR])->all();
         
-        //armamos la estructura adecuada y coordinada con el frontend
-        $i=0;
-        foreach ($prestaciones as $value) {
-            $cuentaSaldo[$i]['id'] = intval($value['personaid']);
-            $cuentaSaldo[$i]['prestacion'] = $value;
-            $cuentaSaldo[$i]['prestacion']['sub_sucursalid'] = intval($value['sub_sucursalid']);
-            $i++;
-        }        
+        if(count($prestaciones)>0){
+            //armamos la estructura adecuada y coordinada con el frontend
+            $i=0;
+            foreach ($prestaciones as $value) {
+                $cuentaSaldo[$i]['id'] = intval($value['personaid']);
+                $cuentaSaldo[$i]['prestacion'] = $value;
+                $cuentaSaldo[$i]['prestacion']['sub_sucursalid'] = intval($value['sub_sucursalid']);
+                $i++;
+            }        
+            
+            /***************** Instancias con atributos externos ************/
+            $cuentaSaldo = self::setInstanciaSubSucursalYPersona($cuentaSaldo);
+        }
         
-        /***************** Instancias con atributos externos ************/
-        $cuentaSaldo = self::setInstanciaSubSucursalYPersona($cuentaSaldo);
         
         /**************Fin de instacia de atributos externos*****************/
         
