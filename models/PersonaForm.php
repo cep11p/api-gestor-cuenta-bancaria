@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-
+use app\components\Help;
 use yii\helpers\ArrayHelper;
 use Yii;
 use yii\base\Model;
@@ -145,10 +145,6 @@ class PersonaForm extends Model
             $arrayErrors=ArrayHelper::merge($arrayErrors, $lugarForm->getErrors());
         } 
         
-        ###### chequeamos si existen errores ###############        
-        if(count($arrayErrors)>0){
-            throw new Exception(json_encode($arrayErrors));
-        }
         
         #Preparamos los parametros para interoperar con registral
         $param_persona = $this->toArray();
@@ -161,18 +157,24 @@ class PersonaForm extends Model
         if(isset($this->id) && !empty($this->id)){
             $resultado = \Yii::$app->registral->actualizarPersona($param_persona);
             if(isset($resultado->message)){
-                throw new Exception($resultado->message);
+                $resultado = Help::objectJsonToArray($resultado->message);
+                $arrayErrors=ArrayHelper::merge(Help::objectJsonToArray(json_encode($arrayErrors)), $resultado);
             }
             $this->id = intval($resultado);
             
         }else{
             $resultado = \Yii::$app->registral->crearPersona($param_persona);
             if(isset($resultado->message)){
-                throw new Exception($resultado->message);
+                $resultado = Help::objectJsonToArray($resultado->message);
+                $arrayErrors=ArrayHelper::merge(Help::objectJsonToArray(json_encode($arrayErrors)), $resultado);
             }
             $this->id = intval($resultado);
         }
         
+        ###### chequeamos si existen errores ###############        
+        if(count($arrayErrors)>0){
+            throw new Exception(json_encode($arrayErrors));
+        }
     }
     /**
      * Se registra persona sin validaciones locales, es decir que, las validaciones son hechas por el sistema registral

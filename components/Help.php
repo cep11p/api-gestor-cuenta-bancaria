@@ -10,6 +10,24 @@ namespace app\components;
 use yii\helpers\ArrayHelper;
 use DateTime;
 class Help extends \yii\base\Component{
+
+    /**
+     * Se convierte un objeto de json a array
+     */
+    public static function objectJsonToArray($json){
+        $errors = json_decode($json);
+        $msj = '';
+        $resultado = array();
+        foreach ($errors as $key => $value) {
+
+            foreach ($value as $val) {
+                $msj .= (empty($msj))?$val:' - '.$val;
+            }
+            $resultado[$key] = $msj;
+        }
+
+        return $resultado;
+    }
     
     /**
      * Se valida la fechas
