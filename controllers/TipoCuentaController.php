@@ -42,7 +42,7 @@ class TipoCuentaController extends ActiveController{
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['usuario'],
+                    'roles' => ['@'],
                 ],
             ]
         ];
