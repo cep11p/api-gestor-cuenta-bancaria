@@ -50,6 +50,10 @@ class CtaBps extends Model
                 if(empty($value)){
                     break;
                 }
+
+                //iniciamos la cadena, donde empieza el numero del convenio 8180 
+                $value = substr($value,strpos($value,'8180'));
+
                 $row = array();
                 $row['convenio'] = trim(substr($value, 0, 4));
                 $row['apellido'] = trim(utf8_encode(substr($value, 4, 30)));
@@ -77,7 +81,6 @@ class CtaBps extends Model
             }
 
             $resultado = $this->registrarListaPersonaConCBU($listaPersona);
-//            
         } else {
             throw new \yii\web\HttpException(400, json_encode($this->errors));
         }
