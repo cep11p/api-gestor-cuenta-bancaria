@@ -32,17 +32,19 @@ class Interbanking extends Model
     public static function exportar($params){
         $model = new Interbanking();
         $model->setAttributes($params);
-        $resultado = $model->getInterbakingTxt();
+
+        $lista_ids = (isset($params['lista_ids']) && !empty($params['lista_ids']))?$params['lista_ids']:'';
+        $resultado = $model->getInterbakingTxt($lista_ids);
          
         return $resultado;
     }
     
-    public function getInterbakingTxt() {
+    public function getInterbakingTxt($lista_ids = '') {
         $this->codigo_cliente = 'CLIENTE';
         $interbankin_txt = '1'.$this->codigo_cliente."\n";
         
         //obtenemos los datos del propietario de cada cuenta
-        $datos = $this->getDatosCuentas();
+        $datos = $this->getDatosCuentas($lista_ids);
         $final_txt = '3'.$this->codigo_cliente.str_pad(count($datos), 6, "0", STR_PAD_LEFT);
         
         foreach ($datos as $value) {
@@ -62,9 +64,16 @@ class Interbanking extends Model
      * @throws \yii\web\HttpException
      * @return array Se devuelve una lista de cuenta con los datos del propietario
      */
-    public function getDatosCuentas() {
+    public function getDatosCuentas($lista_ids = '') {
+
+        if($lista_ids==''){
+            $lista_cuenta = Cuenta::find()->limit(500)->asArray()->where(['tesoreria_alta'=>0])->all();
+        }else{
+            $lista_ids = explode(',',$lista_ids);
+            $lista_cuenta = Cuenta::find()->limit(500)->asArray()->where(['id'=>$lista_ids])->all();
+        }
+
         //obtenemos la lista de cuentas que no fueron dadas de alta en tesoreria
-        $lista_cuenta = Cuenta::find()->limit(500)->asArray()->where(['tesoreria_alta'=>0])->all();
         $lista_cuenta = Cuenta::vincularPropietario($lista_cuenta);
         
         if(empty($lista_cuenta)){

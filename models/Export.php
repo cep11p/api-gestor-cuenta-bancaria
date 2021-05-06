@@ -35,12 +35,17 @@ class Export extends BaseExport
     public function exportar(){
         switch ($this->tipo) {
             case 'interbanking':
-                die('aca');
+                $resultado = Interbanking::exportar(['lista_ids'=>$this->lista_ids]);
                 break;
             
+            case 'ctasaldo':
+                $resultado = Interbanking::exportar(['lista_ids'=>$this->lista_ids]);
+                break;
             default:
                 # code...
                 break;
         }
+
+        return $resultado;
     }
 }
