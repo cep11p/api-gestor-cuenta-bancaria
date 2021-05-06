@@ -99,6 +99,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta', 
                 ], 
+                [   #Export
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'export', 
+                ], 
                 [   #CTASLDO
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'cuenta-saldo', 
