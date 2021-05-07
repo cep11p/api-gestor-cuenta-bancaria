@@ -14,10 +14,26 @@ class CuentaSaldo
 
     const NACIONALIDAD_ARGENTINA = 1;
 
+    /**
+     * Registramos la exportacion de cuenta saldo
+     *
+     * @param [array] $params lista de prestaciones
+     * @return void
+     */
     public static function registrarExportacion($params){
+        #preparamos el atributo lista_ids
         $lista_ids = '';
         foreach ($params as $value) {
-            $lista_ids .= ($lista_ids=='')?strval($value['prestacion']['id']):",".strval($value['prestacion']['id'])
+            $lista_ids .= ($lista_ids=='')?strval($value['prestacion']['id']):",".strval($value['prestacion']['id']);
+        }
+
+        #registramos la exportacion
+        $export = new Export();
+        $export->lista_ids = $lista_ids;
+        $export->tipo = Export::TIPO_CUENTA_SALDO;
+
+        if(!$export->save()){
+            throw new \yii\web\HttpException(400, json_encode($export->errors));
         }
     }
 

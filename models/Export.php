@@ -12,6 +12,9 @@ use yii\helpers\ArrayHelper;
 class Export extends BaseExport
 {
 
+    const TIPO_CUENTA_SALDO = 'ctasaldo';
+    const TIPO_INTERBANKING = 'interbanking';
+
     public function behaviors()
     {
         return ArrayHelper::merge(
