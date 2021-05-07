@@ -27,3 +27,10 @@
     ]
 }
 */
+
+/**** Para re-exportar ****/
+/**
+* @url http://api.gcb.local/exports/2
+* @method GET
+* @return string
+*/

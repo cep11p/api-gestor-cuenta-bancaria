@@ -32,14 +32,20 @@ class Export extends BaseExport
         );
     }
 
+    /**
+     * Realiza la reexportacion de lo que ya fue exportado
+     *
+     * @return void
+     */
     public function exportar(){
+        $resultado = []; 
         switch ($this->tipo) {
             case 'interbanking':
                 $resultado = Interbanking::exportar(['lista_ids'=>$this->lista_ids]);
                 break;
             
             case 'ctasaldo':
-                $resultado = Interbanking::exportar(['lista_ids'=>$this->lista_ids]);
+                $resultado = CuentaSaldo::reexportCtaSaldo($this->lista_ids);
                 break;
             default:
                 # code...

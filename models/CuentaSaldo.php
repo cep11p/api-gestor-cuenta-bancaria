@@ -15,6 +15,32 @@ class CuentaSaldo
     const NACIONALIDAD_ARGENTINA = 1;
 
     /**
+     * Esta funcion nos permite reexportar el archivo ctasaldo que ya fueron exportadas
+     *
+     * @param string $lista_ids
+     * @return void
+     */
+    public static function reexportCtaSaldo($lista_ids = ''){
+
+        $lista_ids = explode(',',$lista_ids);
+        $prestaciones = Prestacion::find()->asArray()->where(['id'=>$lista_ids])->all();
+
+        #Armamos la estructura necesaria para reutilzar el codigo siguiente
+        $lista_prestacion = [];
+        foreach ($prestaciones as $value) {
+            $pres['id'] = $value['personaid'];
+            $pres['prestacion'] = $value;
+            $lista_prestacion[] = $pres;
+        }
+
+        
+        $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($lista_prestacion);
+        $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
+
+        return $resultado;
+    }
+
+    /**
      * Se exportan prestacion es una archivo llamado CTASLDO.TXT
      * @param array $params
      * @return string
@@ -174,7 +200,7 @@ class CuentaSaldo
             if(isset($value['id'])){
                 $ids .= (empty($ids))?$value['id']:','.$value['id'];
             }else{
-                throw new \yii\web\HttpException(400,'No se permite una persona sin id de una persona');
+                throw new \yii\web\HttpException(400,'No se permite una prestacion sin id de una persona');
             }
         }
         $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
@@ -223,7 +249,7 @@ class CuentaSaldo
         /***** Instancia con Sub-Sucursales *****/
         //hacemos instancia con todas las sub-sucursales
         foreach ($params as $value) {
-            if(isset($value['prestacion']['sub_sucursalid']) && is_int($value['prestacion']['sub_sucursalid'])){
+            if(isset($value['prestacion']['sub_sucursalid']) && is_int(intval($value['prestacion']['sub_sucursalid']))){
                 $sub_sucursalesids .= (empty($sub_sucursalesids))?$value['prestacion']['sub_sucursalid']:','.$value['prestacion']['sub_sucursalid'];
             }else{
                 throw new \yii\web\HttpException(400,'No se permite una prestacion sin sub_sucursalid');
