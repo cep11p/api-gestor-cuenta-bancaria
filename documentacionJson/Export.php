@@ -21,7 +21,7 @@
         {
             "id": 1,
             "lista_ids": "1,2,3",
-            "tipo": "interbanking",
+            "tipo": "ctasaldo",
             "export_at": "2021-05-06 14:24:21"
         }
     ]
@@ -32,5 +32,5 @@
 /**
 * @url http://api.gcb.local/exports/2
 * @method GET
-* @return string
+* @return array {"exportacion":"texto plano"}
 */
