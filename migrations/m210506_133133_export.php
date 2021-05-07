@@ -15,7 +15,7 @@ class m210506_133133_export extends Migration
         $table='export';
         $this->createTable($table, [
             'id'=>$this->primaryKey(),
-            'lista_ids'=>$this->string(),
+            'lista_ids'=>$this->text(),
             'tipo'=>$this->string(),
             'export_at'=>$this->timestamp(),
         ]);
