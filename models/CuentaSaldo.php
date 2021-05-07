@@ -14,6 +14,13 @@ class CuentaSaldo
 
     const NACIONALIDAD_ARGENTINA = 1;
 
+    public static function registrarExportacion($params){
+        $lista_ids = '';
+        foreach ($params as $value) {
+            $lista_ids .= ($lista_ids=='')?strval($value['prestacion']['id']):",".strval($value['prestacion']['id'])
+        }
+    }
+
     /**
      * Esta funcion nos permite reexportar el archivo ctasaldo que ya fueron exportadas
      *
@@ -85,7 +92,8 @@ class CuentaSaldo
         
         //Seteamos el txt a exportar
         $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
-        
+
+        self::registrarExportacion($lista_persona_prestacion);
         
         return $resultado;
     }
