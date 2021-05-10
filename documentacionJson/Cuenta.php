@@ -5,6 +5,7 @@
 * @url http://api.gcb.local/cuentas
 * @url http://api.gcb.local/cuentas?ids=1,2,3 url con filtrado de ids
 * @url http://api.gcb.local/cuentas?global_param=27351545475 url con filtro cuil, nombre, apellido o nro de documento
+* @url http://api.gcb.local/cuentas?fecha_desde=2021-01-11&fecha_hasta=2021-04-10
 * @method GET
 * @arrayReturn
 {

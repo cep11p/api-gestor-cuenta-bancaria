@@ -109,6 +109,25 @@ class CuentaSearch extends Cuenta
             $query->andFilterWhere(['like', 'cbu', $this->cbu]);
         }
 
+        #### Filtro por rango de fecha ####
+        if(isset($params['fecha_desde']) && isset($params['fecha_hasta'])){
+            $query->andWhere(['between', 'create_at', $params['fecha_desde'], $params['fecha_hasta']]);
+        }else if(isset($params['fecha_desde'])){
+            $query->andWhere(['between', 'create_at', $params['fecha_desde'], date('Y-m-d')]);
+        }else if(isset($params['fecha_hasta'])){
+            $query->andWhere(['between', 'create_at', '1970-01-01', $params['fecha_hasta']]);
+        }else if(!isset($params['fecha_desde']) && !isset($params['fecha_hasta'])){
+            if(isset($params['mes']) && !empty($params['mes'])){
+                $params['fecha_hasta'] = date('Y').'-'.$params['mes'].'-01';
+            }else{
+                $params['fecha_hasta'] = date('Y').'-06-01';
+            }
+            $params['fecha_desde'] = date('Y-m-d',strtotime($params['fecha_hasta'].' -1 year'));
+
+            $query->andWhere(['between', 'create_at', $params['fecha_desde'], $params['fecha_hasta']]);
+        }
+
+
         /******* Se obtiene la coleccion******/
         $coleccion = array();
         foreach ($dataProvider->getModels() as $value) {
