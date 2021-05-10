@@ -13,6 +13,7 @@ use Yii;
  * @property string $lista_ids
  * @property string $tipo
  * @property string $export_at
+ * @property integer $cantidad
  * @property string $aliasModel
  */
 abstract class Export extends \yii\db\ActiveRecord
@@ -35,6 +36,7 @@ abstract class Export extends \yii\db\ActiveRecord
     {
         return [
             [['export_at'], 'safe'],
+            [['cantidad'], 'integer'],
             [['lista_ids', 'tipo'], 'string', 'max' => 255]
         ];
     }
@@ -49,6 +51,7 @@ abstract class Export extends \yii\db\ActiveRecord
             'lista_ids' => 'Lista Ids',
             'tipo' => 'Tipo',
             'export_at' => 'Export At',
+            'cantidad' => 'Cantidad',
         ];
     }
 

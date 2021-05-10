@@ -23,13 +23,16 @@ class CuentaSaldo
     public static function registrarExportacion($params){
         #preparamos el atributo lista_ids
         $lista_ids = '';
+        $cantidad = 0;
         foreach ($params as $value) {
             $lista_ids .= ($lista_ids=='')?strval($value['prestacion']['id']):",".strval($value['prestacion']['id']);
+            $cantidad++;
         }
 
         #registramos la exportacion
         $export = new Export();
         $export->lista_ids = $lista_ids;
+        $export->cantidad = $cantidad;
         $export->tipo = Export::TIPO_CUENTA_SALDO;
 
         if(!$export->save()){

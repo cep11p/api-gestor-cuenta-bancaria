@@ -69,8 +69,9 @@ class Interbanking extends Model
         return $interbankin_txt;
     }
 
-    public static function registrarExportacion($lista_cuenta){
+    public static function registrarExportacion($lista_cuenta = []){
         $lista_ids = '';
+        $cantidad = count($lista_cuenta);
         foreach ($lista_cuenta as $value) {
             $lista_ids .= ($lista_ids=='')?strval($value['id']):",".strval($value['id']);
         }
@@ -78,6 +79,7 @@ class Interbanking extends Model
         #registramos la exportacion
         $export = new Export();
         $export->lista_ids = $lista_ids;
+        $export->cantidad = $cantidad;
         $export->tipo = Export::TIPO_INTERBANKING;
 
         if(!$export->save()){
