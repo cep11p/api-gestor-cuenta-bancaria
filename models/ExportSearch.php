@@ -69,6 +69,25 @@ class ExportSearch extends Export
         $query->andFilterWhere(['like', 'lista_ids', $this->lista_ids])
             ->andFilterWhere(['like', 'tipo', $this->tipo]);
 
+        #### Filtro por rango de fecha ####
+        if(isset($params['export_at_desde']) && isset($params['export_at_hasta'])){
+            $query->andWhere(['between', 'export_at', $params['export_at_desde'], $params['export_at_hasta']]);
+        }else if(isset($params['export_at_desde'])){
+            $query->andWhere(['between', 'export_at', $params['export_at_desde'], date('Y-m-d')]);
+        }else if(isset($params['export_at_hasta'])){
+            $query->andWhere(['between', 'export_at', '1970-01-01', $params['export_at_hasta']]);
+        }else if(!isset($params['export_at_desde']) && !isset($params['export_at_hasta'])){
+            if(isset($params['mes']) && !empty($params['mes'])){
+                $params['export_at_hasta'] = date('Y').'-'.$params['mes'].'-01';
+            }else{
+                $params['export_at_hasta'] = date('Y').'-06-01';
+            }
+            $params['export_at_desde'] = date('Y-m-d',strtotime($params['export_at_hasta'].' -1 year'));
+
+            $query->andWhere(['between', 'export_at', $params['export_at_desde'], $params['export_at_hasta']]);
+        }
+
+
         /******* Se obtiene la coleccion******/
         $coleccion = array();
         foreach ($dataProvider->getModels() as $value) {
