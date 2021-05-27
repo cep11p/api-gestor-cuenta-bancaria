@@ -31,7 +31,6 @@ class Herramienta extends Model
     
     public function importarCuentas() {
         $lista_persona = [];
-        
         if(!$this->validate('file')){
             throw new \yii\web\HttpException(400, 'La formato del archivo debe ser ods o xlsx');
         }
@@ -48,9 +47,12 @@ class Herramienta extends Model
                 $persona['nombre'] = strtolower($spreadsheet->getActiveSheet()->getCell('C'.$i)->getValue());
                 $persona['cuil'] = strval($spreadsheet->getActiveSheet()->getCell('D'.$i)->getValue());
                 $persona['cbu'] = strval($spreadsheet->getActiveSheet()->getCell('E'.$i)->getValue());
+                $sub_sucursal = $this->buscarSubSucursal(strval($spreadsheet->getActiveSheet()->getCell('F'.$i)->getValue()));
+                $persona['sub_sucursalid'] = (isset($sub_sucursal['id']))?$sub_sucursal['id']:null;
                 $lista_persona [] = $persona;
             }
         }
+        
         $resultado = $this->registrarCuentaConPropietario($lista_persona);
         return $resultado;
     }
@@ -84,6 +86,7 @@ class Herramienta extends Model
                         $cuenta = new Cuenta();
                         $cuenta->personaid = $personaid;
                         $cuenta->cbu = $value['cbu'];
+                        $cuenta->sub_sucursalid = $value['sub_sucursalid'];
                         $cuenta->bancoid = CtaBps::BANCO_PATAGONIA;
                         $cuenta->tipo_cuentaid = CtaBps::CUENTA_CORRIENTE;
                         $cuenta->create_at = date('Y-m-d H:i:s');
@@ -119,6 +122,7 @@ class Herramienta extends Model
                         $cuenta = new Cuenta();
                         $cuenta->personaid = $personaid;
                         $cuenta->cbu = $value['cbu'];
+                        $cuenta->sub_sucursalid = $value['sub_sucursalid'];
                         $cuenta->bancoid = CtaBps::BANCO_PATAGONIA;
                         $cuenta->tipo_cuentaid = CtaBps::CUENTA_CORRIENTE;
                         $cuenta->create_at = date('Y-m-d H:i:s');
@@ -141,6 +145,31 @@ class Herramienta extends Model
         $resultado['cuentas_encontradas'] = $cantidad_cuenta_encontrada;
         $resultado['personas_registradas'] = $cantidad_persona_registrada;
         $resultado['personas_encontradas'] = $cantidad_persona_encontrada;
+        
+        return $resultado;
+    }
+    
+    /**
+     * Se busca sub sucursal por nombre de la localdiad o codigo postal
+     * @param string $param
+     * @return array Devolvemos la sub_sucursal
+     */
+    public function buscarSubSucursal($param) {
+        $query = new \yii\db\Query();
+        $query->from('sub_sucursal');
+        
+        $resultado = array();
+        #Si son numeros buscamos por C.P
+        if(preg_match("/^[[:digit:]]+$/", $param)){
+            $resultado = $query->where(['codigo_postal'=>$param])->createCommand()->queryAll();
+        }
+        #Buscamos coincidencia si son palabras
+        else if(preg_match("/\w/", $param)){
+            $condition = "localidad like '%".$param."%'";
+            $row = $query->where($condition)->createCommand()->queryAll();
+            $resultado = (isset($row[0]))?$row[0]:[];
+        }
+        
         return $resultado;
     }
 }
