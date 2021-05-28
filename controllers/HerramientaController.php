@@ -84,6 +84,28 @@ class HerramientaController extends ActiveController{
 
     }
     
+    public function actionImportarSubsucursalesACuenta()
+    {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            $model = new \app\models\Herramienta();
+            $model->file = \yii\web\UploadedFile::getInstanceByName('cuentas');
+            $resultado = $model->importarSubSucursalesACuentas();
+            
+            $transaction->commit();
+            
+            return $resultado;
+           
+        }catch (Exception $exc) {
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+        
+        
+        exit();
+
+    }
+    
     
     
 }

@@ -133,6 +133,9 @@ $config = [
                     'extraPatterns' => [
                         'POST Importar' => 'importar',
                         'OPTIONS Importar' => 'importar',
+                        'POST importar-subsucursales-a-cuenta' => 'importar-subsucursales-a-cuenta',
+                        'OPTIONS importar-subsucursales-a-cuenta' => 'importar-subsucursales-a-cuenta',
+
                     ], 
                 ],
                  ##### Interoperabilidad con Registral #####

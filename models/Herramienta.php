@@ -56,6 +56,34 @@ class Herramienta extends Model
         $resultado = $this->registrarCuentaConPropietario($lista_persona);
         return $resultado;
     }
+    
+    public function importarSubSucursalesACuentas() {
+        $lista_cuenta = [];
+        if(!$this->validate('file')){
+            throw new \yii\web\HttpException(400, 'La formato del archivo debe ser ods o xlsx');
+        }
+        
+        /** Load $inputFileName to a Spreadsheet Object  **/
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($this->file->tempName);
+        $valor = $spreadsheet->getActiveSheet()->getCell('A2');
+        $cant = 0;
+        for($i=2;$i<=$spreadsheet->getActiveSheet()->getHighestRow();$i++){
+            
+            #buscamos la cuenta por CBU
+            $cbu = strval($spreadsheet->getActiveSheet()->getCell('A'.$i)->getValue());
+            $sub_sucursal = $this->buscarSubSucursal(strval($spreadsheet->getActiveSheet()->getCell('B'.$i)->getValue()));
+            $cuenta = Cuenta::findOne(['cbu'=>$cbu]);
+            
+            //guardamos la cuenta con su sub_sucursalid
+            if($cuenta != null && isset($sub_sucursal['id'])){
+                $cuenta->sub_sucursalid = $sub_sucursal['id'];       
+                $cuenta->save();
+                $cant++;
+            }
+        }
+            
+        return $resultado['mensaje'] = "Se actualizaron $cant cuentas!";
+    }
 
     public function registrarCuentaConPropietario($param) {
         $cantidad_cuenta_registrada = 0;
