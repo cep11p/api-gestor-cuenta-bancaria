@@ -44,10 +44,22 @@ class Export extends BaseExport
         $resultado['exportacion'] = ''; 
         switch ($this->tipo) {
             case 'interbanking':
+
+                #Chequeamos permiso
+                if(!Yii::$app->user->can('interbanking_exportar')){
+                    throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+                }
+                
                 $resultado['exportacion'] = Interbanking::exportar(['lista_ids'=>$this->lista_ids]);
                 break;
             
             case 'ctasaldo':
+
+                #Chequeamos permiso
+                if(!Yii::$app->user->can('cuenta_saldo_exportar')){
+                    throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+                }
+
                 $resultado['exportacion'] = CuentaSaldo::reexportCtaSaldo($this->lista_ids);
                 break;
         }
