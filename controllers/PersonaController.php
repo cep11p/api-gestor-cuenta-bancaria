@@ -69,11 +69,6 @@ class PersonaController extends ActiveController{
      */
     public function actionIndex()
     {
-        #Chequeamos el permiso
-        if (!\Yii::$app->user->can('persona_ver')) {
-            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        }
-
         $param = Yii::$app->request->queryParams;
         
         $resultado = PersonaForm::buscarPersonaEnRegistralConPaginacion($param);
@@ -88,11 +83,6 @@ class PersonaController extends ActiveController{
     
     public function actionView($id)
     {
-        #Chequeamos el permiso
-        if (!\Yii::$app->user->can('persona_ver')) {
-            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        }
-
         $resultado = \Yii::$app->registral->viewPersona($id);
         
         return $resultado;
