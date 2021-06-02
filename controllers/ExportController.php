@@ -85,11 +85,6 @@ class ExportController extends ActiveController{
         if($model==NULL){
             throw new \yii\web\HttpException(400, 'El recurso con el id '.$id.' no existe!');
         }
-
-        #Chequeamos permiso
-        // if(!Yii::$app->user->can('prestacion_ver',['prestacion' => ['programaid'=>$model->programaid]])){
-        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        // }
         
         $resultado = $model->exportar();
         
