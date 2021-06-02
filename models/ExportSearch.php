@@ -70,7 +70,7 @@ class ExportSearch extends Export
             ->andFilterWhere(['like', 'tipo', $this->tipo]);
 
         #### Filtro por rango de fecha ####
-        $time_desde = ' 00:00:00';
+        $time_desde = ' 00:00:01';
         $time_hasta = ' 23:59:59';
         if(isset($params['export_at_desde']) && isset($params['export_at_hasta'])){
             $params['export_at_desde'] .= $time_desde;
@@ -84,7 +84,7 @@ class ExportSearch extends Export
             $query->andWhere(['between', 'export_at', '1970-01-01', $params['export_at_hasta']]);
         }else if(!isset($params['export_at_desde']) && !isset($params['export_at_hasta'])){
             
-            $params['export_at_hasta'] = date('Y').'-06-01';
+            $params['export_at_hasta'] = date('Y-m-d');
             $params['export_at_desde'] = date('Y-m-d',strtotime($params['export_at_hasta'].' -1 year'));
 
             $params['export_at_desde'] .= $time_desde;
@@ -99,8 +99,6 @@ class ExportSearch extends Export
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();
         }
-        // print_r($params);die();
-        // print_r($query->createCommand()->sql);die();
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);           
         $resultado['pagesize']=$pagesize;            

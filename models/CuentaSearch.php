@@ -120,7 +120,7 @@ class CuentaSearch extends Cuenta
             if(isset($params['mes']) && !empty($params['mes'])){
                 $params['fecha_hasta'] = date('Y').'-'.$params['mes'].'-01';
             }else{
-                $params['fecha_hasta'] = date('Y').'-06-01';
+                $params['fecha_hasta'] = date('Y-m-d');
             }
             $params['fecha_desde'] = date('Y-m-d',strtotime($params['fecha_hasta'].' -1 year'));
 
