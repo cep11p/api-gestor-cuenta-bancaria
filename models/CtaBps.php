@@ -142,6 +142,7 @@ class CtaBps extends Model
             $resultado['errors'][] = "No se encuentra registrada la persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
         }
                 
+
         return $resultado;
         
     }
@@ -162,6 +163,21 @@ class CtaBps extends Model
             $cuenta->tipo_cuentaid = self::CUENTA_CORRIENTE;
             $cuenta->cbu = $persona['cuenta']['cbu'];
             $cuenta->create_at = date('Y-m-d H:m:s');
+
+            #Chequeamos si la persona a importar paso por cuentaSaldo
+            $error_cuenta = '';
+            if(Prestacion::findOne(['personaid' => $persona['id']]) == Null){
+                $error_cuenta = " debe ser registrada por cuenta saldo";
+            }
+
+            #Chequeamos si el CBU ya existe
+            if(Cuenta::findOne(['cbu' => $cuenta->cbu]) != Null){
+                $error_cuenta .= (!empty($error_cuenta))?" y tiene vinculado un cbu ajeno":" tiene vinculado un cbu ajeno";
+            }
+
+            if(!empty($error_cuenta)){
+                $resultado['errors'][] = "La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$error_cuenta;
+            }
             
             if(!$cuenta->save()){
                 $error = $cuenta->errors;
@@ -171,7 +187,6 @@ class CtaBps extends Model
                 $cant_registros++;
             }
         }
-        
         
         $resultado['creadas'] = $cant_registros;
         $resultado['existen'] = count($errors);

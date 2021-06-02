@@ -21,6 +21,7 @@ class CuentaSaldo
      * @return void
      */
     public static function registrarExportacion($params){
+
         #preparamos el atributo lista_ids
         $lista_ids = '';
         $cantidad = 0;
@@ -75,15 +76,20 @@ class CuentaSaldo
     public static function exportCtaSaldo($params){
         $resultado = [];
         $errors = [];
-        $lista_prestacion_correcta = [];
         
         /***** Armamos la instancia completa con Persona y Sub-Sucursal*****/
         $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($params);
+
         
         /***** Se validan y se registran las prestaciones *********/
-        foreach ($lista_persona_prestacion as $value) {    
+        $i=0;
+        foreach ($lista_persona_prestacion as $value) { 
             
-            if(empty($value['prestacion']['id'])){
+            if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
+                $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
+                $model->estado = Prestacion::SIN_CBU;
+                
+            }else{
                 //Registramos la prestacion
                 $model = new Prestacion();
                 $model->personaid = (isset($value['id']))?$value['id']:null;
@@ -92,10 +98,9 @@ class CuentaSaldo
                 $model->observacion = 'Se crea en exportacion de CtaSaldo';
                 $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
                 $model->estado = Prestacion::SIN_CBU;
-                $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
-            }else{
-                $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
-                $model->estado = Prestacion::SIN_CBU;
+                $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');  
+                
+                
             }
             
             if(!$model->save()){
@@ -103,6 +108,10 @@ class CuentaSaldo
                 $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
                 $errors[] = $error;
             }
+
+            $lista_persona_prestacion[$i]['prestacion']['id'] = $model->id;
+
+            $i++;
         }
         //si hay errores notificamos
         if(!empty($errors)){

@@ -11,9 +11,9 @@ use Yii;
  *
  * @property integer $id
  * @property string $lista_ids
+ * @property integer $cantidad
  * @property string $tipo
  * @property string $export_at
- * @property integer $cantidad
  * @property string $aliasModel
  */
 abstract class Export extends \yii\db\ActiveRecord
@@ -35,9 +35,10 @@ abstract class Export extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['export_at'], 'safe'],
+            [['lista_ids'], 'string'],
             [['cantidad'], 'integer'],
-            [['lista_ids', 'tipo'], 'string', 'max' => 255]
+            [['export_at'], 'safe'],
+            [['tipo'], 'string', 'max' => 255]
         ];
     }
 
@@ -49,9 +50,9 @@ abstract class Export extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'lista_ids' => 'Lista Ids',
+            'cantidad' => 'Cantidad',
             'tipo' => 'Tipo',
             'export_at' => 'Export At',
-            'cantidad' => 'Cantidad',
         ];
     }
 

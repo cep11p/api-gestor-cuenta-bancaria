@@ -70,19 +70,25 @@ class ExportSearch extends Export
             ->andFilterWhere(['like', 'tipo', $this->tipo]);
 
         #### Filtro por rango de fecha ####
+        $time_desde = ' 00:00:00';
+        $time_hasta = ' 23:59:59';
         if(isset($params['export_at_desde']) && isset($params['export_at_hasta'])){
+            $params['export_at_desde'] .= $time_desde;
+            $params['export_at_hasta'] .= $time_hasta;
             $query->andWhere(['between', 'export_at', $params['export_at_desde'], $params['export_at_hasta']]);
         }else if(isset($params['export_at_desde'])){
+            $params['export_at_desde'] .= $time_desde;
             $query->andWhere(['between', 'export_at', $params['export_at_desde'], date('Y-m-d')]);
         }else if(isset($params['export_at_hasta'])){
+            $params['export_at_hasta'] .= $time_hasta;
             $query->andWhere(['between', 'export_at', '1970-01-01', $params['export_at_hasta']]);
         }else if(!isset($params['export_at_desde']) && !isset($params['export_at_hasta'])){
-            if(isset($params['mes']) && !empty($params['mes'])){
-                $params['export_at_hasta'] = date('Y').'-'.$params['mes'].'-01';
-            }else{
-                $params['export_at_hasta'] = date('Y').'-06-01';
-            }
+            
+            $params['export_at_hasta'] = date('Y').'-06-01';
             $params['export_at_desde'] = date('Y-m-d',strtotime($params['export_at_hasta'].' -1 year'));
+
+            $params['export_at_desde'] .= $time_desde;
+            $params['export_at_hasta'] .= $time_hasta;
 
             $query->andWhere(['between', 'export_at', $params['export_at_desde'], $params['export_at_hasta']]);
         }
@@ -93,7 +99,8 @@ class ExportSearch extends Export
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();
         }
-        
+        // print_r($params);die();
+        // print_r($query->createCommand()->sql);die();
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);           
         $resultado['pagesize']=$pagesize;            
