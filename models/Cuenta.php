@@ -40,7 +40,7 @@ class Cuenta extends BaseCuenta
                 return $model->banco->nombre;
             },
             'tipo_cuenta'=> function($model){
-                return $model->tipoCuenta->nombre;
+                return isset($model->tipoCuenta->nombre)?$model->tipoCuenta->nombre:'';
             }
         ]);
         
@@ -69,6 +69,7 @@ class Cuenta extends BaseCuenta
                     $cuenta['cbu'] = $value['cbu'];
                     $cuenta['banco'] = $value['banco'];
                     $cuenta['tesoreria_alta'] = $value['tesoreria_alta'];
+                    $cuenta['tipo_cuenta'] = $value['tipo_cuenta'];
                     $lista_persona[$i]['lista_cuenta'][] = $cuenta;
                     $lista_persona[$i]['tiene_cbu'] = true;
                     break;
