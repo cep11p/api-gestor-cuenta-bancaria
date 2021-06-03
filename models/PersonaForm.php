@@ -125,6 +125,23 @@ class PersonaForm extends Model
         $this->id = intval($resultado);
         
     }
+
+    /**
+     * Verificamos si existe la persona con el $cuil
+     *
+     * @param [string] $cuil
+     * @return bool
+     */
+    public function existePersona($cuil){
+        $resultado = true;
+        $persona = $this->buscarPersonaEnRegistral(['cuil'=>$cuil]);
+
+        if(empty($persona)){
+            $resultado = false;
+        }
+
+        return $resultado;
+    }
     
     public function setAttributesAndSave($param = array()) {
         $arrayErrors = [];
@@ -134,6 +151,10 @@ class PersonaForm extends Model
         if(!$this->validate()){
             $arrayErrors = ArrayHelper::merge($arrayErrors, $this->getErrors());
         }   
+
+        if($this->existePersona($this->cuil)){
+            throw new Exception("La persona con el cuil $this->cuil ya existe!");
+        }
         
         ####### Instanciamos atributos de LugarForm #########
         $lugarForm = new LugarForm();
