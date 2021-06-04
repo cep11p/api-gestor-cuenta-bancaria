@@ -2,6 +2,8 @@
 
 /**** obtener lista de Personas ***
 @url ejemplo http://gcb.local/registral/personas?global_param=gonzalez
+global_param = string
+diff_id = number (se busca la persona diferente a este valor)
 @Method GET
 {
     "success": true,

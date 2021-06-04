@@ -129,18 +129,31 @@ class PersonaForm extends Model
     /**
      * Verificamos si existe la persona con el $cuil
      *
-     * @param [string] $cuil
      * @return bool
      */
-    public function existePersona($cuil){
+    public function existePersona(){
         $resultado = true;
-        $persona = $this->buscarPersonaEnRegistral(['cuil'=>$cuil]);
+        $persona = '';
+        
+        if(isset($this->id) && !empty($this->id)){
+            $persona = $this->buscarPersonaEnRegistral(['cuil'=>$this->cuil, 'diff_id'=>$this->id]);
+        }else{
+            $persona = $this->buscarPersonaEnRegistral(['cuil'=>$this->cuil]);
+        }
 
         if(empty($persona)){
             $resultado = false;
         }
 
         return $resultado;
+    }
+
+    public function validarEdad(){
+        $fecha_nacimiento_min = date('Y-m-d',strtotime(date('Y-m-d').' -18 year'));
+        // throw new Exception("$fecha_nacimiento_min");
+        if(strtotime($this->fecha_nacimiento." 00:00:00") > strtotime($fecha_nacimiento_min." 00:00:00")){
+            throw new Exception("La persona a registrar es menor de edad!");
+        }
     }
     
     public function setAttributesAndSave($param = array()) {
@@ -152,9 +165,13 @@ class PersonaForm extends Model
             $arrayErrors = ArrayHelper::merge($arrayErrors, $this->getErrors());
         }   
 
-        if($this->existePersona($this->cuil)){
+        #verificamos la existencia de la persona con el cuil
+        if($this->existePersona()){
             throw new Exception("La persona con el cuil $this->cuil ya existe!");
         }
+
+        #validamos la Edad
+        $this->validarEdad();
         
         ####### Instanciamos atributos de LugarForm #########
         $lugarForm = new LugarForm();
