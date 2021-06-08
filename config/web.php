@@ -85,6 +85,10 @@ $config = [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'banco', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'prestacion', 
                 ],
                 [
