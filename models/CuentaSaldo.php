@@ -141,11 +141,6 @@ class CuentaSaldo
             if(!isset($value['lugar']) || empty($value['lugar'])){
                 $error['direccion'] = 'Faltan los datos de direccion.';
             }
-
-            //La longitud de la calle no puede ser mayor a 19
-            if(isset($value['lugar']['calle']) && strlen($value['lugar']['calle'])>19){
-                $error['calle'] = 'La calle no puede superar los 19 caracteres.';
-            }
             
             if(isset($value['lugar']['altura']) && empty($value['lugar']['altura'])){
                 $error['altura'] = 'El campo número se encuentra vacio';
@@ -167,12 +162,12 @@ class CuentaSaldo
             $fecha_nacimiento = \DateTime::createFromFormat('Y-m-d', $value['fecha_nacimiento'])->format('dmY');
             $sexo = ($value['sexo']=='Masculino')?'M':'F';
             $estado_civil = 'S';
-            $calle = str_pad(strtoupper(\app\components\Help::quitar_tildes($value['lugar']['calle'])), 19);
+            $calle = str_pad(strtoupper(\app\components\Help::quitar_tildes(substr($value['lugar']['calle'],0,19))), 19);
             $altura = str_pad((str_pad($value['lugar']['altura'], 5, "0", STR_PAD_LEFT)),9);
             $localidad = str_pad(strtoupper($value['lugar']['localidad']), 30);
             $codigo_postal = str_pad(str_pad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
             $cuil = str_pad('008'.$value['cuil'].str_pad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
-            $sucursal = str_pad(date('dmY').$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
+            $sucursal = str_pad(date('dmY',strtotime(date('Y-m-d').' -1 day')).$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
             $sucursal_codigo_postal = str_pad(str_pad($value['prestacion']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //sub_sucursal[codigo_postal]
 
             $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
