@@ -11,6 +11,18 @@ use yii\helpers\ArrayHelper;
 use DateTime;
 class Help extends \yii\base\Component{
 
+    public static function ArrayErrorsToString($errors = []){
+
+        $oracion = '';
+        foreach ($errors as $key => $value) {
+            foreach ($value as $msj) {
+                $oracion .= (empty($oracion))?$msj:'</br> '.$msj;
+            }
+        }
+
+        return $oracion;
+    }
+
     /**
      * Se convierte un objeto de json a array
      */

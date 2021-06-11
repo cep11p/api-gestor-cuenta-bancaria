@@ -28,7 +28,7 @@ class Cuenta extends BaseCuenta
         return ArrayHelper::merge(
             parent::rules(),
             [
-                # custom validation rules
+                ['cbu','validarCbu']
             ]
         );
     }
@@ -152,5 +152,22 @@ class Cuenta extends BaseCuenta
         }
         
         return $lista_cuenta;
+    }
+    
+    public function validarCbu($attribute, $params, $validator){
+
+        if(isset($this->bancoid) && isset($this->cbu)){
+
+            if(strlen($this->cbu) != 22){
+                $this->addError('cbu','El CBU debe tener 22 digitos.');
+            }
+            
+            #Validamos el codigo del banco del CBU
+            $banco = substr($this->cbu, 0, 3);
+            if($banco != $this->banco->codigo){
+                $this->addError('cbu','No coincide el CBU con el banco.');
+            }
+            
+        }
     }
 }

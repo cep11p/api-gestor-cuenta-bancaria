@@ -132,6 +132,11 @@
 * @url http://api.gcb.local/cuentas 
 * @method POST
 * @param arrayJson
+    {
+    "personaid":11,
+    "bancoid": 1,
+    "cbu":"0344567891234567891234"
+    }
 **/
 
 /**** Para modificar*****

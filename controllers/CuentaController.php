@@ -1,12 +1,17 @@
 <?php
 namespace app\controllers;
 
+use app\components\Help;
+use app\models\Cuenta;
+use Exception;
+use Yii;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
 class CuentaController extends ActiveController{
     
     public $modelClass = 'app\models\Cuenta';
+    const CAJA_AHORRO = 2;
     
     public function behaviors()
     {
@@ -51,6 +56,10 @@ class CuentaController extends ActiveController{
     {
         $actions = parent::actions();
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        unset($actions['create']);
+        unset($actions['view']);
+        unset($actions['update']);
         return $actions;
     }
     
@@ -65,6 +74,37 @@ class CuentaController extends ActiveController{
         }
 
         return $resultado;
+    }
+
+    public function actionCreate(){
+        $params = \Yii::$app->request->post();
+        $resultado['message']='Se registra un cuenta bancaria';
+        $transaction = Yii::$app->db->beginTransaction();
+        
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+        
+        try{            
+            
+            $cuenta = new Cuenta();
+            $cuenta->setAttributes($params);
+            $cuenta->tipo_cuentaid = $this::CAJA_AHORRO;
+
+            
+            if(!$cuenta->save()){                
+                throw new Exception(Help::ArrayErrorsToString($cuenta->errors));
+            }
+            
+            $transaction->commit();
+            return $resultado;
+        }catch (\yii\web\HttpException $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            $statuCode =$exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
+        }
     }
     
 }
