@@ -151,8 +151,11 @@
 * @return arrayJson
 */
 
-/****** Para borrar una localidad *****
+/****** Para borrar una cuenta *****
 * @url http://api.gcb.local/cuentas/{$id} 
 * @method Delete
 * @return arrayJson
+    {
+        "message": "Se borra una cuenta"
+    }
 */

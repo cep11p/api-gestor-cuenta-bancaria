@@ -170,4 +170,24 @@ class Cuenta extends BaseCuenta
             
         }
     }
+
+    /**
+     * Validamos si la cuenta es agregada a mano y se realiza el borrado
+     *
+     * @return void
+     */
+    public function borrarCuenta(){
+        $resultado = false;
+        $prestacion = Prestacion::findOne(['personaid'=>$this->personaid]);
+
+        if(!is_null($prestacion)){
+            throw new \yii\web\HttpException(400, 'No se puede borrar una cuenta que fue dado de alta por el convenio 8081');
+        }
+        
+        if($this->delete()){
+            $resultado = true;
+        }
+
+        return $resultado;
+    }
 }

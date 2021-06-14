@@ -60,6 +60,8 @@ class CuentaController extends ActiveController{
         unset($actions['create']);
         unset($actions['view']);
         unset($actions['update']);
+        unset($actions['delete']);
+
         return $actions;
     }
     
@@ -105,6 +107,21 @@ class CuentaController extends ActiveController{
             $statuCode =$exc->statusCode;
             throw new \yii\web\HttpException($statuCode, $mensaje);
         }
+    }
+
+    public function actionDelete($id){
+        
+        $resultado['message']='Se borra una cuenta';
+        $model = Cuenta::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'La cuenta con el id '.$id.' no existe!');
+        }
+
+        if(!$model->borrarCuenta()){
+            $resultado['message']='No se pudo borra la cuenta '.$this->cbu;
+        }
+
+        return $resultado;
     }
     
 }
