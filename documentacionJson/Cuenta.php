@@ -143,6 +143,12 @@
 * @url http://api.gcb.local/cuentas/{$id} 
 * @method PUT
 * @param arrayJson
+{
+  "cbu":"0344567891234567891234",
+  "sub_sucursalid": 2,
+  "bancoid": 1,
+  "tipo_cuentaid" : 1
+}
 **/
 
 /****** Para visualizar*****

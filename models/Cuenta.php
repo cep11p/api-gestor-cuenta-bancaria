@@ -190,4 +190,20 @@ class Cuenta extends BaseCuenta
 
         return $resultado;
     }
+
+    /**
+     * Se chequea si el origen de la cuenta fue por convenio 8081
+     *
+     * @return void
+     */
+    public function origenConvenio(){
+        $resultado = false;
+        $prestacion = Prestacion::findOne(['personaid'=>$this->personaid]);
+
+        if(!is_null($prestacion)){
+            $resultado = true;
+        }
+
+        return $resultado;
+    }
 }

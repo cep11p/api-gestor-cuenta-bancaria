@@ -110,6 +110,11 @@ class CuentaController extends ActiveController{
     }
 
     public function actionDelete($id){
+
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_borrar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         
         $resultado['message']='Se borra una cuenta';
         $model = Cuenta::findOne(['id'=>$id]);            
@@ -122,6 +127,51 @@ class CuentaController extends ActiveController{
         }
 
         return $resultado;
+    }
+
+    public function actionUpdate($id){
+        
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_modificar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
+        $resultado['message']='Se modifica la cuenta';
+        $params = \Yii::$app->request->post();
+
+        #Buscamos la cuenta
+        $model = Cuenta::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'La cuenta con el id '.$id.' no existe!');
+        }
+
+        #Chequeamos el origen de la cuenta
+        if($model->origenConvenio()){
+            throw new \yii\web\HttpException(400, 'No se puede modificar una cuenta que fue dado de alta por el convenio 8081');
+        }
+
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        try{            
+            
+            $model->setAttributes($params);
+            $model->tipo_cuentaid = $this::CAJA_AHORRO;
+            $model->tesoreria_alta = 0;
+
+            if(!$model->save()){                
+                throw new Exception(Help::ArrayErrorsToString($model->errors));
+            }
+            
+            $transaction->commit();
+
+            return $resultado;
+        }catch (\yii\web\HttpException $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            $statuCode =$exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
+        }
+
     }
     
 }
