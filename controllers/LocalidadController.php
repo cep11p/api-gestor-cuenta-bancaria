@@ -6,7 +6,7 @@ use yii\web\Response;
 
 use Yii;
 use yii\base\Exception;
-
+use yii\helpers\ArrayHelper;
 
 class LocalidadController extends ActiveController{
     
@@ -75,8 +75,11 @@ class LocalidadController extends ActiveController{
         $param=\yii\helpers\ArrayHelper::merge($param, ['provinciaid'=>$rio_negro]);
         
         $resultado = \Yii::$app->lugar->buscarLocalidad($param);
+        $localidades_extras = \Yii::$app->lugar->buscarLocalidad(['ids'=>'613,2504,382']);
+
+        $resultado = ArrayHelper::merge($resultado['resultado'], $localidades_extras['resultado']);        
         
-        return $resultado['resultado'];
+        return $resultado;
 
     }
     

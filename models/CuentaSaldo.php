@@ -88,7 +88,7 @@ class CuentaSaldo
             if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
                 $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
                 $model->estado = Prestacion::SIN_CBU;
-                
+
             }else{
                 //Registramos la prestacion
                 $model = new Prestacion();
@@ -141,11 +141,7 @@ class CuentaSaldo
             if(!isset($value['lugar']) || empty($value['lugar'])){
                 $error['direccion'] = 'Faltan los datos de direccion.';
             }
-            
-            if(isset($value['lugar']['altura']) && empty($value['lugar']['altura'])){
-                $error['altura'] = 'El campo número se encuentra vacio';
-            }
-            
+                        
             //si hay errores notificamos
             if(count($error)>1){
                 throw new \yii\web\HttpException(400, json_encode(array($error)));
@@ -162,8 +158,18 @@ class CuentaSaldo
             $fecha_nacimiento = \DateTime::createFromFormat('Y-m-d', $value['fecha_nacimiento'])->format('dmY');
             $sexo = ($value['sexo']=='Masculino')?'M':'F';
             $estado_civil = 'S';
-            $calle = str_pad(strtoupper(\app\components\Help::quitar_tildes(substr($value['lugar']['calle'],0,19))), 19);
-            $altura = str_pad((str_pad($value['lugar']['altura'], 5, "0", STR_PAD_LEFT)),9);
+            $calle = str_pad(strtoupper(substr(\app\components\Help::quitar_tildes($value['lugar']['calle']), 0, 19)), 19);
+
+            #Seteamos la altura en CTASALDO
+            $patron = "/^[[:digit:]]+$/";
+            if (!preg_match($patron, $value['lugar']['altura'])){
+                $altura = '00001'; #Valor por defecto
+            }else{
+                $altura = $value['lugar']['altura'];
+            }
+            $altura = str_pad(str_pad(substr($altura, 0, 5), 5,'0',STR_PAD_LEFT),9);
+
+
             $localidad = str_pad(strtoupper($value['lugar']['localidad']), 30);
             $codigo_postal = str_pad(str_pad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
             $cuil = str_pad('008'.$value['cuil'].str_pad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
