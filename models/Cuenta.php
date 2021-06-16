@@ -153,6 +153,24 @@ class Cuenta extends BaseCuenta
         
         return $lista_cuenta;
     }
+
+    public static function setOrigenConvenio($lista_cuenta) {    
+        
+        $lista_persona_ids = [];
+        //vinculamos el cuil en cada cuenta
+        foreach ($lista_cuenta as $value) {
+            $lista_persona_ids[] = $value['personaid'];
+        }
+
+        print_r($lista_persona_ids);die();
+        $prestacion = Prestacion::findOne(['personaid'=>$this->personaid]);
+
+        if(!is_null($prestacion)){
+            throw new \yii\web\HttpException(400, 'No se puede borrar una cuenta que fue dado de alta por el convenio 8081');
+        }
+        
+        return $lista_cuenta;
+    }
     
     public function validarCbu($attribute, $params, $validator){
 
