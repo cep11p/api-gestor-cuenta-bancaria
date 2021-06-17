@@ -79,9 +79,13 @@ diff_id = number (se busca la persona diferente a este valor)
             },
             "lista_cuenta": [
                 {
-                    "cbu": "0340220908730032794010",
-                    "banco": "Patagonia",
-                    "tesoreria_alta": 0
+                    "id": 8,
+                    "cbu": "0341235678912345678654",
+                    "banco": "Banco Patagonia S.A.",
+                    "bancoid": 1,
+                    "tesoreria_alta": 0,
+                    "tipo_cuenta": "Caja de Ahorro",
+                    "tipo_cuentaid": 2
                 }
             ],
             "tiene_cbu": true

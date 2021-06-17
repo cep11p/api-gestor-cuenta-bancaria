@@ -66,10 +66,13 @@ class Cuenta extends BaseCuenta
             $i=0;
             foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                    $cuenta['id'] = $value['id'];
                     $cuenta['cbu'] = $value['cbu'];
                     $cuenta['banco'] = $value['banco'];
+                    $cuenta['bancoid'] = $value['bancoid'];
                     $cuenta['tesoreria_alta'] = $value['tesoreria_alta'];
                     $cuenta['tipo_cuenta'] = $value['tipo_cuenta'];
+                    $cuenta['tipo_cuentaid'] = $value['tipo_cuentaid'];
                     $lista_persona[$i]['lista_cuenta'][] = $cuenta;
                     $lista_persona[$i]['tiene_cbu'] = true;
                     break;
