@@ -59,7 +59,7 @@ class Interbanking extends Model
         $final_txt = '3'.$this->codigo_cliente.str_pad(count($lista_cuenta), 6, "0", STR_PAD_LEFT);
         
         foreach ($lista_cuenta as $value) {
-            $interbankin_txt .="2".str_pad("", 51, " ", STR_PAD_LEFT)."SNN".$value['cuil'].$value['cbu']."\n";
+            $interbankin_txt .="2".str_pad("", 51, " ", STR_PAD_LEFT)."SNN".$value['cuil'].$value['cbu']."\r\n";
             $cuenta = Cuenta::findOne(["id"=>$value['id']]);
             $cuenta->tesoreria_alta = 1;
             $cuenta->save();
