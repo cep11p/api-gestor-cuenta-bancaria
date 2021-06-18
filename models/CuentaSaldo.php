@@ -322,27 +322,42 @@ class CuentaSaldo
         $cant_registros = 0;
         /******** Instancia con Persona ************/
         $params = self::setInstanciaSubSucursalYPersona($params);
-        
-        /**** Se borra el listado de prestacion con estado preparado a exportar ****/
-        Prestacion::deleteAll(['estado'=> Prestacion::PREPARADO_A_EXPORTAR]);        
-        
-        /***** Se validan y se registran las prestaciones *********/
-        foreach ($params as $value) {       
-            //Registramos la prestacion
-            $model = new Prestacion();
-            $model->personaid = (isset($value['id']))?$value['id']:null;
-            $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
-            $model->create_at = date('Y-m-d H:m:i');
-            $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
-            $model->estado = Prestacion::PREPARADO_A_EXPORTAR;
-            $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');
 
-            if(!$model->save()){
-                $error = $model->errors;
-                $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
-                $errors[] = $error;
-            }else{
-                $cant_registros++;
+        $lista_prestacion = [];
+        foreach ($params as $persona) {
+            $prestacion = $persona['prestacion'];
+            $prestacion['personaid'] = $persona['id'];
+            $prestacion['persona']['nombre'] = $persona['nombre'];
+            $prestacion['persona']['apellido'] = $persona['apellido'];
+            $prestacion['persona']['cuil'] = $persona['cuil'];
+            $lista_prestacion[] = $prestacion;
+        }
+        
+        // /**** Se borra el listado de prestacion con estado preparado a exportar ****/
+        $lista_convenio = Prestacion::find()->where(['estado'=> Prestacion::PREPARADO_A_EXPORTAR])->asArray()->all();        
+        $lista_prestacion = ArrayHelper::merge($lista_prestacion, $lista_convenio);
+
+        /***** Se validan y se registran las prestaciones *********/
+        foreach ($lista_prestacion as $value) {  
+            
+            if(!isset($value['id'])){
+
+                //Registramos la prestacion
+                $model = new Prestacion();
+                $model->personaid = (isset($value['personaid']))?$value['personaid']:null;
+                $model->monto = (isset($value['monto']))?$value['monto']:null;
+                $model->create_at = date('Y-m-d H:m:i');
+                $model->sub_sucursalid = (isset($value['sub_sucursalid']))?$value['sub_sucursalid']:null;
+                $model->estado = Prestacion::PREPARADO_A_EXPORTAR;
+                $model->fecha_ingreso =(isset($value['fecha_ingreso']) && !empty($value['fecha_ingreso']))?$value['fecha_ingreso']:date('Y-m-d');
+                
+                if(!$model->save()){
+                    $error = $model->errors;
+                    $error['persona'] = $value['persona']['nombre']." ".$value['persona']['apellido']." cuil:".$value['persona']['cuil'];
+                    $errors[] = $error;
+                }else{
+                    $cant_registros++;
+                }
             }
         }
         
