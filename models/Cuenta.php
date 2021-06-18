@@ -194,13 +194,18 @@ class Cuenta extends BaseCuenta
     }
 
     public function validarPersona(){
-
         if(isset($this->personaid) && isset($this->personaid)){
-            $convenio = Prestacion::findOne(['personaid' => $this->personaid]);
             
             #Validamos si la persona tiene pendiente el pedido de cbu por el convenio8081
+            $convenio = Prestacion::findOne(['personaid' => $this->personaid]);
             if($convenio != NULL){
                 $this->addError('personaid','La persona tiene una solicitud de CBU pendiente por el convenio 8081');
+            }
+            
+            #Chequeamos que la persona no tenga una cuenta bancaria
+            $cuenta = Cuenta::findOne(['personaid' => $this->personaid]);
+            if($cuenta != NULL){
+                $this->addError('personaid','La persona ya tiene una cuenta bancaria');
             }
             
         }
