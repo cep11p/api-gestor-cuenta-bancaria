@@ -28,7 +28,8 @@ class Cuenta extends BaseCuenta
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['cbu','validarCbu']
+                ['cbu','validarCbu'],
+                ['personaid','validarPersona']
             ]
         );
     }
@@ -165,7 +166,7 @@ class Cuenta extends BaseCuenta
             $lista_persona_ids[] = $value['personaid'];
         }
 
-        print_r($lista_persona_ids);die();
+        // print_r($lista_persona_ids);die();
         $prestacion = Prestacion::findOne(['personaid'=>$this->personaid]);
 
         if(!is_null($prestacion)){
@@ -187,6 +188,19 @@ class Cuenta extends BaseCuenta
             $banco = substr($this->cbu, 0, 3);
             if($banco != $this->banco->codigo){
                 $this->addError('cbu','No coincide el CBU con el banco.');
+            }
+            
+        }
+    }
+
+    public function validarPersona(){
+
+        if(isset($this->personaid) && isset($this->personaid)){
+            $convenio = Prestacion::findOne(['personaid' => $this->personaid]);
+            
+            #Validamos si la persona tiene pendiente el pedido de cbu por el convenio8081
+            if($convenio != NULL){
+                $this->addError('personaid','La persona tiene una solicitud de CBU pendiente por el convenio 8081');
             }
             
         }
