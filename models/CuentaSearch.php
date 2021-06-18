@@ -92,7 +92,6 @@ class CuentaSearch extends Cuenta
         if(isset($params['ids']) && !empty($params['ids'])){
             $lista_id = explode(",", $params['ids']);
             $query->andWhere(array('in', 'id', $lista_id));
-        
         }else if(isset($params['persona_ids']) && !empty($params['persona_ids'])){
             $lista_id = explode(",", $params['persona_ids']);
             $query->andWhere(array('in', 'personaid', $lista_id));
@@ -117,9 +116,9 @@ class CuentaSearch extends Cuenta
         }else if(isset($params['fecha_hasta'])){
             $query->andWhere(['between', 'create_at', '1970-01-01', $params['fecha_hasta']]);
         }else if(!isset($params['fecha_desde']) && !isset($params['fecha_hasta'])){
-            $params['fecha_hasta'] = date('Y-m-d H:m:s');
+            $params['fecha_hasta'] = date('Y-m-d').' 23:59:59';
             $params['fecha_desde'] = date('Y-m-d H:m:s',strtotime($params['fecha_hasta'].' -1 year'));
-
+            
             $query->andWhere(['between', 'create_at', $params['fecha_desde'], $params['fecha_hasta']]);
         }
 
