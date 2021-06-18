@@ -68,9 +68,15 @@ class Prestacion extends BasePrestacion
         return ArrayHelper::merge(
             parent::rules(),
             [
-                # custom validation rules
+                ['personaid','validarPersona']
             ]
         );
+    }
+
+    public function validarPersona(){
+        if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
+            $this->addError('personaid','La persona ya tiene CBU');
+        }
     }
     
     public function setAttributesCustom($values) {

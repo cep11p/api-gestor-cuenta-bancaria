@@ -360,6 +360,11 @@ class CuentaSaldo
                 }
             }
         }
+
+        //si hay errores notificamos
+        if(!empty($errors)){
+            throw new \yii\web\HttpException(400, json_encode($errors));
+        }
         
         $resultado['cant_registros'] = $cant_registros;
         $resultado['errors'] = $errors;
