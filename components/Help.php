@@ -16,7 +16,7 @@ class Help extends \yii\base\Component{
         $oracion = '';
         foreach ($errors as $key => $value) {
             foreach ($value as $msj) {
-                $oracion .= (empty($oracion))?$msj:'</br> '.$msj;
+                $oracion .= (empty($oracion))?$msj:"\r\n ".$msj;
             }
         }
 
