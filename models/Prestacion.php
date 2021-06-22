@@ -74,8 +74,14 @@ class Prestacion extends BasePrestacion
     }
 
     public function validarPersona(){
+        #Chequemos si ya tiene cbu
         if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
             $this->addError('personaid','La persona ya tiene CBU');
+        }
+
+        #Chequeamos que no tenga pendiente el pedido de cbu
+        if(Prestacion::findOne(['personaid' => $this->personaid]) != NULL){
+            $this->addError('personaid','La persona tiene el pedido de CBU pendiente');
         }
     }
     
