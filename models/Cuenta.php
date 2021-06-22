@@ -205,7 +205,7 @@ class Cuenta extends BaseCuenta
             
             #Validamos el codigo del banco del CBU
             $banco = substr($this->cbu, 0, 3);
-            if($banco != $this->banco->codigo){
+            if($this->bancoid != 999 && $banco != $this->banco->codigo){
                 $this->addError('cbu','No coincide el CBU con el banco.');
             }
             
