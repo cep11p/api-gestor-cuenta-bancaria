@@ -55,12 +55,22 @@ class BancoController extends ActiveController{
     public function actions()
     {
         $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 //        unset($actions['create']);
 //        unset($actions['update']);
 //        unset($actions['view']);
 //        unset($actions['index']);
         return $actions;
     
+    }
+    
+    public function prepareDataProvider() 
+    {
+        $searchModel = new \app\models\BancoSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->search($params);
+
+        return $resultado;
     }
     
 }
