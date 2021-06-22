@@ -16,6 +16,7 @@
         {
             "id": 1,
             "cbu": "0340220908126708871006",
+            "origen_convenio": true
             "personaid": 102,
             "bancoid": 1,
             "tipo_cuentaid": 1,
@@ -54,6 +55,7 @@
             "id": 2,
             "cbu": "0340250608122051844009",
             "personaid": 103,
+            "origen_convenio": true
             "bancoid": 1,
             "tipo_cuentaid": 1,
             "create_at": "2020-10-29 14:10:34",
@@ -90,6 +92,7 @@
         {
             "id": 3,
             "cbu": "0340250608122051855003",
+            "origen_convenio": false
             "personaid": 104,
             "bancoid": 1,
             "tipo_cuentaid": 1,

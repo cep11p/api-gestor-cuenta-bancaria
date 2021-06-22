@@ -109,7 +109,6 @@ class UserSearch extends User
             $query->andWhere(['between', 'last_login_at', '1970-01-01',  DateTime::createFromFormat('Y-m-d', $params['fecha_ingreso_hasta'])->getTimestamp()]);
         }
         
-        // print_r($query->createCommand()->sql);die();
         $coleccion= array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();

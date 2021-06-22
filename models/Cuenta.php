@@ -42,9 +42,28 @@ class Cuenta extends BaseCuenta
             },
             'tipo_cuenta'=> function($model){
                 return isset($model->tipoCuenta->nombre)?$model->tipoCuenta->nombre:'';
-            }
+            },
+            'origen_convenio' => function($model){
+                return $model->getOrigenConvenio();
+            },
         ]);
         
+    }
+
+    /**
+     * Seteamos un flag para saber si la cuenta fue originada por el convenio 8081
+     *
+     * @return void
+     */
+    public function getOrigenConvenio(){
+        $resultado = false;
+        $prestacion = Prestacion::findOne(['personaid' => $this->personaid]);
+
+        if($prestacion != null){
+            $resultado = true;
+        }
+
+        return $resultado;
     }
     
     static function vincularCuenta($lista_persona) {
@@ -74,6 +93,7 @@ class Cuenta extends BaseCuenta
                     $cuenta['tesoreria_alta'] = $value['tesoreria_alta'];
                     $cuenta['tipo_cuenta'] = $value['tipo_cuenta'];
                     $cuenta['tipo_cuentaid'] = $value['tipo_cuentaid'];
+                    $cuenta['origen_convenio'] = $value['origen_convenio'];
                     $lista_persona[$i]['lista_cuenta'][] = $cuenta;
                     $lista_persona[$i]['tiene_cbu'] = true;
                     break;
@@ -166,7 +186,6 @@ class Cuenta extends BaseCuenta
             $lista_persona_ids[] = $value['personaid'];
         }
 
-        // print_r($lista_persona_ids);die();
         $prestacion = Prestacion::findOne(['personaid'=>$this->personaid]);
 
         if(!is_null($prestacion)){

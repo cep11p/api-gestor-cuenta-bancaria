@@ -81,6 +81,7 @@ diff_id = number (se busca la persona diferente a este valor)
                 {
                     "id": 8,
                     "cbu": "0341235678912345678654",
+                    "origen_convenio": true,
                     "banco": "Banco Patagonia S.A.",
                     "bancoid": 1,
                     "tesoreria_alta": 0,
