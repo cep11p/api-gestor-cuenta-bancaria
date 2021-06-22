@@ -203,7 +203,7 @@ class Cuenta extends BaseCuenta
             }
             
             #Chequeamos que la persona no tenga una cuenta bancaria
-            $cuenta = Cuenta::findOne(['personaid' => $this->personaid]);
+            $cuenta = Cuenta::findOne(['personaid' => $this->personaid,['not', ['id' => $this->id]]]);
             if($cuenta != NULL){
                 $this->addError('personaid','La persona ya tiene una cuenta bancaria');
             }
