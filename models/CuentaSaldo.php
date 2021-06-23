@@ -88,10 +88,13 @@ class CuentaSaldo
             if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
                 $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
                 $model->estado = Prestacion::SIN_CBU;
+                $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
+
 
             }else{
                 //Registramos la prestacion
                 $model = new Prestacion();
+                $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
                 $model->personaid = (isset($value['id']))?$value['id']:null;
                 $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
                 $model->create_at = date('Y-m-d H:m:i');
@@ -104,6 +107,7 @@ class CuentaSaldo
             }
             
             if(!$model->save()){
+                throw new \yii\web\HttpException(400, $model->scenario);
                 $error = $model->errors;
                 $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
                 $errors[] = $error;

@@ -16,6 +16,10 @@ class Prestacion extends BasePrestacion
     const EN_TESORERIA=2;
     const PREPARADO_A_EXPORTAR=4;
 
+    #Escenario
+    const SCENARIO_EXPORT_CUENTA_SALDO='exportando_cuenta_saldo';
+
+
     public function behaviors()
     {
         return ArrayHelper::merge(
@@ -68,7 +72,8 @@ class Prestacion extends BasePrestacion
         return ArrayHelper::merge(
             parent::rules(),
             [
-                ['personaid','validarPersona']
+                ['personaid','validarPersona', 'on' => self::SCENARIO_DEFAULT],
+                ['personaid','validarExportListaConvenio','on' => self::SCENARIO_EXPORT_CUENTA_SALDO],
             ]
         );
     }
@@ -81,9 +86,24 @@ class Prestacion extends BasePrestacion
 
         #Chequeamos que no tenga pendiente el pedido de cbu
         if(Prestacion::findOne(['personaid' => $this->personaid]) != NULL){
+            $this->addError('personaid','La persona ya se encuentra en la lista de Cuenta Saldo. Por favor elimine la persona del listado (Cuenta Saldo)');
+        }
+    }
+
+    public function validarExportListaConvenio(){
+
+        #Chequemos si ya tiene cbu
+        if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
+            $this->addError('personaid','La persona ya tiene CBU');
+        }
+
+        #Chequeamos que no tenga pendiente el pedido de cbu
+        if(Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) != NULL){
             $this->addError('personaid','La persona tiene el pedido de CBU pendiente');
         }
     }
+
+
     
     public function setAttributesCustom($values) {
         parent::setAttributes($values);
