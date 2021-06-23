@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use app\components\Help;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
@@ -13,6 +14,7 @@ class CtaBps extends Model
     const NACIONALIDADID_OTRO=999;
     const BANCO_PATAGONIA=1;
     const CUENTA_CORRIENTE=1;
+    const CAJA_AHORRO=2;
 
     /**
      * @var UploadedFile
@@ -156,36 +158,51 @@ class CtaBps extends Model
         $cant_registros = 0;
         $resultado = array();
         $errors = array();
+        $i=0;
         foreach ($lista_personas as $persona) {
             $cuenta = new Cuenta();
             $cuenta->personaid = intval($persona['id']);
             $cuenta->bancoid = self::BANCO_PATAGONIA;
-            $cuenta->tipo_cuentaid = self::CUENTA_CORRIENTE;
+            $cuenta->tipo_cuentaid = self::CAJA_AHORRO;
             $cuenta->cbu = $persona['cuenta']['cbu'];
             $cuenta->create_at = date('Y-m-d H:m:s');
 
             #Chequeamos si la persona a importar paso por cuentaSaldo
             $error_cuenta = '';
-            if(Prestacion::findOne(['personaid' => $persona['id']]) == Null){
-                $error_cuenta = " debe ser registrada por cuenta saldo";
-            }
-
-            #Chequeamos si el CBU ya existe
-            if(Cuenta::findOne(['cbu' => $cuenta->cbu]) != Null){
-                $error_cuenta .= (!empty($error_cuenta))?" y tiene vinculado un cbu ajeno":" tiene vinculado un cbu ajeno";
-            }
-
-            if(!empty($error_cuenta)){
-                $resultado['errors'][] = "La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$error_cuenta;
-            }
+            $prestacion = Prestacion::findOne(['personaid' => $persona['id']]);
             
-            if(!$cuenta->save()){
-                $error = $cuenta->errors;
-                $error['persona'] = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
-                $errors[] = $error;
+            if($prestacion == Null){
+                $error_cuenta = " debe ser registrada por cuenta saldo";
             }else{
-                $cant_registros++;
+
+                
+                $prestacion->scenario = Prestacion::SCENARIO_IMPORTADO_BPS;
+                $prestacion->estado = Prestacion::CON_CBU;
+                
+                if(!$prestacion->save()){
+                    $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);                    
+                    throw new \yii\web\HttpException(400, json_encode($prestacion_errores));
+                }
+                
+                
+                #Chequeamos si el CBU ya existe
+                if(Cuenta::findOne(['cbu' => $cuenta->cbu]) != Null){
+                    $error_cuenta .= (!empty($error_cuenta))?" y tiene vinculado un cbu ajeno":" tiene vinculado un cbu ajeno";
+                }
+                
+                if(!empty($error_cuenta)){
+                    $resultado['errors'][] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$error_cuenta;
+                }
+                
+                if(!$cuenta->save()){
+                    $error = $cuenta->errors;
+                    $error['persona'] = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
+                    $errors[] = $error;
+                }else{
+                    $cant_registros++;
+                }
             }
+            $i++;
         }
         
         $resultado['creadas'] = $cant_registros;

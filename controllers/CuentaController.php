@@ -93,6 +93,7 @@ class CuentaController extends ActiveController{
             
             $cuenta = new Cuenta();
             $cuenta->setAttributes($params);
+            $cuenta->scenario = Cuenta::SCENARIO_CUENTA_PARTICULAR;
             $cuenta->tipo_cuentaid = $this::CAJA_AHORRO;
 
             
@@ -156,6 +157,7 @@ class CuentaController extends ActiveController{
         try{            
             
             $model->setAttributes($params);
+            $model->scenario = Cuenta::SCENARIO_CUENTA_PARTICULAR;
             $model->tipo_cuentaid = $this::CAJA_AHORRO;
             $model->tesoreria_alta = 0;
 

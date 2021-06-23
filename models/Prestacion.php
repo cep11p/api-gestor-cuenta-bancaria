@@ -17,7 +17,8 @@ class Prestacion extends BasePrestacion
     const PREPARADO_A_EXPORTAR=4;
 
     #Escenario
-    const SCENARIO_EXPORT_CUENTA_SALDO='exportando_cuenta_saldo';
+    const SCENARIO_EXPORT_CUENTA_SALDO= 'exportando_cuenta_saldo';
+    const SCENARIO_IMPORTADO_BPS = 'importado_bps';
 
 
     public function behaviors()
@@ -72,6 +73,7 @@ class Prestacion extends BasePrestacion
         return ArrayHelper::merge(
             parent::rules(),
             [
+                ['personaid','validarImportado', 'on' => self::SCENARIO_IMPORTADO_BPS],
                 ['personaid','validarPersona', 'on' => self::SCENARIO_DEFAULT],
                 ['personaid','validarExportListaConvenio','on' => self::SCENARIO_EXPORT_CUENTA_SALDO],
             ]
@@ -88,6 +90,20 @@ class Prestacion extends BasePrestacion
         if(Prestacion::findOne(['personaid' => $this->personaid]) != NULL){
             $this->addError('personaid','La persona ya se encuentra en la lista de Cuenta Saldo. Por favor elimine la persona del listado (Cuenta Saldo)');
         }
+    }
+
+    public function validarImportado(){
+        
+        #Chequemos si ya tiene cbu
+        if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
+            $this->addError('personaid','La persona ya tiene CBU');
+        }
+        
+        #Chequeamos que no tenga pendiente el pedido de cbu
+        if(Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) == NULL){
+            $this->addError('personaid','No se encuentra registrada la persona por el convenio 8081');
+        }
+
     }
 
     public function validarExportListaConvenio(){

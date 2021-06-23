@@ -12,6 +12,8 @@ use yii\helpers\ArrayHelper;
 class Cuenta extends BaseCuenta
 {
 
+    const SCENARIO_CUENTA_PARTICULAR = 'cuenta_particular';
+
     public function behaviors()
     {
         return ArrayHelper::merge(
@@ -29,7 +31,7 @@ class Cuenta extends BaseCuenta
             parent::rules(),
             [
                 ['cbu','validarCbu'],
-                ['personaid','validarPersona']
+                ['personaid','validarPersona','on' => self::SCENARIO_CUENTA_PARTICULAR],
             ]
         );
     }
