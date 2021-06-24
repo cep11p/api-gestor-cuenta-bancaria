@@ -27,7 +27,7 @@
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/prestacions/borrar-pendiente/{$id} 
+* @url http://api.gcb.local/prestacions/borrar-pendiente/{personaid} 
 * @method DELETE
 * @return String
 **/
