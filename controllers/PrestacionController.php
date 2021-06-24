@@ -87,9 +87,9 @@ class PrestacionController extends ActiveController{
     
     public function actionBorrarPendiente($id){
         $resultado = 'Se borra la solicitud de CBU';
-        $model = Prestacion::findOne(['id'=>$id]);
+        $model = Prestacion::findOne(['personaid'=>$id]);
         if($model == Null){
-            throw new \yii\web\HttpException(400, 'No existe la entidad con el id '.$id);
+            throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
         if($model->estado != Prestacion::SIN_CBU){
