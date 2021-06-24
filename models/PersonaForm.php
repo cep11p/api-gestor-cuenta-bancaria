@@ -332,6 +332,7 @@ class PersonaForm extends Model
                 if(count($persona['lugar'])<1){
                     unset($persona['lugar']);
                 }
+                $persona['convenio_pendiente'] = false;
                 $response['resultado'][$i] = $persona;
                 $i++;
             }

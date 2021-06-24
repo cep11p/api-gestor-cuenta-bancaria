@@ -90,6 +90,7 @@ diff_id = number (se busca la persona diferente a este valor)
                 }
             ],
             "tiene_cbu": true
+            "convenio_pendiente": true,
         },
         {
             "id": 102,
@@ -158,7 +159,8 @@ diff_id = number (se busca la persona diferente a este valor)
                 "codigo_postal": 8332
             },
             "lista_cuenta": [],
-            "tiene_cbu": false
+            "tiene_cbu": false,
+            "convenio_pendiente": false,
         },
         {
             "id": 21,
@@ -233,7 +235,8 @@ diff_id = number (se busca la persona diferente a este valor)
                 "localidad": "Villa Lugano"
             },
             "lista_cuenta": [],
-            "tiene_cbu": false
+            "tiene_cbu": false,
+            "convenio_pendiente": false,
         },
         {
         ...

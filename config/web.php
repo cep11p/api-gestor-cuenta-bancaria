@@ -90,6 +90,11 @@ $config = [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'prestacion', 
+                    'extraPatterns' => [
+                        'DELETE borrar-pendiente/{id}' => 'borrar-pendiente',
+                        'OPTIONS borrar-pendiente/{id}' => 'borrar-pendiente',
+                    ],
+                    'tokens' => [ '{id}' => '<id:\\w+>'],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',

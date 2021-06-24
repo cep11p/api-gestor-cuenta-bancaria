@@ -27,19 +27,8 @@
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/prestacions/{$id} 
-* @method PUT
-* @param arrayJson
+* @url http://api.gcb.local/prestacions/borrar-pendiente/{$id} 
+* @method DELETE
+* @return String
 **/
 
-/****** Para visualizar*****
-* @url http://api.gcb.local/prestacions/{$id} 
-* @method GET
-* @return arrayJson
-*/
-
-/****** Para borrar una localidad *****
-* @url http://api.gcb.local/prestacions/{$id} 
-* @method Delete
-* @return arrayJson
-*/

@@ -137,4 +137,35 @@ class Prestacion extends BasePrestacion
             $this->estado = $this::SIN_CBU;
         }
     }
+
+    public static function setEstadoConvenioToListaPersona($lista_persona){
+        $ids = '';
+        $prestacionSearch = new PrestacionSearch();
+
+        /******** Instancia con Persona ***************************/
+        //hacemos instancia con todas las persoans
+        foreach ($lista_persona as $value) {
+            //nos comunicamos con registrar para obtener lista de personas
+            $ids .= (empty($ids))?$value['id']:','.$value['id'];
+        }
+        
+        $lista_prestacion = $prestacionSearch->search(['persona_ids'=>$ids]);
+        $lista_prestacion = (!empty($lista_prestacion['resultado']))?$lista_prestacion['resultado']:[];
+
+        foreach ($lista_prestacion as $value) {
+            $i=0;
+            foreach ($lista_persona as $persona) {
+                if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                    if($value['estado'] == Prestacion::SIN_CBU){
+                        $lista_persona[$i]['convenio_pendiente'] = true;
+                    }
+                    break;
+                }
+                $i++;
+            }
+        }
+
+        return $lista_persona;
+
+    }
 }
