@@ -86,6 +86,12 @@ class PrestacionController extends ActiveController{
     }
     
     public function actionBorrarPendiente($id){
+
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('prestacion_borrar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado = 'Se borra la solicitud de CBU';
         $model = Prestacion::findOne(['personaid'=>$id]);
         if($model == Null){
