@@ -8,9 +8,9 @@ use Yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 
-class LocalidadController extends ActiveController{
+class DepartamentoController extends ActiveController{
     
-    public $modelClass = 'app\models\Programa';
+    public $modelClass = 'app\models\Departamento';
     
     public function behaviors()
     {
@@ -70,39 +70,11 @@ class LocalidadController extends ActiveController{
     {
         $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
-        $rio_negro = 16;
         
-        $param=\yii\helpers\ArrayHelper::merge($param, ['provinciaid'=>$rio_negro]);
         
-        $resultado = \Yii::$app->lugar->buscarLocalidad($param);
-        $localidades_extras = \Yii::$app->lugar->buscarLocalidad(['ids'=>'613,2504,382']);
-
-        $resultado = ArrayHelper::merge($resultado['resultado'], $localidades_extras['resultado']);        
+        $resultado = \Yii::$app->lugar->buscarDepartamento($param);     
         
         return $resultado;
 
     }
-    
-    public function actionCreate(){
-        #Chequeamos el permiso
-        // if (!\Yii::$app->user->can('localidad_crear')) {
-        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        // }
-
-        $resultado['message']='Se registra una nueva localidad';
-        $param = Yii::$app->request->post();
-
-        $response = \Yii::$app->lugar->crearLocalidad($param);
-
-        if(isset($response['message'])){
-            throw new \yii\web\HttpException(400, $response['message']);
-        }
-
-        $resultado['success']=true;
-        $resultado['data']['id']=$response;
-
-        return $resultado;
-        
-    }
-    
 }

@@ -33,8 +33,11 @@ interface IServicioLugar {
     public function buscarLugar($param);
     
     public function buscarLocalidad($param);
+    public function buscarProvincia($param);
+    public function buscarDepartamento($param);
     
     public function buscarLugarPorId($id);
+    public function crearLocalidad($data);
     
     
     /**

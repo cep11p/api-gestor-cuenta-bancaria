@@ -81,6 +81,14 @@ $config = [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'provincia', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'departamento', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'tipo-cuenta', 
                 ],
                 [
