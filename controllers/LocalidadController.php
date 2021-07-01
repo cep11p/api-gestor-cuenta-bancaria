@@ -85,14 +85,37 @@ class LocalidadController extends ActiveController{
     
     public function actionCreate(){
         #Chequeamos el permiso
-        // if (!\Yii::$app->user->can('localidad_crear')) {
-        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        // }
+        if (!\Yii::$app->user->can('localidad_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
 
         $resultado['message']='Se registra una nueva localidad';
         $param = Yii::$app->request->post();
 
         $response = \Yii::$app->lugar->crearLocalidad($param);
+
+        if(isset($response['message'])){
+            throw new \yii\web\HttpException(400, $response['message']);
+        }
+
+        $resultado['success']=true;
+        $resultado['data']['id']=$response;
+
+        return $resultado;
+        
+    }
+
+    public function actionUpdate($id){
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('localidad_modificar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
+        $resultado['message']='Se modifica una nueva localidad';
+        $param = Yii::$app->request->post();
+        $param['id'] = $id;
+
+        $response = \Yii::$app->lugar->modificarLocalidad($param);
 
         if(isset($response['message'])){
             throw new \yii\web\HttpException(400, $response['message']);

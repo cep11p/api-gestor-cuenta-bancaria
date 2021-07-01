@@ -49,6 +49,11 @@
 * @url http://api.gcb.local/localidads/{$id} 
 * @method PUT
 * @param arrayJson
+{
+	"nombre":"Milocali",
+	"departamentoid":1,
+	"codigo_postal":"8200"
+}
 **/
 
 /****** Para visualizar*****
