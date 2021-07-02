@@ -275,6 +275,62 @@ class ServicioLugar extends Component
        
     }
 
+    public function buscarLocalidadExtra($param)
+    {
+        $criterio = $this->crearCriterioBusquedad($param);
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://lugar/api/localidad-extras?'.$criterio, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+
+    public function crearLocalidadExtra($param)
+    {
+        $criterio = $this->crearCriterioBusquedad($param);
+        $client =   $this->_client;
+        try{
+            $headers = [
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('POST', 'http://lugar/api/localidad-extras', ['json' => $param,'headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+            $resultado = json_decode($e->getResponse()->getBody()->getContents());
+            \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+            \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+            
+            #devolvemos array
+            return (array)$resultado;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+
     public function buscarDepartamento($param)
     {
         $criterio = $this->crearCriterioBusquedad($param);

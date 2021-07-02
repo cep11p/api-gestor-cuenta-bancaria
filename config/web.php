@@ -176,6 +176,14 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'localidad', 
                 ],
+                [   #backend-localidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'backend-localidad', 
+                ],
+                [   #backend-localidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'localidad-extra', 
+                ],
                 [   #nacionalidad
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'nacionalidad', 
