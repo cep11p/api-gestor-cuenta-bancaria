@@ -43,6 +43,7 @@ interface IServicioLugar {
 
     public function buscarLocalidadExtra($param);
     public function crearLocalidadExtra($param);
+    public function borrarLocalidadExtra($param);
     
     
     /**

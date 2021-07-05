@@ -331,6 +331,38 @@ class ServicioLugar extends Component
        
     }
 
+    public function borrarLocalidadExtra($data)
+    {
+        $client =   $this->_client;
+        try{
+            \Yii::error(json_encode($data));
+            $headers = [
+                'Content-Type'=>'application/json'
+            ];          
+            
+            if(!isset($data['id'])){
+                throw new \yii\web\HttpException(400, 'Falta el id de la localidad');
+            }
+            
+            $response = $client->request('DELETE', 'http://lugar/api/localidad-extras/'.$data['id'], ['json' => $data,'headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            return $respuesta['data']['id'];
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                $resultado = json_decode($e->getResponse()->getBody()->getContents());
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                
+                #devolvemos array
+                return (array)$resultado;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+
     public function buscarDepartamento($param)
     {
         $criterio = $this->crearCriterioBusquedad($param);

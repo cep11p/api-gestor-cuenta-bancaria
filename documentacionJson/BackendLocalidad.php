@@ -5,32 +5,32 @@
 * @url http://api.gcb.local/backend-localidads
 * @method GET
 * @arrayReturn
-[
-    {
-        "id": 2636,
-        "nombre": "Aguada Cecilio",
-        "regionid": null,
-        "departamentoid": 404,
-        "municipioid": null,
-        "codigo_postal": 8534
-    },
-    {
-        "id": 3976,
-        "nombre": "Aguada de Guerra",
-        "regionid": null,
-        "departamentoid": 399,
-        "municipioid": null,
-        "codigo_postal": 8424
-    },
-    {
-        "id": 2616,
-        "nombre": "Aguada Guzman",
-        "regionid": null,
-        "departamentoid": 400,
-        "municipioid": null,
-        "codigo_postal": 8333
-    }
-]
+{
+    "pagesize": 0,
+    "pages": 0,
+    "total_filtrado": 4027,
+    "resultado": [
+        {
+            "id": 381,
+            "nombre": "16 De Julio",
+            "regionid": null,
+            "departamentoid": 8,
+            "municipioid": null,
+            "codigo_postal": null,
+            "extra": false
+        },
+        {...},
+        {
+            "id": 640,
+            "nombre": "17 De Agosto",
+            "regionid": null,
+            "departamentoid": 85,
+            "municipioid": null,
+            "codigo_postal": null,
+            "extra": false
+        }
+    ]
+}
 */
 
 /*****Para crear****

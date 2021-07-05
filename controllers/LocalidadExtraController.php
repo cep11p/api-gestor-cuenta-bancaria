@@ -58,6 +58,7 @@ class LocalidadExtraController extends ActiveController{
         unset($actions['view']);
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['delete']);
         return $actions;
     
     }
@@ -95,6 +96,28 @@ class LocalidadExtraController extends ActiveController{
 
         $resultado['success']=true;
         $resultado['data']['id']=$response;
+
+        return $resultado;
+        
+    }
+
+    public function actionDelete($id){
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('localidad_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
+        $resultado['message']='Se borra una localidad extra';
+        $param = Yii::$app->request->post();
+        $param['id'] = $id;
+
+        $response = \Yii::$app->lugar->borrarLocalidadExtra($param);
+
+        if(isset($response['message'])){
+            throw new \yii\web\HttpException(400, $response['message']);
+        }
+
+        $resultado['success']=true;
 
         return $resultado;
         
