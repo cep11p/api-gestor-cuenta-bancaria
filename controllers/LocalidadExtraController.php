@@ -90,7 +90,7 @@ class LocalidadExtraController extends ActiveController{
 
         $response = \Yii::$app->lugar->crearLocalidadExtra($param);
 
-        if(isset($response['message'])){
+        if(isset($response['success']) && $response['success'] != 1){
             throw new \yii\web\HttpException(400, $response['message']);
         }
 
