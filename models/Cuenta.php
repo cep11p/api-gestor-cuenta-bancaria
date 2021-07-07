@@ -32,6 +32,7 @@ class Cuenta extends BaseCuenta
             [
                 ['cbu','validarCbu'],
                 ['personaid','validarPersona','on' => self::SCENARIO_CUENTA_PARTICULAR],
+                ['cbu','validarFormatoCbu','on' => self::SCENARIO_CUENTA_PARTICULAR],
             ]
         );
     }
@@ -212,6 +213,44 @@ class Cuenta extends BaseCuenta
             }
             
         }
+    }
+
+    public function validarFormatoCbu($attribute, $params, $validator){
+        $validacion1 = false;
+        $validacion2 = false;
+        $numero = str_split($this->$attribute);
+
+        #Validamos Bloque1
+        $suma1 = $numero[0]*7+$numero[1]*1+$numero[2]*3+$numero[3]*9+$numero[4]*7+$numero[5]*1+$numero[6]*3;
+        $diferencia1 = 10 - substr($suma1, -1);
+        
+        #validacion1
+        if($diferencia1 != 0 && $diferencia1 == $numero[7]){
+            $validacion1 = true;
+        }
+        #validacion2
+        if($diferencia1 == 0 && $diferencia1 == 10){
+            $validacion1 = true;
+        }
+
+        #Validamos Bloque2
+        $suma2 = $numero[8]*3 + $numero[9]*9 + $numero[10]*7 + $numero[11]*1 + $numero[12]*3 + $numero[13]*9 + $numero[14]*7 + $numero[15]*1 + $numero[16]*3 + $numero[17]*9 + $numero[18]*7 + $numero[19]*1 + $numero[20]*3;
+        $diferencia2 = 10 - substr($suma2, -1);
+
+        #validacion3
+        if($diferencia2 != 0 && $diferencia2 == $numero[21]){
+            $validacion2 = true;
+        }
+        #validacion4
+        if($diferencia2 == 0 && $diferencia2 == 10){
+            $validacion2 = true;
+        }
+
+        if(!$validacion1 || !$validacion2){
+            $this->addError('cbu','El CBU es invalido');
+        }
+
+
     }
 
     public function validarPersona(){
