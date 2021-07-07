@@ -75,7 +75,7 @@ class LocalidadController extends ActiveController{
         $param=\yii\helpers\ArrayHelper::merge($param, ['provinciaid'=>$rio_negro]);
         
         $resultado = \Yii::$app->lugar->buscarLocalidad($param);
-        $localidades_extras = \Yii::$app->lugar->buscarLocalidad(['ids'=>'613,2504,382']);
+        $localidades_extras = \Yii::$app->lugar->buscarLocalidadExtra([]);
 
         $resultado = ArrayHelper::merge($resultado['resultado'], $localidades_extras['resultado']);        
         

@@ -85,19 +85,15 @@ class LocalidadExtraController extends ActiveController{
             throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
         }
 
-        $resultado['message']='Se registra una nueva localidad';
         $param = Yii::$app->request->post();
-
+        
         $response = \Yii::$app->lugar->crearLocalidadExtra($param);
-
-        if(isset($response['success']) && $response['success'] != 1){
+        
+        if(isset($response['status']) && $response['status'] != 200){
             throw new \yii\web\HttpException(400, $response['message']);
         }
 
-        $resultado['success']=true;
-        $resultado['data']['id']=$response;
-
-        return $resultado;
+        return $response;
         
     }
 
