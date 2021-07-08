@@ -60,9 +60,9 @@ class CuentaSearch extends Cuenta
         }
         
          ############ Buscamos por datos de persona ############
-        #global search #global param
+        #Se prepara el filtrado de persona si es que global param no es un cbu
         $personaForm = new PersonaForm();
-        if(isset($params['global_param']) && !empty($params['global_param'])){
+        if(isset($params['global_param']) && !empty($params['global_param']) && !(strlen($params['global_param'])>11 && preg_match("/^[[:digit:]]+$/", $params['global_param']))){
             $persona_params["global_param"] = $params['global_param'];
         }
         
@@ -87,6 +87,12 @@ class CuentaSearch extends Cuenta
             $query->andWhere(array('in', 'personaid', $lista_personaid));
         }
         ############ Fin filtrado por Persona ############
+
+        #Seteamos el cbu a filtrar
+        $patron = "/^[[:digit:]]+$/";
+        if(isset($params['global_param']) && strlen($params['global_param'])>11 && preg_match($patron, $params['global_param'])){
+            $this->cbu = $params['global_param'];
+        }
 
         //Filtrado por coleccion de ids
         if(isset($params['ids']) && !empty($params['ids'])){

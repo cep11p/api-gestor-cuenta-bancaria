@@ -321,7 +321,22 @@ class PersonaForm extends Model
      */
     static function buscarPersonaEnRegistralConPaginacion($param){
         $param['sort']='-id';
-        $response = \Yii::$app->registral->buscarPersona($param); 
+
+        #Filtramos por persona por CBU
+        $patron = "/^[[:digit:]]+$/";
+        $param['global_param'] = (isset($param['global_param']))?$param['global_param']:"";
+        if(preg_match($patron, $param['global_param']) && strlen($param['global_param'])>11){
+            $cuenta = Cuenta::find()->filterWhere(['like','cbu', $param['global_param']])->one();
+            if($cuenta != null){
+                $response = \Yii::$app->registral->buscarPersona(['ids' => $cuenta->personaid]); 
+            }else{
+                $response['success']=false;
+            }
+        #Filtramos personas normalmente
+        }else{
+            $response = \Yii::$app->registral->buscarPersona($param); 
+        }
+
         $response['success'] = true;
         
         if(isset($response['estado']) && $response['estado']==true){
