@@ -326,9 +326,13 @@ class PersonaForm extends Model
         $patron = "/^[[:digit:]]+$/";
         $param['global_param'] = (isset($param['global_param']))?$param['global_param']:"";
         if(preg_match($patron, $param['global_param']) && strlen($param['global_param'])>11){
-            $cuenta = Cuenta::find()->filterWhere(['like','cbu', $param['global_param']])->one();
-            if($cuenta != null){
-                $response = \Yii::$app->registral->buscarPersona(['ids' => $cuenta->personaid]); 
+            $lista_cuenta = Cuenta::find()->filterWhere(['like','cbu', $param['global_param']])->asArray()->all();
+            if($lista_cuenta != null && !empty($lista_cuenta)){
+                $persona_ids = "";
+                foreach ($lista_cuenta as $cuenta) {
+                    $persona_ids .=($persona_ids=="")?$cuenta['personaid']:",".$persona_ids;
+                }
+                $response = \Yii::$app->registral->buscarPersona(['ids' => $persona_ids]); 
             }else{
                 $response['success']=false;
             }
