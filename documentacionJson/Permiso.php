@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/permisos
+* @url http://api.gcb.local/api/permisos
 * @method GET
 * @arrayReturn
 * 

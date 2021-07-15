@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/rol
+* @url http://api.gcb.local/api/rol
 * @method GET
 * @arrayReturn
 [
@@ -37,25 +37,25 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/rol 
+* @url http://api.gcb.local/api/rol 
 * @method POST
 * @param arrayJson
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/rol/{$id} 
+* @url http://api.gcb.local/api/rol/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/rol/{$id} 
+* @url http://api.gcb.local/api/rol/{$id} 
 * @method GET
 * @return arrayJson
 */
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/rol/{$id} 
+* @url http://api.gcb.local/api/rol/{$id} 
 * @method Delete
 * @return arrayJson
 */

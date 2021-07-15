@@ -2,8 +2,8 @@
 
 /**** Para mostrar listado ****/
 /** Se muestra un listado de sub-sucursales, esta misma tambien puede filtrarse por todos sus parametros. Pero hay un filtrado especial, se puede filtrar por ids
-* @url http://api.gcb.local/sub-sucursales
-* @url http://api.gcb.local/sub-sucursales?ids='1,2,3,4'
+* @url http://api.gcb.local/api/sub-sucursales
+* @url http://api.gcb.local/api/sub-sucursales?ids='1,2,3,4'
 * @method GET
 * @arrayReturn
  * [
@@ -47,25 +47,25 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/sub-sucursales
+* @url http://api.gcb.local/api/sub-sucursales
 * @method POST
 * @param arrayJson
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/sub-sucursales/{$id} 
+* @url http://api.gcb.local/api/sub-sucursales/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/sub-sucursales/{$id} 
+* @url http://api.gcb.local/api/sub-sucursales/{$id} 
 * @method GET
 * @return arrayJson
 */
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/sub-sucursales/{$id} 
+* @url http://api.gcb.local/api/sub-sucursales/{$id} 
 * @method Delete
 * @return arrayJson
 */

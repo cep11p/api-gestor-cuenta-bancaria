@@ -1,13 +1,16 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
+use app\models\Export;
+use app\models\ExportSearch;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
+use Yii;
 
-class SexoController extends ActiveController{
+class ExportController extends ActiveController{
     
-    public $modelClass = 'Sexo';
+    public $modelClass = 'app\models\Export';
     
     public function behaviors()
     {
@@ -34,7 +37,7 @@ class SexoController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['index'],
+            'only' => ['*'],
             'rules' => [
                 [
                     'allow' => true,
@@ -52,8 +55,8 @@ class SexoController extends ActiveController{
     {
         $actions = parent::actions();
         unset($actions['index']);
-        unset($actions['create']);
         unset($actions['view']);
+        unset($actions['create']);
         unset($actions['update']);
         return $actions;
     
@@ -65,14 +68,26 @@ class SexoController extends ActiveController{
      */
     public function actionIndex()
     {
-        $param = \Yii::$app->request->queryParams;
-        
-        $resultado = \Yii::$app->registral->buscarSexo($param);
+        $params = Yii::$app->request->queryParams;
+        $searchModel = new ExportSearch();
+
+        $resultado = $searchModel->search($params);
         
         return $resultado;
-
     }
     
+    public function actionView($id)
+    {
+        $resultado['message']='Se exporta';
+        $model = Export::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El recurso con el id '.$id.' no existe!');
+        }
+        
+        $resultado = $model->exportar();
+        
+        return $resultado;
+    }
     
     
 }

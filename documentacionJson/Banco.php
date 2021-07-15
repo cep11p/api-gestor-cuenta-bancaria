@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/bancos
+* @url http://api.gcb.local/api/bancos
 * @method GET
 * @arrayReturn
 [
@@ -34,25 +34,25 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/bancos 
+* @url http://api.gcb.local/api/bancos 
 * @method POST
 * @param arrayJson
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/bancos/{$id} 
+* @url http://api.gcb.local/api/bancos/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/bancos/{$id} 
+* @url http://api.gcb.local/api/bancos/{$id} 
 * @method GET
 * @return arrayJson
 */
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/bancos/{$id} 
+* @url http://api.gcb.local/api/bancos/{$id} 
 * @method Delete
 * @return arrayJson
 */

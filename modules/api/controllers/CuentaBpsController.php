@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -7,10 +7,9 @@ use yii\web\Response;
 use Yii;
 use yii\base\Exception;
 
-
-class LocalidadController extends ActiveController{
+class CuentaBpsController extends ActiveController{
     
-    public $modelClass = 'app\models\Programa';
+    public $modelClass = 'app\models\CuentaBps';
     
     public function behaviors()
     {
@@ -41,7 +40,7 @@ class LocalidadController extends ActiveController{
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];
@@ -54,32 +53,35 @@ class LocalidadController extends ActiveController{
     public function actions()
     {
         $actions = parent::actions();
-        unset($actions['index']);
-        unset($actions['view']);
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['view']);
+        unset($actions['index']);
         return $actions;
     
     }
     
-    /**
-     * Esta accion permite hacer una interoperabilidad con el sistema registral
-     * @return array()
-     */
-    public function actionIndex()
+    public function actionImportar()
     {
-        $resultado['estado']=false;
-        $param = Yii::$app->request->queryParams;
-        $rio_negro = 16;
-        
-        $param=\yii\helpers\ArrayHelper::merge($param, ['provinciaid'=>$rio_negro]);
-        
-        $resultado = \Yii::$app->lugar->buscarLocalidad($param);
-        
-        return $resultado['resultado'];
-
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_bps_importar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $model = new \app\models\CtaBps();
+            $model->file = \yii\web\UploadedFile::getInstanceByName('ctabps');
+            $resultado = $model->importar();
+            $transaction->commit();
+            
+            return $resultado;
+           
+        }catch (Exception $exc) {
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+                
+        exit();
     }
-    
-    
     
 }

@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/provincias
+* @url http://api.gcb.local/api/provincias
 * @method GET
 * @arrayReturn
 [
@@ -34,25 +34,25 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/provincias 
+* @url http://api.gcb.local/api/provincias 
 * @method POST
 * @param arrayJson
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/provincias/{$id} 
+* @url http://api.gcb.local/api/provincias/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/provincias/{$id} 
+* @url http://api.gcb.local/api/provincias/{$id} 
 * @method GET
 * @return arrayJson
 */
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/provincias/{$id} 
+* @url http://api.gcb.local/api/provincias/{$id} 
 * @method Delete
 * @return arrayJson
 */

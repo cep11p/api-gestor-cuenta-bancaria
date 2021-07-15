@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/backend-localidads
+* @url http://api.gcb.local/api/backend-localidads
 * @method GET
 * @arrayReturn
 {
@@ -34,7 +34,7 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/backend-localidads 
+* @url http://api.gcb.local/api/backend-localidads 
 * @method POST
 * @param arrayJson
 {
@@ -45,19 +45,19 @@
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/backend-localidads/{$id} 
+* @url http://api.gcb.local/api/backend-localidads/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/backend-localidads/{$id} 
+* @url http://api.gcb.local/api/backend-localidads/{$id} 
 * @method GET
 * @return arrayJson
 */
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/backend-localidads/{$id} 
+* @url http://api.gcb.local/api/backend-localidads/{$id} 
 * @method Delete
 * @return arrayJson
 */

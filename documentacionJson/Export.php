@@ -2,9 +2,9 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/exports
-* @url http://api.gcb.local/exports?sort=-export_at se ordena la lista por fecha de exportacion
-* @url http://api.gcb.local/exports?export_at_desde=2021-01-11&export_at_hasta=2021-04-10 Se filtra por fecha
+* @url http://api.gcb.local/api/exports
+* @url http://api.gcb.local/api/exports?sort=-export_at se ordena la lista por fecha de exportacion
+* @url http://api.gcb.local/api/exports?export_at_desde=2021-01-11&export_at_hasta=2021-04-10 Se filtra por fecha
 
 * @method GET
 * @arrayReturn
@@ -34,7 +34,7 @@
 
 /**** Para re-exportar ****/
 /**
-* @url http://api.gcb.local/exports/2
+* @url http://api.gcb.local/api/exports/2
 * @method GET
 * @return array {"exportacion":"texto plano"}
 */

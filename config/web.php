@@ -49,10 +49,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableSession' => false,
-        ],
+        // 'user' => [
+        //     'identityClass' => 'app\models\User',
+        //     'enableSession' => false,
+        // ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -81,23 +81,23 @@ $config = [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'provincia', 
+                    'controller' => 'api/provincia', 
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'departamento', 
+                    'controller' => 'api/departamento', 
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'tipo-cuenta', 
+                    'controller' => 'api/tipo-cuenta', 
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'banco', 
+                    'controller' => 'api/banco', 
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'prestacion', 
+                    'controller' => 'api/prestacion', 
                     'extraPatterns' => [
                         'DELETE borrar-pendiente/{id}' => 'borrar-pendiente',
                         'OPTIONS borrar-pendiente/{id}' => 'borrar-pendiente',
@@ -106,23 +106,51 @@ $config = [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'sucursal', 
+                    'controller' => 'api/provincia', 
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'sub-sucursal', 
+                    'controller' => 'api/departamento', 
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'cuenta', 
+                    'controller' => 'api/tipo-cuenta', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/api/banco', 
+                    'extraPatterns' => [
+                        'GET banco' => 'pepe',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/prestacion', 
+                    'extraPatterns' => [
+                        'DELETE borrar-pendiente/{id}' => 'borrar-pendiente',
+                        'OPTIONS borrar-pendiente/{id}' => 'borrar-pendiente',
+                    ],
+                    'tokens' => [ '{id}' => '<id:\\w+>'],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/sucursal', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/sub-sucursal', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/cuenta', 
                 ], 
                 [   #Export
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'export', 
+                    'controller' => 'api/export', 
                 ], 
                 [   #CTASLDO
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'cuenta-saldo', 
+                    'controller' => 'api/cuenta-saldo', 
                     'extraPatterns' => [
                         'POST Exportar' => 'exportar',
                         'OPTIONS Exportar' => 'exportar',
@@ -130,7 +158,7 @@ $config = [
                 ],
                 [   #INTERBANKING
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'interbanking', 
+                    'controller' => 'api/interbanking', 
                     'extraPatterns' => [
                         'POST Exportar' => 'exportar',
                         'OPTIONS Exportar' => 'exportar',
@@ -138,7 +166,7 @@ $config = [
                 ],
                 [   #CuentaBps
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'cuenta-bps', 
+                    'controller' => 'api/cuenta-bps', 
                     'extraPatterns' => [
                         'POST Importar' => 'importar',
                         'OPTIONS Importar' => 'importar',
@@ -146,7 +174,7 @@ $config = [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'herramienta', 
+                    'controller' => 'api/herramienta', 
                     'extraPatterns' => [
                         'POST Importar' => 'importar',
                         'OPTIONS Importar' => 'importar',
@@ -158,7 +186,7 @@ $config = [
                  ##### Interoperabilidad con Registral #####
                 [   #persona
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'persona', 
+                    'controller' => 'api/persona', 
                     'extraPatterns' => [
                         'GET buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
                         'OPTIONS buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
@@ -170,95 +198,54 @@ $config = [
                 
                 [   #tipo-documento
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'tipo-documento', 
+                    'controller' => 'api/tipo-documento', 
                 ],
                 [   #localidad
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'localidad', 
+                    'controller' => 'api/localidad', 
                 ],
                 [   #backend-localidad
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'backend-localidad', 
+                    'controller' => 'api/backend-localidad', 
                 ],
                 [   #backend-localidad
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'localidad-extra', 
+                    'controller' => 'api/localidad-extra', 
                 ],
                 [   #nacionalidad
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'nacionalidad', 
+                    'controller' => 'api/nacionalidad', 
                 ],
                 [   #sexo
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'sexo', 
+                    'controller' => 'api/sexo', 
                 ],
                 [   #tipo-red-social
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'tipo-red-social', 
+                    'controller' => 'api/tipo-red-social', 
                 ],
                 [   #genero
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'genero', 
+                    'controller' => 'api/genero', 
                 ],
                 [   #estado-civil
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'estado-civil', 
+                    'controller' => 'api/estado-civil', 
                 ],
 
                 [   #Permiso
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'permiso', 
+                    'controller' => 'api/permiso', 
                 ],
                 [   #Rol
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'rol', 
+                    'controller' => 'api/rol', 
                 ],
-                /******************** Ruteo con el Modulo Registral (Servicio de interoperable) ***********/
-                [   #estado-civil
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/estado-civil', 
-                ],
-                [   #persona
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/persona',
-                    'extraPatterns' => [
-                        'GET buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
-                        'OPTIONS buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
-                        'PUT contacto/{id}' => 'contacto',
-                        'OPTIONS contacto/{id}' => 'contacto',
-                    ],
-                    'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
-                ],
-                [   #sexo
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/sexo', 
-                ],
-                [   #genero
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/genero', 
-                ],
-                [   #nacionalidad
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/nacionalidad', 
-                ],
-                [   #tipo-red-social
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/tipo-red-social', 
-                ],
-                [   #localidad
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/localidad', 
-                ],
-                [   #tipo-documento
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => 'registral/tipo-documento', 
-                ],
-                
                 /*************** Fin de Ruteo Registral *****************/
                 /****** USUARIOS *******/
                 [   #Usuario
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'usuario',   
+                    'controller' => 'api/usuario',   
                     'extraPatterns' => [
                         'POST login' => 'login',
                         'OPTIONS login' => 'options',
@@ -282,6 +269,9 @@ $config = [
     'params' => $params,
     
     'modules'=>[
+        'api' => [
+            'class' => 'app\modules\api\Api',
+        ],
         "audit"=>[
             "class"=>"bedezign\yii2\audit\Audit",
             "ignoreActions" =>['audit/*', 'debug/*'],
@@ -289,7 +279,7 @@ $config = [
             'userFilterCallback' => ['app\components\ServicioUsuarios', 'userFilterCallback'],
             'accessIps'=>null,
             'accessUsers'=>null,
-            // 'accessRoles'=>['admin']
+            'accessRoles'=>['admin']
         ],
         'user' => [
             'class' => 'dektrium\user\Module',

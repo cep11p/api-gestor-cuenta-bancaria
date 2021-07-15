@@ -1,14 +1,12 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
 
 use Yii;
-use yii\base\Exception;
 
-
-class NacionalidadController extends ActiveController{
+class GeneroController extends ActiveController{
     
     public $modelClass = 'app\models\Programa';
     
@@ -55,8 +53,8 @@ class NacionalidadController extends ActiveController{
     {
         $actions = parent::actions();
         unset($actions['index']);
-        unset($actions['create']);
         unset($actions['view']);
+        unset($actions['create']);
         unset($actions['update']);
         return $actions;
     
@@ -68,9 +66,9 @@ class NacionalidadController extends ActiveController{
      */
     public function actionIndex()
     {
-        $param = \Yii::$app->request->queryParams;
+        $param = Yii::$app->request->queryParams;
         
-        $resultado = \Yii::$app->registral->buscarNacionalidad($param);
+        $resultado = \Yii::$app->registral->buscarGenero($param);
         
         return $resultado;
 

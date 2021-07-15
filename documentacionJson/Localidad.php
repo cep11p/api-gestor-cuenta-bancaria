@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/localidads
+* @url http://api.gcb.local/api/localidads
 * @params ?provinciaid=16 localidads de la provincia de rio negro
 * @method GET
 * @arrayReturn
@@ -35,7 +35,7 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/localidads 
+* @url http://api.gcb.local/api/localidads 
 * @method POST
 * @param arrayJson
 {
@@ -46,19 +46,19 @@
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/localidads/{$id} 
+* @url http://api.gcb.local/api/localidads/{$id} 
 * @method PUT
 * @param arrayJson
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/localidads/{$id} 
+* @url http://api.gcb.local/api/localidads/{$id} 
 * @method GET
 * @return arrayJson
 */
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/localidads/{$id} 
+* @url http://api.gcb.local/api/localidads/{$id} 
 * @method Delete
 * @return arrayJson
 */

@@ -1,14 +1,10 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
 
-use Yii;
-use yii\base\Exception;
-
-
-class TipoDocumentoController extends ActiveController{
+class SexoController extends ActiveController{
     
     public $modelClass = 'app\models\Programa';
     
@@ -37,7 +33,7 @@ class TipoDocumentoController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index'],
             'rules' => [
                 [
                     'allow' => true,
@@ -70,7 +66,7 @@ class TipoDocumentoController extends ActiveController{
     {
         $param = \Yii::$app->request->queryParams;
         
-        $resultado = \Yii::$app->registral->buscarTipoDocumento($param);
+        $resultado = \Yii::$app->registral->buscarSexo($param);
         
         return $resultado;
 

@@ -1,15 +1,16 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
 
 use Yii;
+use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 
-
-class TipoRedSocialController extends ActiveController{
+class DepartamentoController extends ActiveController{
     
-    public $modelClass = 'app\models\Programa';
+    public $modelClass = 'app\models\Departamento';
     
     public function behaviors()
     {
@@ -54,8 +55,8 @@ class TipoRedSocialController extends ActiveController{
     {
         $actions = parent::actions();
         unset($actions['index']);
-        unset($actions['create']);
         unset($actions['view']);
+        unset($actions['create']);
         unset($actions['update']);
         return $actions;
     
@@ -67,14 +68,13 @@ class TipoRedSocialController extends ActiveController{
      */
     public function actionIndex()
     {
+        $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
         
-        $resultado = \Yii::$app->registral->buscarTipoRedSocial($param);
+        
+        $resultado = \Yii::$app->lugar->buscarDepartamento($param);     
         
         return $resultado;
 
     }
-    
-    
-    
 }

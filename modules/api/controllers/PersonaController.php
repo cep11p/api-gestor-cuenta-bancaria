@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -11,7 +11,7 @@ use \app\models\PersonaForm;
 
 class PersonaController extends ActiveController{
     
-    public $modelClass = 'Persona';
+    public $modelClass = 'app\models\Persona';
     
     public function behaviors()
     {
@@ -42,7 +42,7 @@ class PersonaController extends ActiveController{
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];
@@ -69,21 +69,15 @@ class PersonaController extends ActiveController{
      */
     public function actionIndex()
     {
-        $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
         
-        $resultado = \Yii::$app->registral->buscarPersona($param);
-        
-        if($resultado['estado']!=true){
-            $resultado['success']=false;
-            $resultado['total_filtrado']=0;            
-            $resultado['resultado']=[];
-            $resultado['message']="No se encontró ninguna persona!";   
-        }else{
-            $resultado['success']=true;
+        $resultado = PersonaForm::buscarPersonaEnRegistralConPaginacion($param);
+
+        if($resultado['success']==true){
             $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
+            $resultado['resultado']=\app\models\Prestacion::setEstadoConvenioToListaPersona($resultado['resultado']);
         }
-        
+
         return $resultado;
 
     }
@@ -91,14 +85,8 @@ class PersonaController extends ActiveController{
     public function actionView($id)
     {
         $resultado = \Yii::$app->registral->viewPersona($id);
-                
-        if($resultado['estado']!=true){
-            $data = $resultado;       
-        }else{
-            $data = $resultado;  
-        }
         
-        return $data;
+        return $resultado;
 
     }
     
@@ -109,6 +97,11 @@ class PersonaController extends ActiveController{
      */
     public function actionCreate()
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado['message']='Se registró una nueva persona';
         $param = Yii::$app->request->post();
         
@@ -118,7 +111,7 @@ class PersonaController extends ActiveController{
             
             $resultado['success']=true;
             $resultado['data']['id']=$model->id;
-            
+            \Yii::$app->getModule('audit')->data('yooooo', $param);
             return $resultado;
            
         }catch (Exception $exc) {
@@ -137,6 +130,11 @@ class PersonaController extends ActiveController{
      */
     public function actionUpdate($id)
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_modificar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $resultado['message']='Se modifica una Persona';
         $param = Yii::$app->request->post();
         try {   
@@ -170,6 +168,10 @@ class PersonaController extends ActiveController{
      */
     public function actionContacto($id)
     {
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_crear')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
         $resultado['message']='Se modifica los datos de contacto de una Persona';
         $param = Yii::$app->request->post();
         try {   
@@ -200,18 +202,21 @@ class PersonaController extends ActiveController{
      * Se busca una persona por numero documento
      * @param type $nro_documento
      * @Method GET
-     * @url ejemplo http://api.gcb.local/registral/personas/buscar-por-documento/32049553
+     * @url ejemplo http://api.gcb.local/personas/buscar-por-documento/29800100
      * @return array
      */
     public function actionBuscarPorDocumento($nro_documento)
     {
-
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('persona_ver')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+        $resultado['estado']=false;   
         $resultado = \Yii::$app->registral->buscarPersonaPorNroDocumento($nro_documento);
         
-        
-        if(isset($resultado) && count($resultado)>0){
+        if(isset($resultado['resultado']) && count($resultado['resultado'])>0){
             $data['success']=true;
-            $data['resultado']=$resultado;
+            $data['resultado']=$resultado['resultado'];
         }else{
             $data['success']=false;  
             $data['message']="No se encontró ninguna persona!";

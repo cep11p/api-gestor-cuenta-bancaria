@@ -1,16 +1,12 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
 
-use Yii;
-use yii\base\Exception;
-
-
-class GeneroController extends ActiveController{
+class BancoController extends ActiveController{
     
-    public $modelClass = 'app\models\Programa';
+    public $modelClass = 'app\models\Banco';
     
     public function behaviors()
     {
@@ -54,28 +50,22 @@ class GeneroController extends ActiveController{
     public function actions()
     {
         $actions = parent::actions();
-        unset($actions['index']);
-        unset($actions['view']);
-        unset($actions['create']);
-        unset($actions['update']);
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+//        unset($actions['create']);
+//        unset($actions['update']);
+//        unset($actions['view']);
+//        unset($actions['index']);
         return $actions;
     
     }
     
-    /**
-     * Esta accion permite hacer una interoperabilidad con el sistema registral
-     * @return array()
-     */
-    public function actionIndex()
+    public function prepareDataProvider() 
     {
-        $param = Yii::$app->request->queryParams;
-        
-        $resultado = \Yii::$app->registral->buscarGenero($param);
-        
-        return $resultado;
+        $searchModel = new \app\models\BancoSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->search($params);
 
+        return $resultado;
     }
-    
-    
     
 }

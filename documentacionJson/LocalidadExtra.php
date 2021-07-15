@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/localidad-extra
+* @url http://api.gcb.local/api/localidad-extra
 * @method GET
 * @arrayReturn
 {
@@ -39,7 +39,7 @@
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/localidad-extra 
+* @url http://api.gcb.local/api/localidad-extra 
 * @method POST
 * @param arrayJson
 {
@@ -48,7 +48,7 @@
 **/
 
 /****** Para borrar una localidad *****
-* @url http://api.gcb.local/localidad-extra/{$id} 
+* @url http://api.gcb.local/api/localidad-extra/{$id} 
 * @method Delete
 * @return arrayJson
 */

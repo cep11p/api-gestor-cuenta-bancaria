@@ -1,16 +1,12 @@
 <?php
-namespace app\modules\registral\controllers;
+namespace app\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use yii\web\Response;
 
-use Yii;
-use yii\base\Exception;
-
-
-class EstadoCivilController extends ActiveController{
+class SucursalController extends ActiveController{
     
-    public $modelClass = 'app\models\Programa';
+    public $modelClass = 'app\models\Sucursal';
     
     public function behaviors()
     {
@@ -41,7 +37,7 @@ class EstadoCivilController extends ActiveController{
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];
@@ -50,32 +46,6 @@ class EstadoCivilController extends ActiveController{
 
         return $behaviors;
     }
-    
-    public function actions()
-    {
-        $actions = parent::actions();
-        unset($actions['index']);
-        unset($actions['view']);
-        unset($actions['create']);
-        unset($actions['update']);
-        return $actions;
-    
-    }
-    
-    /**
-     * Esta accion permite hacer una interoperabilidad con el sistema registral
-     * @return array()
-     */
-    public function actionIndex()
-    {
-        $param = Yii::$app->request->queryParams;
-        
-        $resultado = \Yii::$app->registral->buscarEstadoCivil($param);
-        
-        return $resultado;
-
-    }
-    
     
     
 }

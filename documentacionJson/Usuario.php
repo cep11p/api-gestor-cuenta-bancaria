@@ -1,14 +1,8 @@
 <?php
 
 /**** Para mostrar listado ****/
-/**
-* @url http://api.gestor-inventario.local/proveedors
-* @method GET
-* @arrayReturn
-*/
-
 /*****Login****
-* @url http://api.gcb.local/usuarios/login
+* @url http://api.gcb.local/api/usuarios/login
 * @method POST
 * @param arrayJson
 {
@@ -30,7 +24,7 @@
 
 
 /*****Para crear usuario****
-* @url http://api.gcb.local/usuarios 
+* @url http://api.gcb.local/api/usuarios 
 * @method POST
 * @param arrayJson
 # Con persona existente
@@ -62,7 +56,7 @@
 **/
 
 /****** Para visualizar*****
-* @url http://api.gcb.local/usuarios/2
+* @url http://api.gcb.local/api/usuarios/2
 * @method GET
 * @return arrayJson
 {
@@ -91,7 +85,7 @@
 */
 
 /**** Para modificar*****
-* @url http://api.gps.local/usuarios/{$id} 
+* @url http://api.gps.local/api/usuarios/{$id} 
 * @method PUT
 * @param arrayJson
 {
@@ -103,7 +97,7 @@
 **/
 
 /**** Dar de baja un Usuarios*****
-* @url http://api.gcb.local/usuarios/baja/47 
+* @url http://api.gcb.local/api/usuarios/baja/47 
 * @method PUT
 * @param arrayJson
 {
@@ -113,7 +107,7 @@
 **/
 
 /** Buscar a un usuario por nro de cuil
- * @url http://api.gcb.local/usuarios/buscar-persona-por-cuil/20320542389
+ * @url http://api.gcb.local/api/usuarios/buscar-persona-por-cuil/20320542389
  * @method GET
  * @return arrayJson
  * 
@@ -146,7 +140,7 @@
  **/
 
 /**** Crear Asignaciones a Usuarios*****
-* @url http://api.gcb.local/usuarios/crear-asignacion/
+* @url http://api.gcb.local/api/usuarios/crear-asignacion/
 * @method POST
 * @param arrayJson
 {
@@ -158,7 +152,7 @@
 }
 
 /**** Listar Asignaciones a Usuarios*****
-* @url http://api.gcb.local/usuarios/listar-asignacion/14
+* @url http://api.gcb.local/api/usuarios/listar-asignacion/14
 * @method GET
 * @param arrayJson
 {
@@ -170,7 +164,7 @@
 }
 
 /**** Borrar Asignaciones a Usuarios*****
-* @url http://api.gcb.local/usuarios/borrar-asignacion 
+* @url http://api.gcb.local/api/usuarios/borrar-asignacion 
 * @method POST
 * @param arrayJson
 {

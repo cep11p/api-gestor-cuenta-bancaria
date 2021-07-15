@@ -2,13 +2,13 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://api.gcb.local/prestacions
+* @url http://api.gcb.local/api/prestacions
 * @method GET
 * @arrayReturn
 */
 
 /*****Para crear****
-* @url http://api.gcb.local/prestacions 
+* @url http://api.gcb.local/api/prestacions 
 * @method POST
 * @param arrayJson
 * {
@@ -27,7 +27,7 @@
 **/
 
 /**** Para modificar*****
-* @url http://api.gcb.local/prestacions/borrar-pendiente/{personaid} 
+* @url http://api.gcb.local/api/prestacions/borrar-pendiente/{personaid} 
 * @method DELETE
 * @return String
 **/
