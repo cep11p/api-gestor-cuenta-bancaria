@@ -69,14 +69,10 @@ class LocalidadController extends ActiveController{
     {
         $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
-        $rio_negro = 16;
-        
-        $param=\yii\helpers\ArrayHelper::merge($param, ['provinciaid'=>$rio_negro]);
+        $param['provinciaid'] = 16; // Rio negro
+        $param['extra'] = 1; // Seteamos el flags para injectar localidades extras
         
         $resultado = \Yii::$app->lugar->buscarLocalidad($param);
-        $localidades_extras = \Yii::$app->lugar->buscarLocalidadExtra([]);
-
-        $resultado = ArrayHelper::merge($resultado['resultado'], $localidades_extras['resultado']);        
         
         return $resultado;
 
