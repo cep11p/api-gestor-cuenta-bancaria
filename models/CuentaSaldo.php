@@ -86,11 +86,14 @@ class CuentaSaldo
         foreach ($lista_persona_prestacion as $value) { 
             
             if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
+                // print_r($value);die();
                 $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
+                // print_r($model);die();
+                // die('exportando');
                 $model->estado = Prestacion::SIN_CBU;
                 $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
-
-
+                
+                
             }else{
                 //Registramos la prestacion
                 $model = new Prestacion();
@@ -107,7 +110,7 @@ class CuentaSaldo
             }
             
             if(!$model->save()){
-                throw new \yii\web\HttpException(400, $model->scenario);
+                // throw new \yii\web\HttpException(400, $model->scenario);
                 $error = $model->errors;
                 $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
                 $errors[] = $error;

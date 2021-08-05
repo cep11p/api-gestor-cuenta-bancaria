@@ -180,7 +180,9 @@ class CtaBps extends Model
                 $prestacion->estado = Prestacion::CON_CBU;
                 
                 if(!$prestacion->save()){
-                    $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);                    
+                    $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);    
+                    // $resultado['errors'][] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].Help::ArrayErrorsToString($prestacion_errores);                
+
                     throw new \yii\web\HttpException(400, json_encode($prestacion_errores));
                 }
                 

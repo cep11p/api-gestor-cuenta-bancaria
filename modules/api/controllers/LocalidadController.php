@@ -71,10 +71,11 @@ class LocalidadController extends ActiveController{
         $param = Yii::$app->request->queryParams;
         $param['provinciaid'] = 16; // Rio negro
         $param['extra'] = 1; // Seteamos el flags para injectar localidades extras
-        
+        $param['pagesize'] = 5000; // Seteamos el flags para injectar localidades extras
+
         $resultado = \Yii::$app->lugar->buscarLocalidad($param);
         
-        return $resultado;
+        return $resultado['resultado'];
 
     }
     
