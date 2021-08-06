@@ -128,12 +128,17 @@ class CtaBps extends Model
         foreach ($lista_persona_bps as $persona_bps) {
             foreach ($lista_persona_encontrada as $persona) {
                 if(isset($persona['cuil']) && isset($persona_bps['cuil']) && $persona['cuil']==$persona_bps['cuil']){                    
+                    // print_r($persona_bps);
+                    // print_r($persona);
+                    // die();
                     unset($lista_persona_bps[$i]);
                     break;
                 }
             }
             $i++;
         }
+
+        // print_r($lista_persona_bps);die();
         
         //registramos la cuenta bancaria de la persona
         $resultado = $this->crearCuentas($lista_persona_encontrada);
@@ -141,6 +146,8 @@ class CtaBps extends Model
         //Se notifican las personas que aun no estan registradas
         $error_persona = array();
         foreach ($lista_persona_bps as $persona) {
+        // print_r($persona);die();
+
             $resultado['errors'][] = "No se encuentra registrada la persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
         }
                 
@@ -181,9 +188,7 @@ class CtaBps extends Model
                 
                 if(!$prestacion->save()){
                     $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);    
-                    // $resultado['errors'][] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].Help::ArrayErrorsToString($prestacion_errores);                
-
-                    throw new \yii\web\HttpException(400, json_encode($prestacion_errores));
+                    $resultado['errors'][] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$prestacion_errores;
                 }
                 
                 
