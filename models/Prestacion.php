@@ -151,9 +151,9 @@ class Prestacion extends BasePrestacion
             $i=0;
             foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
+                    $lista_persona[$i]['sucursal'] = $value['sucursal']['sucursal_codigo'].' - '.$value['sucursal']['nombre'];
                     if($value['estado'] == Prestacion::SIN_CBU){
                         $lista_persona[$i]['convenio_pendiente'] = true;
-                        $lista_persona[$i]['sucursal'] = $value['sucursal']['sucursal_codigo'].' - '.$value['sucursal']['nombre'];
                     }
                     break;
                 }
