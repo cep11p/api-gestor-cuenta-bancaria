@@ -94,11 +94,6 @@ class Prestacion extends BasePrestacion
 
     public function validarImportado(){
         
-        #Chequemos si ya tiene cbu
-        if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
-            $this->addError('personaid','La persona ya tiene CBU');
-        }
-        
         #Chequeamos que no tenga pendiente el pedido de cbu
         if(Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) == NULL){
             $this->addError('personaid','No se encuentra registrada la persona por el convenio 8081');
@@ -158,6 +153,7 @@ class Prestacion extends BasePrestacion
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
                     if($value['estado'] == Prestacion::SIN_CBU){
                         $lista_persona[$i]['convenio_pendiente'] = true;
+                        $lista_persona[$i]['sucursal'] = $value['sucursal']['sucursal_codigo'].' - '.$value['sucursal']['nombre'];
                     }
                     break;
                 }
@@ -165,7 +161,18 @@ class Prestacion extends BasePrestacion
             }
         }
 
+
         return $lista_persona;
 
+    }
+
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'sucursal'=> function($model){
+                return $model->subSucursal;
+            }
+        ]);
+        
     }
 }

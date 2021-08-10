@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use \app\models\base\Cuenta as BaseCuenta;
 use yii\helpers\ArrayHelper;
 
@@ -88,6 +87,7 @@ class Cuenta extends BaseCuenta
         foreach ($lista_cuenta as $value) {
             $i=0;
             foreach ($lista_persona as $persona) {
+                $lista_persona[$i]['tiene_cbu'] = false;
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
                     $cuenta['id'] = $value['id'];
                     $cuenta['cbu'] = $value['cbu'];
@@ -168,6 +168,7 @@ class Cuenta extends BaseCuenta
                     $lista_cuenta[$i]['telefono'] = $persona['telefono'];
                     $lista_cuenta[$i]['celular'] = $persona['celular'];
                     $lista_cuenta[$i]['email'] = $persona['email'];
+                    $lista_cuenta[$i]['sucursal'] = '';
                     
                     if(!empty($persona['lugar'])){
                         $lista_cuenta[$i]['lugar'] = $persona['lugar'];
@@ -265,7 +266,12 @@ class Cuenta extends BaseCuenta
             }
             
             #Chequeamos que la persona no tenga una cuenta bancaria
-            $cuenta = Cuenta::findOne(['personaid' => $this->personaid,['not', ['id' => $this->id]]]);
+            if(isset($this->id)){//viene por un update
+                $cuenta = Cuenta::findOne(['personaid' => $this->personaid,['not', ['id' => $this->id]]]);
+            }else{//es un registro nuevo
+                $cuenta = Cuenta::findOne(['personaid' => $this->personaid]);
+            }
+
             if($cuenta != NULL){
                 $this->addError('personaid','La persona ya tiene una cuenta bancaria');
             }

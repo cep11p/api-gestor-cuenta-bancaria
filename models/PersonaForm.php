@@ -348,7 +348,7 @@ class PersonaForm extends Model
             $i=0;
             foreach ($response['resultado'] as $persona) {                
                 unset($persona['hogar']);
-                
+                $persona['sucursal'] = '';
                 if(count($persona['lugar'])<1){
                     unset($persona['lugar']);
                 }

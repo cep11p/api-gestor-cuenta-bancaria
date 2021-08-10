@@ -86,10 +86,7 @@ class CuentaSaldo
         foreach ($lista_persona_prestacion as $value) { 
             
             if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
-                // print_r($value);die();
                 $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
-                // print_r($model);die();
-                // die('exportando');
                 $model->estado = Prestacion::SIN_CBU;
                 $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
                 

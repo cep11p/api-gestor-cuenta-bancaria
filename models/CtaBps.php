@@ -127,18 +127,13 @@ class CtaBps extends Model
         $i=0;
         foreach ($lista_persona_bps as $persona_bps) {
             foreach ($lista_persona_encontrada as $persona) {
-                if(isset($persona['cuil']) && isset($persona_bps['cuil']) && $persona['cuil']==$persona_bps['cuil']){                    
-                    // print_r($persona_bps);
-                    // print_r($persona);
-                    // die();
+                if(isset($persona['cuil']) && isset($persona_bps['cuil']) && $persona['cuil']==$persona_bps['cuil']){   
                     unset($lista_persona_bps[$i]);
                     break;
                 }
             }
             $i++;
         }
-
-        // print_r($lista_persona_bps);die();
         
         //registramos la cuenta bancaria de la persona
         $resultado = $this->crearCuentas($lista_persona_encontrada);
@@ -146,8 +141,6 @@ class CtaBps extends Model
         //Se notifican las personas que aun no estan registradas
         $error_persona = array();
         foreach ($lista_persona_bps as $persona) {
-        // print_r($persona);die();
-
             $resultado['errors'][] = "No se encuentra registrada la persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
         }
                 
@@ -163,8 +156,10 @@ class CtaBps extends Model
     private function crearCuentas($lista_personas){
         $cant_cuentas = count($lista_personas);
         $cant_registros = 0;
+        $cant_existe = 0;
         $resultado = array();
         $errors = array();
+        $lista_cuenta_personaid = array();
         $i=0;
         foreach ($lista_personas as $persona) {
             $cuenta = new Cuenta();
@@ -174,46 +169,43 @@ class CtaBps extends Model
             $cuenta->cbu = $persona['cuenta']['cbu'];
             $cuenta->create_at = date('Y-m-d H:m:s');
 
-            #Chequeamos si la persona a importar paso por cuentaSaldo
-            $error_cuenta = '';
-            $prestacion = Prestacion::findOne(['personaid' => $persona['id']]);
-            
-            if($prestacion == Null){
-                $error_cuenta = " debe ser registrada por cuenta saldo";
-            }else{
-
-                
-                $prestacion->scenario = Prestacion::SCENARIO_IMPORTADO_BPS;
-                $prestacion->estado = Prestacion::CON_CBU;
-                
-                if(!$prestacion->save()){
-                    $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);    
-                    $resultado['errors'][] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$prestacion_errores;
-                }
-                
-                
-                #Chequeamos si el CBU ya existe
-                if(Cuenta::findOne(['cbu' => $cuenta->cbu]) != Null){
-                    $error_cuenta .= (!empty($error_cuenta))?" y tiene vinculado un cbu ajeno":" tiene vinculado un cbu ajeno";
-                }
-                
-                if(!empty($error_cuenta)){
-                    $resultado['errors'][] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$error_cuenta;
-                }
-                
-                if(!$cuenta->save()){
-                    $error = $cuenta->errors;
-                    $error['persona'] = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
-                    $errors[] = $error;
-                }else{
-                    $cant_registros++;
-                }
+            #Chequemos si ya tiene cbu
+            if(Cuenta::findOne(['personaid' => $cuenta->personaid]) != NULL){
+                $cuenta->addError('personaid','La persona ya tiene CBU');
+                $cant_existe++;
             }
+                
+            // #Chequeamos si el CBU ya existe
+            if(Cuenta::findOne(['cbu' => $cuenta->cbu]) != Null){
+                $cuenta->addError('cbu','El cbu '.$cuenta->cbu.' lo tiene otra persona');
+            }
+                        
+            if(!$cuenta->save()){
+                $error = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." " . Help::ArrayErrorsToString($cuenta->errors);
+                $errors[] = $error;
+            }else{
+                $cant_registros++;
+                $lista_cuenta_personaid[] = $cuenta->personaid;
+            }
+            
             $i++;
         }
-        
+
+        foreach ($lista_cuenta_personaid as $value) {
+            #Chequeamos si la persona a importar paso por cuentaSaldo
+            $prestacion = Prestacion::findOne(['personaid' => $value]);
+            $prestacion->scenario = Prestacion::SCENARIO_IMPORTADO_BPS;
+            $prestacion->estado = Prestacion::CON_CBU;
+            
+            if(!$prestacion->save()){
+                $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);    
+                $errors[] = "$i La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$prestacion_errores;
+            }
+        }
+            
         $resultado['creadas'] = $cant_registros;
-        $resultado['existen'] = count($errors);
+        $resultado['existen'] = $cant_existe;
+        $resultado['errors'] = $errors;
                 
         return $resultado;
     }
