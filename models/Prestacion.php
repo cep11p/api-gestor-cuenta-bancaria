@@ -94,10 +94,7 @@ class Prestacion extends BasePrestacion
 
     public function validarImportado(){
         
-        #Chequeamos que no tenga pendiente el pedido de cbu
-        if(Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) == NULL){
-            $this->addError('personaid','No se encuentra registrada la persona por el convenio 8081');
-        }
+        #no validamos la prestacion porque se valida previamente en cuenta
 
     }
 
