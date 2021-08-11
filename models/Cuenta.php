@@ -224,10 +224,6 @@ class Cuenta extends BaseCuenta
             $this->addError('cbu','El cbu '.$this->cbu.' lo tiene otra persona');
         }
 
-        // #Chequemos si ya tiene cbu
-        // print_r($this->personaid);
-        // die();
-
         if(Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) != NULL){
             $cuenta_encontrada = Cuenta::findOne(['personaid' => $this->personaid]);
             if($cuenta_encontrada != null){
@@ -235,18 +231,7 @@ class Cuenta extends BaseCuenta
             }
         }else{
             $this->addError('personaid','No se encuentra registrada la persona por el convenio 8180');
-        }
-
-        // print_r($cuenta_encontrada);
-        // die();
-
-        // #Chequeamos que tenga la solicitud pendiente de cbu (convenio 8180)
-        // if((Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) == NULL) && $cuenta_encontrada != null){
-        //     #agregamos el error en cuenta, por mas que se valide la prestacion
-        //     $this->addError('personaid','No se encuentra registrada la persona por el convenio 8180');
-        // }
-
-        
+        }        
     }
 
     public function validarFormatoCbu($attribute, $params, $validator){
