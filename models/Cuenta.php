@@ -87,7 +87,6 @@ class Cuenta extends BaseCuenta
         foreach ($lista_cuenta as $value) {
             $i=0;
             foreach ($lista_persona as $persona) {
-                $lista_persona[$i]['tiene_cbu'] = false;
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
                     $cuenta['id'] = $value['id'];
                     $cuenta['cbu'] = $value['cbu'];

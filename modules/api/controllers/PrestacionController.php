@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\api\controllers;
 
+use app\models\Cuenta;
 use app\models\Prestacion;
 use yii\rest\ActiveController;
 use yii\web\Response;
@@ -97,7 +98,9 @@ class PrestacionController extends ActiveController{
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
-        if($model->estado != Prestacion::SIN_CBU){
+        $cuenta = Cuenta::findOne(['personaid' => $id]);
+
+        if($cuenta != null){
             throw new \yii\web\HttpException(400, 'Solo se pueden borrar Solicitudes de CBU en estado pendiente');
         }
 

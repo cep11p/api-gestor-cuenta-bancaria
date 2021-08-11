@@ -346,9 +346,11 @@ class PersonaForm extends Model
         
         if(isset($response['estado']) && $response['estado']==true){
             $i=0;
-            foreach ($response['resultado'] as $persona) {                
+            foreach ($response['resultado'] as $persona) {         
+                #inicializamos parametros       
                 unset($persona['hogar']);
                 $persona['sucursal'] = '';
+                $persona['tiene_cbu'] = false;
                 if(count($persona['lugar'])<1){
                     unset($persona['lugar']);
                 }
