@@ -75,7 +75,7 @@ class PersonaController extends ActiveController{
 
         if($resultado['success']==true){
             $resultado['resultado']=\app\models\Cuenta::vincularCuenta($resultado['resultado']);
-            $resultado['resultado']=\app\models\Prestacion::setEstadoConvenioToListaPersona($resultado['resultado']);
+            $resultado['resultado']=\app\models\Prestacion::setEstado($resultado['resultado']);
         }
 
         return $resultado;
