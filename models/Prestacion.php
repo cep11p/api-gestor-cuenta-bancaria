@@ -130,7 +130,7 @@ class Prestacion extends BasePrestacion
         }
     }
 
-    public static function setEstadoConvenioToListaPersona($lista_persona){
+    public static function setEstado($lista_persona){
         $ids = '';
         $prestacionSearch = new PrestacionSearch();
 
@@ -151,6 +151,9 @@ class Prestacion extends BasePrestacion
                     $lista_persona[$i]['sucursal'] = $value['sucursal']['sucursal_codigo'].' - '.$value['sucursal']['nombre'];
                     if($value['estado'] == Prestacion::SIN_CBU){
                         $lista_persona[$i]['convenio_pendiente'] = true;
+                    }
+                    if($value['estado'] == Prestacion::PREPARADO_A_EXPORTAR){
+                        $lista_persona[$i]['para_exportar'] = true;
                     }
                     break;
                 }

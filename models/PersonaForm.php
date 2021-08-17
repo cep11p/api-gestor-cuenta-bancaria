@@ -351,6 +351,8 @@ class PersonaForm extends Model
                 unset($persona['hogar']);
                 $persona['sucursal'] = '';
                 $persona['tiene_cbu'] = false;
+                $persona['para_exportar'] = false;
+
                 if(count($persona['lugar'])<1){
                     unset($persona['lugar']);
                 }
