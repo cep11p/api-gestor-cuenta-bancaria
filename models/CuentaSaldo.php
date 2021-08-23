@@ -98,7 +98,6 @@ class CuentaSaldo
                 $model->personaid = (isset($value['id']))?$value['id']:null;
                 $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
                 $model->create_at = date('Y-m-d H:m:i');
-                $model->observacion = 'Se crea en exportacion de CtaSaldo';
                 $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
                 $model->estado = Prestacion::SIN_CBU;
                 $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');  

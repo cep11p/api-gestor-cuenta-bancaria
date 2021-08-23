@@ -155,6 +155,8 @@ class Prestacion extends BasePrestacion
                     if($value['estado'] == Prestacion::PREPARADO_A_EXPORTAR){
                         $lista_persona[$i]['para_exportar'] = true;
                     }
+                    #Seteamos la observacion de la prestacion
+                    $lista_persona[$i]['observacion'] = $value['observacion'];
                     break;
                 }
                 $i++;
