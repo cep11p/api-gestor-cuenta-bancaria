@@ -219,19 +219,31 @@ class Cuenta extends BaseCuenta
 
     public function validarCuentaImportada($attribute, $params, $validator){
 
-        // #Chequeamos si el CBU ya existe
-        if(Cuenta::findOne(['cbu' => $this->cbu]) != Null){
-            $this->addError('cbu','El cbu '.$this->cbu.' lo tiene otra persona');
-        }
-
-        if(Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]) != NULL){
-            $cuenta_encontrada = Cuenta::findOne(['personaid' => $this->personaid]);
-            if($cuenta_encontrada != null){
-                $this->addError('personaid','La persona ya tiene CBU');
-            }
+        #Buscamos si la persona ya tiene cbu
+        if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
+            $this->addError('personaid','La persona ya tiene CBU');
         }else{
-            $this->addError('personaid','No se encuentra registrada la persona por el convenio 8180');
-        }        
+            #Si la persona no tiene cuenta procedemos a validar la importacion de cuenta, cambiando el estado de una prestacion(convenio8180)
+            $prestacion = Prestacion::findOne(['personaid' => $this->personaid, 'estado' => Prestacion::SIN_CBU]);
+            $estado = ($prestacion != null)?$prestacion->estado:null;
+            switch ($estado) {
+                case Prestacion::PREPARADO_A_EXPORTAR:
+                    $this->addError('personaid','Se encuentra preparada para exportar.');
+                    break;
+                case Prestacion::SIN_CBU:
+                    #Se realiza la importacion
+                    break;
+                case Prestacion::CON_CBU:
+                    $this->addError('personaid','Fallo de la importacion (Estado Incorrecto!)');
+                    break;
+                                
+                default:
+                    $this->addError('personaid','No se encuentra la petición del CBU por el convenio 8180');
+                    break;
+            }
+
+
+        }     
     }
 
     public function validarFormatoCbu($attribute, $params, $validator){

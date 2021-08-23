@@ -44,9 +44,12 @@ class CtaBps extends Model
             $content = file_get_contents($this->file->tempName);
             $ctaBps_array = preg_split('/\n|\r\n?/', $content); 
 
-            
+            #Se valida la cantidad de filas del archivo a importar
+            if(count($ctaBps_array)>500){
+                throw new \yii\web\HttpException(400, 'El archivo excede a las 500 personas para importar!.');
+            }
+
             $listaPersona = array();
-            $nombre_apellido = array();
             foreach ($ctaBps_array as $value) {
                 //Si viene una linea vacia saltamos la iteracion
                 if(empty($value)){
