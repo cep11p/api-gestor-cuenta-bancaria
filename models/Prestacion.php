@@ -156,7 +156,7 @@ class Prestacion extends BasePrestacion
                         $lista_persona[$i]['para_exportar'] = true;
                     }
                     #Seteamos la observacion de la prestacion
-                    $lista_persona[$i]['observacion'] = $value['observacion'];
+                    $lista_persona[$i]['observacion'] = (isset($value['observacion']))?$value['observacion']:"";
                     break;
                 }
                 $i++;

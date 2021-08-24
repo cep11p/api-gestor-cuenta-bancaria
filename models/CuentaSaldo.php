@@ -333,10 +333,11 @@ class CuentaSaldo
             $prestacion['persona']['nombre'] = $persona['nombre'];
             $prestacion['persona']['apellido'] = $persona['apellido'];
             $prestacion['persona']['cuil'] = $persona['cuil'];
+            $prestacion['observacion'] = $persona['prestacion']['observacion'];
             $lista_prestacion[] = $prestacion;
         }
         
-        // /**** Se borra el listado de prestacion con estado preparado a exportar ****/
+        // /**** Acarrilamos todas las prestaciones ****/
         $lista_convenio = Prestacion::find()->where(['estado'=> Prestacion::PREPARADO_A_EXPORTAR])->asArray()->all();        
         $lista_prestacion = ArrayHelper::merge($lista_prestacion, $lista_convenio);
 
@@ -353,7 +354,8 @@ class CuentaSaldo
                 $model->sub_sucursalid = (isset($value['sub_sucursalid']))?$value['sub_sucursalid']:null;
                 $model->estado = Prestacion::PREPARADO_A_EXPORTAR;
                 $model->fecha_ingreso =(isset($value['fecha_ingreso']) && !empty($value['fecha_ingreso']))?$value['fecha_ingreso']:date('Y-m-d');
-                
+                $model->observacion = $value['observacion'];
+
                 if(!$model->save()){
                     $error = $model->errors;
                     $error['persona'] = $value['persona']['nombre']." ".$value['persona']['apellido']." cuil:".$value['persona']['cuil'];
@@ -392,6 +394,7 @@ class CuentaSaldo
                 $cuentaSaldo[$i]['id'] = intval($value['personaid']);
                 $cuentaSaldo[$i]['prestacion'] = $value;
                 $cuentaSaldo[$i]['prestacion']['sub_sucursalid'] = intval($value['sub_sucursalid']);
+                $cuentaSaldo[$i]['prestacion']['observacion'] = (isset($value['observacion']) && !empty($value['observacion']))?$value['observacion']:"";
                 $i++;
             }        
             
