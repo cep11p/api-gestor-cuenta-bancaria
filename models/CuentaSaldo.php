@@ -2,7 +2,9 @@
 
 namespace app\models;
 
+use app\components\Help;
 use Yii;
+use yii\base\Component;
 use yii\helpers\ArrayHelper;
 use yii\base\Exception;
 
@@ -153,15 +155,15 @@ class CuentaSaldo
             /************* Fin de validacion CtaSldo ***************/
             
             //Estructura de CTASLDO.TXT
-            $convenio_apellido = str_pad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
-            $nombre = str_pad(strtoupper(substr(\app\components\Help::quitar_tildes($value['nombre']), 0, 16)), 16);
-            $tipo_documento = str_pad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
-            $nro_documento = str_pad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
-            $nacionalidad = str_pad($value['nacionalidad'], 3, "0", STR_PAD_LEFT);
+            $convenio_apellido = Help::mbstrpad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
+            $nombre = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['nombre']), 0, 16)), 16);
+            $tipo_documento = Help::mbstrpad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
+            $nro_documento = Help::mbstrpad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
+            $nacionalidad = Help::mbstrpad($value['nacionalidad'], 3, "0", STR_PAD_LEFT);
             $fecha_nacimiento = \DateTime::createFromFormat('Y-m-d', $value['fecha_nacimiento'])->format('dmY');
             $sexo = ($value['sexo']=='Masculino')?'M':'F';
             $estado_civil = 'S';
-            $calle = str_pad(strtoupper(substr(\app\components\Help::quitar_tildes($value['lugar']['calle']), 0, 19)), 19);
+            $calle = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['lugar']['calle']), 0, 19)), 19);
 
             #Seteamos la altura en CTASALDO
             $patron = "/^[[:digit:]]+$/";
@@ -170,14 +172,15 @@ class CuentaSaldo
             }else{
                 $altura = $value['lugar']['altura'];
             }
-            $altura = str_pad(str_pad(substr($altura, 0, 5), 5,'0',STR_PAD_LEFT),9);
+            $altura = Help::mbstrpad(Help::mbstrpad(substr($altura, 0, 5), 5,'0',STR_PAD_LEFT),9);
 
 
-            $localidad = str_pad(strtoupper($value['lugar']['localidad']), 30);
-            $codigo_postal = str_pad(str_pad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
-            $cuil = str_pad('008'.$value['cuil'].str_pad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
-            $sucursal = str_pad(date('dmY',strtotime(date('Y-m-d').' -1 day')).$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
-            $sucursal_codigo_postal = str_pad(str_pad($value['prestacion']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //sub_sucursal[codigo_postal]
+            $localidad = Help::mbstrpad(strtoupper($value['lugar']['localidad']), 30);
+            //  (strtoupper($value['lugar']['localidad']), 30);
+            $codigo_postal = Help::mbstrpad(Help::mbstrpad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
+            $cuil = Help::mbstrpad('008'.$value['cuil'].Help::mbstrpad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
+            $sucursal = Help::mbstrpad(date('dmY',strtotime(date('Y-m-d').' -1 day')).$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
+            $sucursal_codigo_postal = Help::mbstrpad(Help::mbstrpad($value['prestacion']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //sub_sucursal[codigo_postal]
 
             $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
             $ctasaldo .= (empty($ctasaldo))?$linea_ctasaldo:"\r\n".$linea_ctasaldo;
