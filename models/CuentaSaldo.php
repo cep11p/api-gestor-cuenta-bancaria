@@ -88,9 +88,8 @@ class CuentaSaldo
             if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
                 $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
                 $model->estado = Prestacion::SIN_CBU;
-                $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
-                
-                
+                $model->observacion = $value['prestacion']['observacion'];
+                $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;      
             }else{
                 //Registramos la prestacion
                 $model = new Prestacion();
@@ -100,6 +99,7 @@ class CuentaSaldo
                 $model->create_at = date('Y-m-d H:m:i');
                 $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
                 $model->estado = Prestacion::SIN_CBU;
+                $model->observacion = $value['prestacion']['observacion'];
                 $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');  
                 
                 
