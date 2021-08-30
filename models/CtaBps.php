@@ -42,7 +42,7 @@ class CtaBps extends Model
         $resultado = array();
         if ($this->validate()) {
             $content = file_get_contents($this->file->tempName);
-            $ctaBps_array = preg_split('/\n|\r\n?/', $content); 
+            $ctaBps_array = preg_split('/\n|\r\n?/', trim($content)); 
 
             #Se valida la cantidad de filas del archivo a importar
             if(count($ctaBps_array)>500){
