@@ -180,14 +180,20 @@ class CtaBps extends Model
                 $error = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." " . Help::ArrayErrorsToString($cuenta->errors);
                 $errors[] = $error;
             }else{
-                $cant_registros++;
                 $prestacion = Prestacion::findOne(['personaid' => $cuenta->personaid]);
-                $prestacion->setScenario(Prestacion::SCENARIO_IMPORTADO_BPS);
-                $prestacion->estado = Prestacion::CON_CBU;
-                
-                if(!$prestacion->save()){
-                    $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);    
-                    $errors[] = "(fila: $i) La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$prestacion_errores;
+                //chequeamos que la persona este en el convenio
+                if(!isset($prestacion)){
+                    $error = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." No fue dado de alta por el convenio";
+                    $errors[] = $error;
+                }else{
+                    $prestacion->setScenario(Prestacion::SCENARIO_IMPORTADO_BPS);
+                    $prestacion->estado = Prestacion::CON_CBU;
+                    
+                    if(!$prestacion->save()){
+                        $prestacion_errores = Help::ArrayErrorsToString($prestacion->errors);    
+                        $errors[] = "(fila: $i) La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'].$prestacion_errores;
+                    }
+                    $cant_registros++;
                 }
             }
             
