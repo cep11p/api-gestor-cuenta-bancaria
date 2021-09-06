@@ -60,28 +60,28 @@ class CtaBps extends Model
                 $value = substr($value,strpos($value,'8180'));
 
                 $row = array();
-                $row['convenio'] = trim(substr($value, 0, 4));
-                $row['apellido'] = trim(utf8_encode(substr($value, 4, 30)));
-                $row['nombre'] = trim(utf8_encode(substr($value, 34, 16)));
-                $row['nro_documento'] = preg_replace('/^0+/', '', trim(utf8_encode(substr($value, 62, 8))));
-                $row['nacionalidad'] = trim(utf8_encode(substr($value, 72, 1)));
+                $row['convenio'] = trim(mb_substr($value, 0, 4));
+                $row['apellido'] = trim(utf8_encode(mb_substr($value, 4, 30)));
+                $row['nombre'] = trim(utf8_encode(mb_substr($value, 34, 16)));
+                $row['nro_documento'] = preg_replace('/^0+/', '', trim(utf8_encode(mb_substr($value, 62, 8))));
+                $row['nacionalidad'] = trim(utf8_encode(mb_substr($value, 72, 1)));
                 $row['nacionalidadid'] = ($row['nacionalidad']=='A')?self::NACIONALIDADID_ARGENTINO: self::NACIONALIDADID_OTRO;
-                $row['fecha_nacimiento'] = trim(utf8_encode(substr($value, 73, 8)));
-                $row['sexo'] = trim(utf8_encode(substr($value, 81, 1)));
+                $row['fecha_nacimiento'] = trim(utf8_encode(mb_substr($value, 73, 8)));
+                $row['sexo'] = trim(utf8_encode(mb_substr($value, 81, 1)));
                 $row['sexoid'] = ($row['sexo']=='M')? self::SEXO_MASCULINO: self::SEXO_FEMENINO;
-                $row['estado_civil'] = trim(utf8_encode(substr($value, 82, 1)));
+                $row['estado_civil'] = trim(utf8_encode(mb_substr($value, 82, 1)));
                 $row['estado_civilid'] = self::ESTADO_CIVIL_SOLTERO;
-                $row['cuil'] = trim(substr($value, 182, 11));
-                $row['lugar']['calle'] = trim(utf8_encode(substr($value, 83, 19)));
-                $row['lugar']['altura'] = intval(trim(substr($value, 102, 9)));
-                $row['lugar']['localidad'] = trim(substr($value, 111, 30));
-                $row['lugar']['codigo_postal'] = intval(trim(substr($value, 141, 5)));
-                $row['prestacion']['monto'] = intval(trim(substr($value, 193, 5)));
-                $row['prestacion']['fecha'] = trim(substr($value, 216, 8));
-                $row['cuenta']['tipo_inscripcionid'] = trim(substr($value, 179, 3));
-                $row['cuenta']['tipo_cuentaid'] = trim(utf8_encode(substr($value, 50, 3)));
-                $row['cuenta']['cbu'] = trim(substr($value, 244, 27));
-                $row['cuenta']['sub_sucursalid'] = trim(substr($value, 149, 3));
+                $row['cuil'] = trim(mb_substr($value, 182, 11));
+                $row['lugar']['calle'] = trim(utf8_encode(mb_substr($value, 83, 19)));
+                $row['lugar']['altura'] = intval(trim(mb_substr($value, 102, 9)));
+                $row['lugar']['localidad'] = trim(mb_substr($value, 111, 30));
+                $row['lugar']['codigo_postal'] = intval(trim(mb_substr($value, 141, 5)));
+                $row['prestacion']['monto'] = intval(trim(mb_substr($value, 193, 5)));
+                $row['prestacion']['fecha'] = trim(mb_substr($value, 216, 8));
+                $row['cuenta']['tipo_inscripcionid'] = trim(mb_substr($value, 179, 3));
+                $row['cuenta']['tipo_cuentaid'] = trim(utf8_encode(mb_substr($value, 50, 3)));
+                $row['cuenta']['cbu'] = trim(mb_substr($value, 244, 27));
+                $row['cuenta']['sub_sucursalid'] = trim(mb_substr($value, 149, 3));
                 $listaPersona[] = $row;
             }
 
@@ -180,10 +180,13 @@ class CtaBps extends Model
                 $error = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." " . Help::ArrayErrorsToString($cuenta->errors);
                 $errors[] = $error;
             }else{
+                //borramos la cuenta si la persona no pasó por el convenio
+                $cuenta->delete();
+
                 $prestacion = Prestacion::findOne(['personaid' => $cuenta->personaid]);
                 //chequeamos que la persona este en el convenio
                 if(!isset($prestacion)){
-                    $error = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." No fue dado de alta por el convenio";
+                    $error = "La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." no fue dado de alta en ningún convenio";
                     $errors[] = $error;
                 }else{
                     $prestacion->setScenario(Prestacion::SCENARIO_IMPORTADO_BPS);
