@@ -56,9 +56,6 @@ class CtaBps extends Model
                     break;
                 }
 
-                //iniciamos la cadena, donde empieza el numero del convenio 8180 
-                $value = substr($value,strpos($value,'8180'));
-
                 $row = array();
                 $row['convenio'] = trim(mb_substr($value, 0, 4));
                 $row['apellido'] = trim(utf8_encode(mb_substr($value, 4, 30)));
@@ -180,12 +177,12 @@ class CtaBps extends Model
                 $error = $persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." " . Help::ArrayErrorsToString($cuenta->errors);
                 $errors[] = $error;
             }else{
-                //borramos la cuenta si la persona no pasó por el convenio
-                $cuenta->delete();
-
+                
                 $prestacion = Prestacion::findOne(['personaid' => $cuenta->personaid]);
                 //chequeamos que la persona este en el convenio
                 if(!isset($prestacion)){
+                    //borramos la cuenta si la persona no pasó por el convenio
+                    $cuenta->delete();
                     $error = "La persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil']." no fue dado de alta en ningún convenio";
                     $errors[] = $error;
                 }else{
