@@ -18,8 +18,12 @@ use Yii;
  * @property integer $personaid
  * @property integer $estado
  * @property string $fecha_ingreso
+ * @property integer $areaid
+ * @property integer $tipo_convenioid
  *
+ * @property \app\models\Area $area
  * @property \app\models\SubSucursal $subSucursal
+ * @property \app\models\TipoConvenio $tipoConvenio
  * @property string $aliasModel
  */
 abstract class Prestacion extends \yii\db\ActiveRecord
@@ -45,8 +49,10 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             [['monto'], 'number'],
             [['create_at', 'fecha_ingreso'], 'safe'],
             [['proposito', 'observacion'], 'string'],
-            [['sub_sucursalid', 'personaid', 'estado'], 'integer'],
-            [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']]
+            [['sub_sucursalid', 'personaid', 'estado', 'areaid', 'tipo_convenioid'], 'integer'],
+            [['areaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Area::className(), 'targetAttribute' => ['areaid' => 'id']],
+            [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']],
+            [['tipo_convenioid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoConvenio::className(), 'targetAttribute' => ['tipo_convenioid' => 'id']]
         ];
     }
 
@@ -65,6 +71,8 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             'personaid' => 'Personaid',
             'estado' => 'Estado',
             'fecha_ingreso' => 'Fecha Ingreso',
+            'areaid' => 'Areaid',
+            'tipo_convenioid' => 'Tipo Convenioid',
         ];
     }
 
@@ -85,9 +93,25 @@ abstract class Prestacion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getArea()
+    {
+        return $this->hasOne(\app\models\Area::className(), ['id' => 'areaid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSubSucursal()
     {
         return $this->hasOne(\app\models\SubSucursal::className(), ['id' => 'sub_sucursalid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoConvenio()
+    {
+        return $this->hasOne(\app\models\TipoConvenio::className(), ['id' => 'tipo_convenioid']);
     }
 
 
