@@ -5,6 +5,16 @@
 * @url http://api.gestor-inventario.local/api/tipo-convenios
 * @method GET
 * @arrayReturn
+    [
+        {
+            "id": 1,
+            "nombre": "8180"
+        },
+        {
+            "id": 2,
+            "nombre": "8277"
+        }
+    ]
 */
 
 /*****Para crear****

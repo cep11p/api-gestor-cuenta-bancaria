@@ -5,6 +5,16 @@
 * @url http://api.gestor-inventario.local/api/areas
 * @method GET
 * @arrayReturn
+    [
+        {
+            "id": 1,
+            "nombre": "Secretaria de Políticas Sociales y Articulación Territorial"
+        },
+        {
+            "id": 2,
+            "nombre": "SubSecretaria de Integración Social"
+        }
+    ]
 */
 
 /*****Para crear****
