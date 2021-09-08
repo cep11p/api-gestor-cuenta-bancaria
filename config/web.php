@@ -89,6 +89,10 @@ $config = [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/tipo-export', 
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/provincia', 
                 ],
                 [
