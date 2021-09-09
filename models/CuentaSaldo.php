@@ -22,25 +22,25 @@ class CuentaSaldo
      * @param [array] $params lista de prestaciones
      * @return void
      */
-    public static function registrarExportacion($params){
-
-        #preparamos el atributo lista_ids
-        $lista_ids = '';
-        $cantidad = 0;
-        foreach ($params as $value) {
-            $lista_ids .= ($lista_ids=='')?strval($value['prestacion']['id']):",".strval($value['prestacion']['id']);
-            $cantidad++;
-        }
+    public static function registrarExportacion($prestaciones){
 
         #registramos la exportacion
         $export = new Export();
-        $export->lista_ids = $lista_ids;
-        $export->cantidad = $cantidad;
+        $export->cantidad = count($prestaciones);
         $export->tipo = Export::TIPO_CUENTA_SALDO;
 
         if(!$export->save()){
             throw new \yii\web\HttpException(400, json_encode($export->errors));
         }
+
+        $lista_prestacionid = array ();
+        #preparamos el atributo lista_ids
+        foreach ($prestaciones as $value) {
+            $lista_prestacionid[] = $value['prestacion']['id'];
+        }
+
+        #integramos la exportacion en cada prestacion
+        Prestacion::updateAll(['exportid' => $export->id],['id' => $lista_prestacionid]);
     }
 
     /**
@@ -49,10 +49,10 @@ class CuentaSaldo
      * @param string $lista_ids
      * @return void
      */
-    public static function reexportCtaSaldo($lista_ids = ''){
+    public static function reexportCtaSaldo($id){
 
-        $lista_ids = explode(',',$lista_ids);
-        $prestaciones = Prestacion::find()->asArray()->where(['id'=>$lista_ids])->all();
+        // $lista_ids = explode(',',$lista_ids);
+        $prestaciones = Prestacion::find()->asArray()->where(['exportid'=>$id])->all();
 
         #Armamos la estructura necesaria para reutilzar el codigo siguiente
         $lista_prestacion = [];

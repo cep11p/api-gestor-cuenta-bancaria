@@ -60,7 +60,7 @@ class Export extends BaseExport
                     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
                 }
 
-                $resultado['exportacion'] = CuentaSaldo::reexportCtaSaldo($this->lista_ids);
+                $resultado['exportacion'] = CuentaSaldo::reexportCtaSaldo($this->id);
                 break;
         }
 
