@@ -151,6 +151,7 @@ class Prestacion extends BasePrestacion
                     $lista_persona[$i]['sucursal'] = $value['sucursal']['sucursal_codigo'].' - '.$value['sucursal']['nombre'];
                     if($value['estado'] == Prestacion::SIN_CBU){
                         $lista_persona[$i]['convenio_pendiente'] = true;
+                        $lista_persona[$i]['fecha_exportacion'] = $value['fecha_exportacion'];
                     }
                     if($value['estado'] == Prestacion::PREPARADO_A_EXPORTAR){
                         $lista_persona[$i]['para_exportar'] = true;
@@ -173,6 +174,9 @@ class Prestacion extends BasePrestacion
         return ArrayHelper::merge(parent::fields(), [
             'sucursal'=> function($model){
                 return $model->subSucursal;
+            },
+            'fecha_exportacion'=> function($model){
+                return (isset($model->exportid))?$model->export->export_at:"";
             }
         ]);
         
