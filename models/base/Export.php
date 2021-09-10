@@ -14,6 +14,8 @@ use Yii;
  * @property integer $cantidad
  * @property string $tipo
  * @property string $export_at
+ *
+ * @property \app\models\Prestacion[] $prestacions
  * @property string $aliasModel
  */
 abstract class Export extends \yii\db\ActiveRecord
@@ -54,6 +56,14 @@ abstract class Export extends \yii\db\ActiveRecord
             'tipo' => 'Tipo',
             'export_at' => 'Export At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPrestacions()
+    {
+        return $this->hasMany(\app\models\Prestacion::className(), ['exportid' => 'id']);
     }
 
 

@@ -66,4 +66,17 @@ class Export extends BaseExport
 
         return $resultado;
     }
+
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'cantidad_inicial'=> function($model){
+                return $model->cantidad;
+            },
+            'cantidad_actual'=> function($model){
+                return count($model->prestacions);
+            },
+        ]);
+        
+    }
 }
