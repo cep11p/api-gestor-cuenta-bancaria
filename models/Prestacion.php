@@ -178,7 +178,7 @@ class Prestacion extends BasePrestacion
                 return $model->subSucursal;
             },
             'export_at'=> function($model){
-                return (isset($model->exportid))?$model->export->export_at:"";
+                return (isset($model->exportid))?\DateTime::createFromFormat('Y-m-d H:i:s', $model->export->export_at)->format('Y-m-d'):"";
             }
         ]);
         
