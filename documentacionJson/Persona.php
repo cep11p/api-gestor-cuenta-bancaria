@@ -57,7 +57,7 @@ diff_id = number (se busca la persona diferente a este valor)
             "sucursal": "252 - Ramos Mexia (Suc. San Antonio Oeste)",
             "tiene_cbu": false,
             "para_exportar": false,
-            "fecha_exportacion": "2021-09-06 14:43:57",
+            "export_at": "2021-09-06 14:43:57",
             "observacion": "",
             "convenio_pendiente": true,
             "lista_cuenta": []
@@ -108,7 +108,7 @@ diff_id = number (se busca la persona diferente a este valor)
             "sucursal": "252 - Ramos Mexia (Suc. San Antonio Oeste)",
             "tiene_cbu": false,
             "para_exportar": false,
-            "fecha_exportacion": "",
+            "export_at": "",
             "observacion": "",
             "convenio_pendiente": true
         }
