@@ -104,6 +104,9 @@ class CuentaSaldo
                 $model->observacion = $value['prestacion']['observacion'];
                 $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');  
                 
+                #Establecemos el area y el convenio por defecto
+                $model->tipo_convenioid = Prestacion::CONVENIO_8180;
+                $model->areaid = Prestacion::AREA_SECRETARIA_DE_POLITICA_SOCIALES_Y_ARTICULACION_TERRITORIAL;
                 
             }
             
@@ -358,6 +361,10 @@ class CuentaSaldo
                 $model->estado = Prestacion::PREPARADO_A_EXPORTAR;
                 $model->fecha_ingreso =(isset($value['fecha_ingreso']) && !empty($value['fecha_ingreso']))?$value['fecha_ingreso']:date('Y-m-d');
                 $model->observacion = $value['observacion'];
+
+                #Establecemos el area y el convenio por defecto
+                $model->tipo_convenioid = Prestacion::CONVENIO_8180;
+                $model->areaid = Prestacion::AREA_SECRETARIA_DE_POLITICA_SOCIALES_Y_ARTICULACION_TERRITORIAL;
 
                 if(!$model->save()){
                     $error = $model->errors;
