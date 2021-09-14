@@ -16,7 +16,6 @@ class Prestacion extends BasePrestacion
     const EN_TESORERIA=2;
     const PREPARADO_A_EXPORTAR=4;
     const CONVENIO_8180=1;
-    const AREA_SECRETARIA_DE_POLITICA_SOCIALES_Y_ARTICULACION_TERRITORIAL=1;
 
     #Escenario
     const SCENARIO_EXPORT_CUENTA_SALDO= 'exportando_cuenta_saldo';

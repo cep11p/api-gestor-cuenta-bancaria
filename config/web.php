@@ -81,10 +81,6 @@ $config = [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/area', 
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/tipo-convenio', 
                 ],
                 [
