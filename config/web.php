@@ -2,7 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-
+Yii::$classMap['dektrium\rbac\models\Rule'] = '@app/overrides/Rule.php';
 $config = [
     'id' => 'basic',
     'name' => 'Gestor de cuentas bancarias',
