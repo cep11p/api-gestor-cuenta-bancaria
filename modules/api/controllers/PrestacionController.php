@@ -98,6 +98,15 @@ class PrestacionController extends ActiveController{
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
+        // #Permisos para rol usuario_8180
+        // if ($model->tipo_convenioid == Prestacion::CONVENIO_8180 && !\Yii::$app->user->can('usuario_8180', ['prestacionid' => $model->id])) {
+        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        // }
+        // #Permisos para rol usuario_8277
+        // if ($model->tipo_convenioid == Prestacion::CONVENIO_8277 && !\Yii::$app->user->can('usuario_8277', ['prestacionid' => $model->id])) {
+        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        // }
+
         $cuenta = Cuenta::findOne(['personaid' => $id]);
 
         if($cuenta != null){

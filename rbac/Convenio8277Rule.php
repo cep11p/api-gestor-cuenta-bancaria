@@ -2,13 +2,13 @@
 
 namespace app\rbac;
 
-use app\models\ProgramaHasUsuario;
+use app\models\Prestacion;
 use yii\rbac\Rule;
 
 /**
  * Comprueba si un usuario pertenece a un programa
  */
-class ConvenioRule extends Rule
+class Convenio8277Rule extends Rule
 {
     public $name = 'isAuthor';
 
@@ -20,13 +20,12 @@ class ConvenioRule extends Rule
      */
     public function execute($user, $item, $param)
     {
-        $progama_usuario = ProgramaHasUsuario::findOne([
-            'programaid'=>$param['prestacion']['programaid'],
-            'userid' => $user,
-            'permiso' => $item->name
+        $prestacion = Prestacion::findOne([
+            'id'=>$param['prestacionid'],
+            'tipo_convenioid' => Prestacion::CONVENIO_8180,
         ]);
 
-        return ($progama_usuario!==null) ? true : false;
+        return ($prestacion!==null) ? true : false;
 
     }
 }
