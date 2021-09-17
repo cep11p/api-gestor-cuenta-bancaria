@@ -82,6 +82,24 @@ class Prestacion extends BasePrestacion
         );
     }
 
+    public function validarConvenioRule(){
+        
+        switch ($this->tipo_convenioid) {
+            case  Prestacion::CONVENIO_8180:
+                #Permisos para rol usuario_8180
+                if (!\Yii::$app->user->can('usuario_8180', ['prestacionid' => $this->id])) {
+                    throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+                }
+                break;
+            case  Prestacion::CONVENIO_8277:
+                #Permisos para rol usuario_8277
+                if (!\Yii::$app->user->can('usuario_8277', ['prestacionid' => $this->id])) {
+                    throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+                }
+                break;
+        }
+    }
+
     public function validarPersona(){
         #Chequemos si ya tiene cbu
         if(Cuenta::findOne(['personaid' => $this->personaid]) != NULL){
