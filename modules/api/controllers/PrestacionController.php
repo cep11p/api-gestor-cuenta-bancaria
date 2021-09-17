@@ -114,6 +114,12 @@ class PrestacionController extends ActiveController{
     }
 
     public function actionDelete($id){
+
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('prestacion_borrar')) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+        
         $model = Prestacion::findOne(['id'=>$id]);
         if($model == Null){
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
