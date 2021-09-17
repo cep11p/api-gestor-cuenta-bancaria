@@ -172,11 +172,6 @@ class User extends ApiUser
         if ( $user->load(['User'=>$params['usuario']]) && $user->create()) {
             $id = $user->id;
         }
-
-        #Chequeamos que venga el rol
-        if(!isset($params['usuario']['rol'])){
-            $user->addError('rol','Falta asiganar un rol1');
-        }
         
         #Chequeamos si se puede regitrar el usuario
         if($user->hasErrors() || count($lista_error)>0){
@@ -201,7 +196,7 @@ class User extends ApiUser
             throw new \yii\web\HttpException(400, json_encode(array($userPersona->errors)));
         }
         
-        $user->setRol($params['usuario']['rol']);
+        $user->setRol('usuario');
 
         return $id;
     }

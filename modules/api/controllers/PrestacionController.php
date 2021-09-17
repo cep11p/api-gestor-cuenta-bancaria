@@ -55,6 +55,7 @@ class PrestacionController extends ActiveController{
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['delete']);
         return $actions;
     
     }
@@ -67,6 +68,7 @@ class PrestacionController extends ActiveController{
         try{            
             $model = new \app\models\Prestacion();
             $model->setAttributesCustom($params);
+            // $model->validarConvenioRule();
             
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));
@@ -98,14 +100,7 @@ class PrestacionController extends ActiveController{
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
-        // #Permisos para rol usuario_8180
-        // if ($model->tipo_convenioid == Prestacion::CONVENIO_8180 && !\Yii::$app->user->can('usuario_8180', ['prestacionid' => $model->id])) {
-        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        // }
-        // #Permisos para rol usuario_8277
-        // if ($model->tipo_convenioid == Prestacion::CONVENIO_8277 && !\Yii::$app->user->can('usuario_8277', ['prestacionid' => $model->id])) {
-        //     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        // }
+        // $model->validarConvenioRule();
 
         $cuenta = Cuenta::findOne(['personaid' => $id]);
 
@@ -116,6 +111,16 @@ class PrestacionController extends ActiveController{
         $model->delete();
 
         return $resultado;
+    }
+
+    public function actionDelete($id){
+        $model = Prestacion::findOne(['id'=>$id]);
+        if($model == Null){
+            throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
+        }
+
+        // $model->validarConvenioRule();
+        $model->delete();
     }
     
 }
