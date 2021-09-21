@@ -77,6 +77,20 @@ class User extends ApiUser
                     }
                 }
             }
+
+            #Asociamos el convenio (vinculacion de convenio, permiso y usuario)
+            foreach ($params['lista_permiso'] as $value) {
+                $model = new UsuarioHasConvenio();
+                $model->setAttributes([
+                    'userid'=>$params['usuarioid'],
+                    'tipo_convenioid'=>$params['tipo_convenioid'],
+                    'permiso'=>$value['name']
+                ]);
+
+                if(!$model->save()){
+                    throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                }
+            }
             
             $transaction->commit();
 

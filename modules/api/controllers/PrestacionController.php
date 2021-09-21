@@ -100,8 +100,6 @@ class PrestacionController extends ActiveController{
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
-        // $model->validarConvenioRule();
-
         $cuenta = Cuenta::findOne(['personaid' => $id]);
 
         if($cuenta != null){

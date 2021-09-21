@@ -3,12 +3,13 @@
 namespace app\rbac;
 
 use app\models\Prestacion;
+use app\models\UsuarioHasConvenio;
 use yii\rbac\Rule;
 
 /**
  * Comprueba si un usuario pertenece a un programa
  */
-class Convenio8277Rule extends Rule
+class ConvenioRule extends Rule
 {
     public $name = 'isAuthor';
 
@@ -18,14 +19,14 @@ class Convenio8277Rule extends Rule
      * @param array $params parámetros pasados a ManagerInterface::checkAccess().
      * @return bool un valor indicando si la regla permite al rol o permiso con el que está asociado.
      */
-    public function execute($user, $item, $param)
+    public function execute($user, $item, $tipo_convenioid)
     {
-        $prestacion = Prestacion::findOne([
-            'id'=>$param['prestacionid'],
-            'tipo_convenioid' => Prestacion::CONVENIO_8180,
+        $model = UsuarioHasConvenio::findOne([
+            'userid' => $user,
+            'tipo_convenioid' => $tipo_convenioid,
+            'permiso' => $item->name
         ]);
 
-        return ($prestacion!==null) ? true : false;
-
+        return ($model!==null) ? true : false;
     }
 }
