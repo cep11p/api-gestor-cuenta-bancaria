@@ -45,7 +45,7 @@ class User extends ApiUser
 
         #Chequeamos la lista de permisos
         if(!isset($params['lista_permiso']) || empty($params['lista_permiso'])){
-            throw new \yii\web\HttpException(400, json_encode([['error'=>['Falta la lista de permisos (lista_permiso)']]]));
+            throw new \yii\web\HttpException(400, 'Falta la lista de permisos');
         }
 
         #Borramos los permisos (auth_assigment)
