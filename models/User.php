@@ -129,27 +129,52 @@ class User extends ApiUser
     
 
     public function getAsignaciones(){
+        $lista_tipo_convenio = $this->getTipoConveniosAsociados();
 
-        $query = new Query();      
-        $query->select('item_name as permiso');
-        $query->from('auth_assignment');
-        $query->leftJoin('auth_item ai', 'item_name = ai.name');
-        $query->where([
-            'user_id'=>$this->id,
-            'type'=>AuthItem::PERMISO
+        $i=0;
+        foreach ($lista_tipo_convenio as $value) {
+            $query = new Query();        
+            $query->select([
+                'permiso'
+            ]);
+            $query->from('usuario_has_convenio');
+            $query->where([
+                'userid'=>$this->id,
+                'tipo_convenioid'=>$value['tipo_convenioid']
+            ]);
+            
+            $command = $query->createCommand();
+            $rows = $command->queryAll();
+            
+            $permisos = array();
+            foreach ($rows as $value) {
+                $permisos[] = $value['permiso'];
+            }
+            $lista_tipo_convenio[$i]['lista_permiso'] = $permisos;
+            $lista_tipo_convenio[$i]['usuarioid'] = $this->id;
+            $i++;
+        }
+                
+        return $lista_tipo_convenio;
+    }
+
+    public function getTipoConveniosAsociados(){
+        $query = new Query();
+        
+        $query->select([
+            'tipo_convenio'=>'convenio.nombre',
+            'tipo_convenioid',
         ]);
+
+        $query->from('usuario_has_convenio uhc1');
+        $query->leftJoin("tipo_convenio as convenio", "tipo_convenioid=convenio.id");
+        $query->where(['userid'=>$this->id]);
+        $query->groupBy('tipo_convenio');
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
-        
-        $permisos = array();
-        foreach ($rows as $value) {
-            $permisos[] = $value['permiso'];
-        }
-        $resultado['lista_permiso'] = $permisos;
-        $resultado['usuarioid'] = $this->id;
-        
-        return $resultado;
+
+        return $rows;
     }
 
     /**
