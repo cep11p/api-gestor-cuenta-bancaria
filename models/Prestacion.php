@@ -169,6 +169,8 @@ class Prestacion extends BasePrestacion
             foreach ($lista_persona as $persona) {
                 if(isset($persona['id']) && isset($value['personaid']) && $persona['id']==$value['personaid']){
                     $lista_persona[$i]['sucursal'] = $value['sucursal']['sucursal_codigo'].' - '.$value['sucursal']['nombre'];
+                    $lista_persona[$i]['tipo_convenio'] = $value['tipo_convenio'];
+
                     if($value['estado'] == Prestacion::SIN_CBU){
                         $lista_persona[$i]['convenio_pendiente'] = true;
                         $lista_persona[$i]['export_at'] = $value['export_at'];
@@ -194,6 +196,9 @@ class Prestacion extends BasePrestacion
         return ArrayHelper::merge(parent::fields(), [
             'sucursal'=> function($model){
                 return $model->subSucursal;
+            },
+            'tipo_convenio'=> function($model){
+                return $model->tipoConvenio->nombre;
             },
             'export_at'=> function($model){
                 return (isset($model->exportid))?\DateTime::createFromFormat('Y-m-d H:i:s', $model->export->export_at)->format('Y-m-d'):"";
