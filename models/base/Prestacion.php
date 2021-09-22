@@ -18,11 +18,9 @@ use Yii;
  * @property integer $personaid
  * @property integer $estado
  * @property string $fecha_ingreso
- * @property integer $areaid
  * @property integer $tipo_convenioid
  * @property integer $exportid
  *
- * @property \app\models\Area $area
  * @property \app\models\Export $export
  * @property \app\models\SubSucursal $subSucursal
  * @property \app\models\TipoConvenio $tipoConvenio
@@ -51,8 +49,7 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             [['monto'], 'number'],
             [['create_at', 'fecha_ingreso'], 'safe'],
             [['proposito', 'observacion'], 'string'],
-            [['sub_sucursalid', 'personaid', 'estado', 'areaid', 'tipo_convenioid', 'exportid'], 'integer'],
-            [['areaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Area::className(), 'targetAttribute' => ['areaid' => 'id']],
+            [['sub_sucursalid', 'personaid', 'estado', 'tipo_convenioid', 'exportid'], 'integer'],
             [['exportid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Export::className(), 'targetAttribute' => ['exportid' => 'id']],
             [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']],
             [['tipo_convenioid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoConvenio::className(), 'targetAttribute' => ['tipo_convenioid' => 'id']]
@@ -74,7 +71,6 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             'personaid' => 'Personaid',
             'estado' => 'Estado',
             'fecha_ingreso' => 'Fecha Ingreso',
-            'areaid' => 'Areaid',
             'tipo_convenioid' => 'Tipo Convenioid',
             'exportid' => 'Exportid',
         ];
@@ -92,14 +88,6 @@ abstract class Prestacion extends \yii\db\ActiveRecord
             'fecha_ingreso' => 'Esta fecha nos indica cuando fue la solicitud de esta prestacion
 ',
         ]);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getArea()
-    {
-        return $this->hasOne(\app\models\Area::className(), ['id' => 'areaid']);
     }
 
     /**
