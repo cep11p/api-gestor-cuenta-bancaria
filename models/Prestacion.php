@@ -141,13 +141,7 @@ class Prestacion extends BasePrestacion
             $this->fecha_ingreso = date('Y-m-d');
         }
         
-        //chequeamos si la persona tiene cuenta con cbu para definir el estado de la prestacion
-        $cuenta = Cuenta::findOne(['personaid'=> $this->personaid]);
-        if(isset($cuenta)){
-            $this->estado = $this::CON_CBU;
-        }else{
-            $this->estado = $this::SIN_CBU;
-        }
+        $this->estado = Prestacion::PREPARADO_A_EXPORTAR;
     }
 
     public static function setEstado($lista_persona){
