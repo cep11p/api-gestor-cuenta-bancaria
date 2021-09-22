@@ -45,7 +45,7 @@ abstract class Prestacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['monto', 'create_at', 'sub_sucursalid', 'personaid', 'fecha_ingreso'], 'required'],
+            [['monto', 'create_at', 'sub_sucursalid', 'personaid', 'fecha_ingreso', 'tipo_convenioid'], 'required'],
             [['monto'], 'number'],
             [['create_at', 'fecha_ingreso'], 'safe'],
             [['proposito', 'observacion'], 'string'],

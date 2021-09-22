@@ -68,7 +68,6 @@ class PrestacionController extends ActiveController{
         try{            
             $model = new \app\models\Prestacion();
             $model->setAttributesCustom($params);
-            // $model->validarConvenioRule();
             
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));
