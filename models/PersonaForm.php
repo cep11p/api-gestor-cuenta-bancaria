@@ -354,6 +354,7 @@ class PersonaForm extends Model
                 $persona['para_exportar'] = false;
                 $persona['export_at'] = '';
                 $persona['observacion'] = "";
+                $persona['tipo_convenio'] = "";
 
                 if(count($persona['lugar'])<1){
                     unset($persona['lugar']);
