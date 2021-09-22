@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\api\controllers;
 
+use app\components\Help;
 use app\models\Cuenta;
 use app\models\Prestacion;
 use yii\rest\ActiveController;
@@ -68,9 +69,14 @@ class PrestacionController extends ActiveController{
         try{            
             $model = new \app\models\Prestacion();
             $model->setAttributesCustom($params);
+
+            #Chequeamos el permiso
+            if (!\Yii::$app->user->can('cuenta_saldo_crear',$model->tipo_convenioid)) {
+                throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+            }
             
             if(!$model->save()){
-                throw new Exception(json_encode($model->getErrors()));
+                throw new Exception(Help::ArrayErrorsToString($model->getErrors()));
             }
             
             $transaction->commit();
@@ -87,18 +93,18 @@ class PrestacionController extends ActiveController{
     }
     
     public function actionBorrarPendiente($id){
-
-        #Chequeamos el permiso
-        if (!\Yii::$app->user->can('prestacion_borrar')) {
-            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        }
-
         $resultado = 'Se borra la solicitud de CBU';
         $model = Prestacion::findOne(['personaid'=>$id]);
         if($model == Null){
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('prestacion_borrar',$model->tipo_convenioid)) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
+        #validamos
         $cuenta = Cuenta::findOne(['personaid' => $id]);
 
         if($cuenta != null){
@@ -110,19 +116,17 @@ class PrestacionController extends ActiveController{
         return $resultado;
     }
 
-    public function actionDelete($id){
-
-        #Chequeamos el permiso
-        if (!\Yii::$app->user->can('prestacion_borrar')) {
-            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        }
-        
+    public function actionDelete($id){       
         $model = Prestacion::findOne(['id'=>$id]);
         if($model == Null){
             throw new \yii\web\HttpException(400, 'No existe la entidad con  personaid '.$id);
         }
 
-        // $model->validarConvenioRule();
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('prestacion_borrar',$model->tipo_convenioid)) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $model->delete();
     }
     

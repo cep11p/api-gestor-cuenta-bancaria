@@ -11,19 +11,20 @@
 * @url http://api.gcb.local/api/prestacions 
 * @method POST
 * @param arrayJson
-* {
-   "monto":"admin",
-   "proposito":"admins",
-   "sub_sucursalid":"admins",
-   "personaid":"admins",
+{
+   "monto":"5000",
+   "proposito":"Un Proposito",
+   "sub_sucursalid":"1",
+   "personaid":"1212",
    "fecha_ingreso":"2020-06-06",
-   "observacion":"admins"
- }
+   "observacion":"una obser",
+   "tipo_convenioid":"1"
+}
 * @return
-* {
+{
    "message": "Se crea una prestacion",
    "id": 1
-   }
+}
 **/
 
 /**** Para modificar*****

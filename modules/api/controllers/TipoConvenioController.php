@@ -41,7 +41,7 @@ class TipoConvenioController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['soporte'],
+                    'roles' => ['soporte','usuario'],
                 ],
             ]
         ];

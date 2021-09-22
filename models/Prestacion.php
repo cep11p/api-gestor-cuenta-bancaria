@@ -185,6 +185,14 @@ class Prestacion extends BasePrestacion
 
     }
 
+    public function attributeLabels()
+    {
+        $labels = parent::attributeLabels();
+        return ArrayHelper::merge($labels, [
+            "tipo_convenioid" => "Tipo convenio"
+        ]);
+    }
+
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(), [
