@@ -48,6 +48,24 @@ class User extends ApiUser
             throw new \yii\web\HttpException(400, 'Falta la lista de permisos');
         }
 
+        #Chequeamos el tipo convenio
+        if(!isset($params['tipo_convenioid']) || empty($params['tipo_convenioid'])){
+            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta el Tipo Convenio']]));
+        }
+
+        #Buscamos el permiso distinto a borrar
+        $permisos = UsuarioHasConvenio::find()->select('permiso')->where(['userid'=>$params['usuarioid']])->andWhere(['!=','tipo_convenioid',$params['tipo_convenioid']])->distinct()->asArray()->all();
+
+        $i=0;
+        foreach ($params['lista_permiso'] as $permiso_borrar) {
+            foreach ($permisos as $permiso_bd) {
+                if($permiso_borrar == $permiso_bd['permiso']){
+                    unset($params['lista_permiso'][$i]);
+                }
+            }
+            $i++;
+        }
+
         #Borramos los permisos (auth_assigment)
         if(!empty($params['lista_permiso'])){
             AuthAssignment::deleteAll([
@@ -55,6 +73,12 @@ class User extends ApiUser
                 'item_name'=>$params['lista_permiso']
             ]);
         }
+
+        #Borramos la regla (usuario_has_convenio)
+        UsuarioHasConvenio::deleteAll([
+            'userid'=>$params['usuarioid'],
+            'tipo_convenioid'=>$params['tipo_convenioid']
+        ]);
     }
 
     public static function setAsignacion($params){
