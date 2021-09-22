@@ -155,14 +155,32 @@
 /**** Listar Asignaciones a Usuarios*****
 * @url http://api.gcb.local/api/usuarios/listar-asignacion/14
 * @method GET
-* @param arrayJson
-{
-	"usuarioid": 14,
-	"lista_permiso": [
-        "cuenta_saldo_exportar",
-        "cuenta_ver"
-  ],
-}
+* @param return
+[
+    {
+        "tipo_convenio": "8180",
+        "tipo_convenioid": "1",
+        "lista_permiso": [
+            "prestacion_borrar",
+            "cuenta_saldo_crear",
+            "cuenta_saldo_crear",
+            "persona_crear",
+            "cuenta_saldo_crear",
+            "persona_crear",
+            "prestacion_borrar"
+        ],
+        "usuarioid": 31
+    },
+    {
+        "tipo_convenio": "8277",
+        "tipo_convenioid": "2",
+        "lista_permiso": [
+            "cuenta_saldo_crear",
+            "persona_crear"
+        ],
+        "usuarioid": 31
+    }
+]
 
 /**** Borrar Asignaciones a Usuarios*****
 * @url http://api.gcb.local/api/usuarios/borrar-asignacion 
