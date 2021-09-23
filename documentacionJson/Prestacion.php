@@ -3,6 +3,7 @@
 /**** Para mostrar listado ****/
 /**
 * @url http://api.gcb.local/api/prestacions
+* @params tipo_convenioid=integer
 * @method GET
 * @arrayReturn
 {
