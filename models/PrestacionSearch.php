@@ -18,7 +18,7 @@ class PrestacionSearch extends Prestacion
     public function rules()
     {
         return [
-            [['id', 'sub_sucursalid', 'personaid', 'estado'], 'integer'],
+            [['id', 'sub_sucursalid', 'personaid', 'estado','tipo_convenioid'], 'integer'],
             [['monto'], 'number'],
             [['create_at', 'proposito', 'observacion', 'fecha_ingreso'], 'safe'],
         ];
@@ -79,6 +79,7 @@ class PrestacionSearch extends Prestacion
                 'personaid' => $this->personaid,
                 'estado' => $this->estado,
                 'fecha_ingreso' => $this->fecha_ingreso,
+                'tipo_convenioid' => $this->tipo_convenioid,
             ]);
             $query->andFilterWhere(['like', 'proposito', $this->proposito])
                 ->andFilterWhere(['like', 'observacion', $this->observacion]);

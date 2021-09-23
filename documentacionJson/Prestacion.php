@@ -5,6 +5,60 @@
 * @url http://api.gcb.local/api/prestacions
 * @method GET
 * @arrayReturn
+{
+"pagesize": 500,
+"pages": 2,
+"total_filtrado": 781,
+"resultado": [
+   {
+      "id": 27,
+      "monto": 45000,
+      "create_at": "2021-06-10 14:06:10",
+      "proposito": null,
+      "observacion": null,
+      "sub_sucursalid": 15,
+      "personaid": 2568,
+      "estado": 0,
+      "fecha_ingreso": "2021-06-09",
+      "tipo_convenioid": 1,
+      "exportid": 7,
+      "sucursal": {
+            "id": 15,
+            "localidad": "Villa Regina",
+            "codigo_postal": "8336",
+            "codigo": "161452",
+            "sucursalid": 4,
+            "nombre": "Villa Regina (Suc. Villa Regina)",
+            "sucursal_codigo": "253"
+      },
+      "tipo_convenio": "8180",
+      "export_at": "2021-06-11"
+   },
+   {
+      "id": 28,
+      "monto": 35000,
+      "create_at": "2021-06-10 14:06:10",
+      "proposito": null,
+      "observacion": null,
+      "sub_sucursalid": 2,
+      "personaid": 2569,
+      "estado": 1,
+      "fecha_ingreso": "2021-06-09",
+      "tipo_convenioid": 1,
+      "exportid": 7,
+      "sucursal": {
+            "id": 2,
+            "localidad": "Bariloche",
+            "codigo_postal": "8400",
+            "codigo": "161399",
+            "sucursalid": 3,
+            "nombre": "Bariloche (Suc. Bariloche)",
+            "sucursal_codigo": "255"
+      },
+      "tipo_convenio": "8180",
+      "export_at": "2021-06-11"
+   }
+}
 */
 
 /*****Para crear****
