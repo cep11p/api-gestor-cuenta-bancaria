@@ -388,7 +388,7 @@ class CuentaSaldo
     }
     
     /**
-     * Se vinsualizan las prestaciones con su datos de Persona y Sub_sucursal
+     * Se detallan las personas que solicitan cbu (convenios 8180 8277)
      * @return array
      */
     static function verCtaSaldo() {
