@@ -6,11 +6,7 @@
 * @params tipo_convenioid=integer
 * @method GET
 * @arrayReturn
-{
-"pagesize": 500,
-"pages": 2,
-"total_filtrado": 781,
-"resultado": [
+{[
    {
       "id": 27,
       "monto": 45000,
@@ -59,7 +55,7 @@
       "tipo_convenio": "8180",
       "export_at": "2021-06-11"
    }
-}
+]}
 */
 
 /*****Para crear****
