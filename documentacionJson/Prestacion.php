@@ -4,57 +4,123 @@
 /**
 * @url http://api.gcb.local/api/prestacions
 * @params tipo_convenioid=integer
+* @params estado=0 SIN CBU
+* @params estado=1 CON CBU
+* @params estado=2 EN TESORERIA
+* @params estado=4 PREPARADO PARA EXPORTAR
 * @method GET
 * @arrayReturn
 {[
    {
-      "id": 27,
-      "monto": 45000,
-      "create_at": "2021-06-10 14:06:10",
-      "proposito": null,
-      "observacion": null,
-      "sub_sucursalid": 15,
-      "personaid": 2568,
-      "estado": 0,
-      "fecha_ingreso": "2021-06-09",
-      "tipo_convenioid": 1,
-      "exportid": 7,
-      "sucursal": {
-            "id": 15,
-            "localidad": "Villa Regina",
-            "codigo_postal": "8336",
-            "codigo": "161452",
-            "sucursalid": 4,
-            "nombre": "Villa Regina (Suc. Villa Regina)",
-            "sucursal_codigo": "253"
-      },
-      "tipo_convenio": "8180",
-      "export_at": "2021-06-11"
-   },
+        "id": 3668,
+        "apellido": "Larrosa",
+        "nombre": "Miguel Angel",
+        "nro_documento": "34075149",
+        "tipo_documentoid": 1,
+        "fecha_nacimiento": "1988-10-04",
+        "sexo": "Masculino",
+        "nacionalidadid": 1,
+        "nacionalidad": "A",
+        "cuil": "20340751494",
+        "telefono": "",
+        "celular": "",
+        "email": "",
+        "lugar": {
+            "calle": "heroes de malvinas",
+            "altura": "",
+            "localidad": "Ministro Ramos Mexia",
+            "codigo_postal": 8534,
+            "barrio": "",
+            "depto": "",
+            "piso": "",
+            "escalera": ""
+        },
+        "prestacion": {
+            "id": 1314,
+            "monto": 20000,
+            "create_at": "2021-09-23 11:09:09",
+            "proposito": null,
+            "observacion": "123123",
+            "sub_sucursalid": 1,
+            "personaid": 3668,
+            "estado": 4,
+            "fecha_ingreso": "2021-09-23",
+            "tipo_convenioid": 2,
+            "exportid": null,
+            "sucursal": {
+                "id": 1,
+                "localidad": "Allen",
+                "codigo_postal": "8328",
+                "codigo": "161014",
+                "sucursalid": 14,
+                "nombre": "Allen (Suc. Allen)",
+                "sucursal_codigo": "265"
+            },
+            "tipo_convenio": "8277",
+            "export_at": "",
+            "localidad": "Allen",
+            "codigo_postal": "8328",
+            "codigo": "161014",
+            "sucursalid": 14,
+            "nombre": "Allen (Suc. Allen)",
+            "sucursal_codigo": "265"
+        }
+    },
    {
-      "id": 28,
-      "monto": 35000,
-      "create_at": "2021-06-10 14:06:10",
-      "proposito": null,
-      "observacion": null,
-      "sub_sucursalid": 2,
-      "personaid": 2569,
-      "estado": 1,
-      "fecha_ingreso": "2021-06-09",
-      "tipo_convenioid": 1,
-      "exportid": 7,
-      "sucursal": {
-            "id": 2,
+        "id": 2569,
+        "apellido": "Cortes",
+        "nombre": "Gustavo Gabriel",
+        "nro_documento": "30874888",
+        "tipo_documentoid": 1,
+        "fecha_nacimiento": "1984-05-01",
+        "sexo": "Masculino",
+        "nacionalidadid": 1,
+        "nacionalidad": "A",
+        "cuil": "20308748880",
+        "telefono": "",
+        "celular": "",
+        "email": "",
+        "lugar": {
+            "calle": "roca negra 406",
+            "altura": "lote 22",
+            "localidad": "San Carlos De Bariloche",
+            "codigo_postal": 8400,
+            "barrio": "",
+            "depto": "",
+            "piso": "",
+            "escalera": ""
+        },
+        "prestacion": {
+            "id": 28,
+            "monto": 35000,
+            "create_at": "2021-06-10 14:06:10",
+            "proposito": null,
+            "observacion": "",
+            "sub_sucursalid": 2,
+            "personaid": 2569,
+            "estado": 1,
+            "fecha_ingreso": "2021-06-09",
+            "tipo_convenioid": 1,
+            "exportid": 7,
+            "sucursal": {
+                "id": 2,
+                "localidad": "Bariloche",
+                "codigo_postal": "8400",
+                "codigo": "161399",
+                "sucursalid": 3,
+                "nombre": "Bariloche (Suc. Bariloche)",
+                "sucursal_codigo": "255"
+            },
+            "tipo_convenio": "8180",
+            "export_at": "2021-06-11",
             "localidad": "Bariloche",
             "codigo_postal": "8400",
             "codigo": "161399",
             "sucursalid": 3,
             "nombre": "Bariloche (Suc. Bariloche)",
             "sucursal_codigo": "255"
-      },
-      "tipo_convenio": "8180",
-      "export_at": "2021-06-11"
-   }
+        }
+    }
 ]}
 */
 

@@ -90,6 +90,21 @@ class PrestacionSearch extends Prestacion
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();
         }
+
+        if(count($coleccion)>0){
+            //armamos la estructura adecuada y coordinada con el frontend
+            $i=0;
+            foreach ($coleccion as $value) {
+                $coleccion[$i]['id'] = intval($value['personaid']);
+                $coleccion[$i]['prestacion'] = $value;
+                $coleccion[$i]['prestacion']['sub_sucursalid'] = intval($value['sub_sucursalid']);
+                $coleccion[$i]['prestacion']['observacion'] = (isset($value['observacion']) && !empty($value['observacion']))?$value['observacion']:"";
+                $i++;
+            }        
+            
+            /***************** Instancias con atributos externos ************/
+            $coleccion = self::setInstanciaSubSucursalYPersona($coleccion);
+        }
         
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);           

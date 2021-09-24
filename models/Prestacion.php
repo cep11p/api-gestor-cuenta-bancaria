@@ -185,6 +185,133 @@ class Prestacion extends BasePrestacion
 
     }
 
+    /**
+     * Se vinculan los datos de Persona y SubSucursal
+     * @param array $params
+     * @return Array
+        (
+            [0] => Array
+                (
+                    [id] => 1
+                    [apellido] => González
+                    [nombre] => Victoria Margarita
+                    [nro_documento] => 23851266
+                    [tipo_documentoid] => 1
+                    [fecha_nacimiento] => 1982-12-30
+                    [sexo] => Femenino
+                    [nacionalidadid] => 1
+                    [nacionalidad] => A
+                    [lugar] => Array
+                        (
+                            [calle] => escalera 39 planta baja dpto. d b°guido
+                            [altura] => 
+                            [localidad] => Viedma
+                            [codigo_postal] => 8500
+                        )
+
+                    [cuil] => 20238512669
+                    [prestacion] => Array
+                        (
+                            [sub_sucursalid] => 1
+                            [localidad] => Allen
+                            [codigo_postal] => 8328
+                            [codigo] => 161014
+                            [sucursalid] => 14
+                            [nombre] => Allen (Suc. Allen)
+                            [sucursal_codigo] => 265
+                        )
+
+                )
+        )
+     * @throws \yii\web\HttpException
+     */
+    public static function setInstanciaSubSucursalYPersona($params) {
+        $subSucursalSearch = new SubSucursalSearch();
+        $lista_persona_prestacion = [];
+        $sub_sucursalesids = '';
+        $ids = '';
+        
+        /******** Instancia con Persona ************/
+        //hacemos instancia con todas las persoans
+        foreach ($params as $value) {
+            //nos comunicamos con registrar para obtener lista de personas
+            if(isset($value['id'])){
+                $ids .= (empty($ids))?$value['id']:','.$value['id'];
+            }else{
+                throw new \yii\web\HttpException(400,'No se permite una prestacion sin id de una persona');
+            }
+        }
+        $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
+        //validamos si la lista tiene personas
+        if(count($lista_persona['resultado'])<1){
+            throw new \yii\web\HttpException(400,'Hubo problemas con obtener la lista de personas');
+        }
+        
+        //vamos a vincular la lista de persona con sus prestaciones correspondientes
+        $i=0;
+        foreach ($params as $value) {
+            foreach ($lista_persona['resultado'] as $persona) {
+                if(isset($persona['id']) && isset($value['id']) && $persona['id']==$value['id']){
+                    $lista_persona_prestacion[$i]['id'] = $persona['id'];
+                    $lista_persona_prestacion[$i]['apellido'] = $persona['apellido'];
+                    $lista_persona_prestacion[$i]['nombre'] = $persona['nombre'];
+                    $lista_persona_prestacion[$i]['nro_documento'] = $persona['nro_documento'];
+                    $lista_persona_prestacion[$i]['tipo_documentoid'] = $persona['tipo_documentoid'];
+                    $lista_persona_prestacion[$i]['fecha_nacimiento'] = $persona['fecha_nacimiento'];
+                    $lista_persona_prestacion[$i]['sexo'] = $persona['sexo'];
+                    $lista_persona_prestacion[$i]['nacionalidadid'] = $persona['nacionalidadid'];
+                    $lista_persona_prestacion[$i]['nacionalidad'] = ($persona['nacionalidadid']==PersonaForm::NACIONALIDAD_ARGENTINA)?'A':'E';
+                    $lista_persona_prestacion[$i]['cuil'] = $persona['cuil'];
+                    $lista_persona_prestacion[$i]['telefono'] = $persona['telefono'];
+                    $lista_persona_prestacion[$i]['celular'] = $persona['celular'];
+                    $lista_persona_prestacion[$i]['email'] = $persona['email'];
+                    
+                    if(!empty($persona['lugar'])){
+                        $lista_persona_prestacion[$i]['lugar']['calle'] = $persona['lugar']['calle'];
+                        $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
+                        $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
+                        $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
+                        $lista_persona_prestacion[$i]['lugar']['barrio'] = $persona['lugar']['barrio'];
+                        $lista_persona_prestacion[$i]['lugar']['depto'] = $persona['lugar']['depto'];
+                        $lista_persona_prestacion[$i]['lugar']['piso'] = $persona['lugar']['piso'];
+                        $lista_persona_prestacion[$i]['lugar']['escalera'] = $persona['lugar']['escalera'];
+                    }else{
+                        unset($lista_persona_prestacion[$i]['lugar']);
+                    }
+                    break;
+                }
+            }
+            $i++;
+        }
+        
+        /***** Instancia con Sub-Sucursales *****/
+        //hacemos instancia con todas las sub-sucursales
+        foreach ($params as $value) {
+            if(isset($value['prestacion']['sub_sucursalid']) && is_int(intval($value['prestacion']['sub_sucursalid']))){
+                $sub_sucursalesids .= (empty($sub_sucursalesids))?$value['prestacion']['sub_sucursalid']:','.$value['prestacion']['sub_sucursalid'];
+            }else{
+                throw new \yii\web\HttpException(400,'No se permite una prestacion sin sub_sucursalid');
+            }
+        }
+        $lista_sub_sucursales = $subSucursalSearch->search(['ids' => $sub_sucursalesids]);
+        
+        
+        //vamos a vincular las sub_sucursales correspondiente a cada prestacion
+         $i=0;
+        foreach ($params as $value) {
+            foreach ($lista_sub_sucursales as $sub_sucursal) {
+                if(isset($sub_sucursal['id']) && isset($value['prestacion']['sub_sucursalid']) && $sub_sucursal['id']==$value['prestacion']['sub_sucursalid']){
+                    unset($sub_sucursal['id']);
+                    $lista_persona_prestacion[$i]['prestacion']=ArrayHelper::merge($params[$i]['prestacion'], $sub_sucursal);
+                    break;
+                }
+            }
+            $i++;
+        }
+        
+        return $lista_persona_prestacion;
+    }
+
     public function attributeLabels()
     {
         $labels = parent::attributeLabels();

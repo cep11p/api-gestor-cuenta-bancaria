@@ -32,6 +32,8 @@ class PersonaForm extends Model
     public $cuil;
     public $nacionalidadid;
 
+    const NACIONALIDAD_ARGENTINA = 1;
+
     public function rules()
     {
         return [
