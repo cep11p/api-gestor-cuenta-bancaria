@@ -68,8 +68,8 @@ class PrestacionController extends ActiveController{
         $searchModel = new \app\models\PrestacionSearch();
         $params = \Yii::$app->request->queryParams;
         $resultado = $searchModel->search($params);
-        
-        return $resultado;
+
+        return (isset($resultado['resultado']) && count($resultado['resultado'])>0)?$resultado['resultado']:[];
     }
     
     public function actionCreate() {
