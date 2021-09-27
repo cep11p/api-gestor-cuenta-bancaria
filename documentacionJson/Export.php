@@ -18,7 +18,8 @@
             "lista_ids": "1,2,3",
             "tipo": "interbanking",
             "export_at": "2021-05-06 14:24:21",
-            "cantidad":13
+            "cantidad":13,
+            tipo_convenio: ""
         },
         {...},
         {
@@ -26,7 +27,8 @@
             "lista_ids": "1,2,3",
             "tipo": "ctasaldo",
             "export_at": "2021-05-06 14:24:21",
-            "cantidad":210
+            "cantidad":210,
+            tipo_convenio: "8277"
         }
     ]
 }

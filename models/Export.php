@@ -76,6 +76,9 @@ class Export extends BaseExport
             'cantidad_actual'=> function($model){
                 return count($model->prestacions);
             },
+            'tipo_convenio'=> function($model){
+                return isset($model->prestacions[0])?$model->prestacions[0]->tipoConvenio->nombre:"";
+            },
         ]);
         
     }
