@@ -46,6 +46,19 @@ class UserPersona extends BaseUserPersona
         );
     }
 
+    public function getTipoConvenios(){
+        $model = UsuarioHasConvenio::find()->select('tipo_convenioid ')->distinct('tipo_convenioid')->where(['userid'=>$this->userid])->asArray()->all();
+        $lista_ids = [];
+        $lista_tipo_convenio = [];
+        foreach ($model as $value) {
+            $lista_ids[] = intval($value['tipo_convenioid']);
+        }
+
+        $lista_tipo_convenio = TipoConvenio::find()->where(['id' => $lista_ids])->asArray()->all();
+
+        return (count($lista_tipo_convenio)>0)?$lista_tipo_convenio:[];
+    }
+
     public function rules()
     {
         return ArrayHelper::merge(

@@ -160,7 +160,8 @@ class UsuarioController extends ActiveController
         $resultado = [
             'access_token' => $token,
             'username' => $usuario->username,
-            'rol' => $rol
+            'rol' => $rol,
+            'lista_convenio' => $userPersona->getTipoConvenios()
         ];
         
         #Si es diferente de admin

@@ -17,7 +17,17 @@
     "cuil": "20068512669",
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQyMDYwMjMsInVzdWFyaW8iOiJhZG1pbiIsInVpZCI6MX0.gB1lraNxeF-6wsBpf4X0VA2Y8AypQKdkPk-9dxdupWA",
     "username": "admin",
-    "rol": ["soporte"]
+    "rol": "soporte",
+    "lista_convenio": [
+        {
+            "id": "1",
+            "nombre": "8180"
+        },
+        {
+            "id": "2",
+            "nombre": "8277"
+        }
+    ]
 }
 **/
 
