@@ -101,9 +101,8 @@ class PrestacionSearch extends Prestacion
                 $coleccion[$i]['prestacion']['observacion'] = (isset($value['observacion']) && !empty($value['observacion']))?$value['observacion']:"";
                 $i++;
             }        
-            
             /***************** Instancias con atributos externos ************/
-            $coleccion = self::setInstanciaSubSucursalYPersona($coleccion);
+            $coleccion = self::setDataPersona($coleccion);
         }
         
         
