@@ -109,6 +109,8 @@ $config = [
                     'extraPatterns' => [
                         'DELETE borrar-pendiente/{id}' => 'borrar-pendiente',
                         'OPTIONS borrar-pendiente/{id}' => 'borrar-pendiente',
+                        'POST exportar-convenio' => 'exportar-convenio',
+                        'OPTIONS exportar-convenio' => 'exportar-convenio',
                     ],
                     'tokens' => [ '{id}' => '<id:\\w+>'],
                 ],

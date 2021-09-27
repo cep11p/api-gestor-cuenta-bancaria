@@ -150,3 +150,16 @@
 * @return String
 **/
 
+/**** Exportar txt CTASALDO ****/
+/**
+* Se exporta CTASLDO.txt y se registran las prestaciones con estado = 0 (Prestaciones de personas sin CBU) 
+* @url http://api.gcb.local/api/prestacions/exportar-convenio
+* @method POST
+* @params 
+* @arrayReturn
+    {
+        "message": "Se crea el archivo CTASLDO.txt",
+        "cuenta_saldo": "8180GONZáLEZ                     8180VICTORIA MARGARITA0010000000002385126600A30121982FSCALLE              00327    VIEDMA                        08500162                              0082023851266905000                  05112020265            08328                         000000000                       "
+    }
+*/
+

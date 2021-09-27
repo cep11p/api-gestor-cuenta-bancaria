@@ -4,6 +4,7 @@ namespace app\modules\api\controllers;
 use app\components\Help;
 use app\models\Cuenta;
 use app\models\Prestacion;
+use Yii;
 use yii\rest\ActiveController;
 use yii\web\Response;
 use yii\base\Exception;
@@ -139,6 +140,37 @@ class PrestacionController extends ActiveController{
         }
 
         $model->delete();
+    }
+
+    /**
+     * Se exportan prestaciones con estado 4 (Preparado para exportar). Esta prestaciones son exportada para solicitar CBU masivamente por
+     * convenio 8180 o 8277 (tipo de prestacion)
+     * @return void
+     */
+    public function actionExportarConvenio()
+    {
+        $params = \Yii::$app->request->post();
+        
+        $resultado['message']='Se crea el archivo CTASLDO.txt';
+        $transaction = Yii::$app->db->beginTransaction();
+        
+        try{            
+            
+            $ctaSaldo = Prestacion::exportConvenio($params);
+
+            if(!empty($ctaSaldo)){
+                $resultado['cuenta_saldo'] = $ctaSaldo;
+                $transaction->commit();
+                return $resultado;
+            }else{
+                throw new \yii\web\HttpException(400, 'Lista de personas vacia');
+            }
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+        
     }
     
 }
