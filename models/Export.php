@@ -67,6 +67,23 @@ class Export extends BaseExport
         return $resultado;
     }
 
+    public function getImportados(){
+        switch ($this->tipo) {
+            case 'interbanking':
+                $resultado = '';
+                break;
+            
+            case 'ctasaldo':
+                $lista_prestacion = Prestacion::find()->where(['exportid' => $this->id, 'estado' => Prestacion::CON_CBU])->asArray()->all();
+                $resultado = count($lista_prestacion);
+                break;
+            default: 
+            $resultado = '';
+        }
+
+        return $resultado;
+    }
+
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(), [
@@ -76,8 +93,11 @@ class Export extends BaseExport
             'cantidad_actual'=> function($model){
                 return count($model->prestacions);
             },
-            'tipo_convenio'=> function($model){
+            'tipo_convenio' => function($model){
                 return isset($model->prestacions[0])?$model->prestacions[0]->tipoConvenio->nombre:"";
+            },
+            'importados' => function($model){
+                return $this->getImportados();
             },
         ]);
         
