@@ -377,6 +377,12 @@ class Prestacion extends BasePrestacion
         if(!isset($params['tipo_convenioid']) || empty($params['tipo_convenioid'])){
             throw new \yii\web\HttpException(400, 'Falta tipo de convenio');
         }
+
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('cuenta_saldo_exportar',$params['tipo_convenioid'])) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $lista_prestacion = Prestacion::find()->where([
             'tipo_convenioid' => $params['tipo_convenioid'],
             'estado' => Prestacion::PREPARADO_A_EXPORTAR    
