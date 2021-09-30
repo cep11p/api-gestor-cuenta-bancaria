@@ -476,7 +476,21 @@ class Prestacion extends BasePrestacion
             /************* Fin de validacion CtaSldo ***************/
             
             //Estructura de CTASLDO.TXT
-            $convenio_apellido = Help::mbstrpad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
+            switch ($value['prestacion']['tipo_convenioid']) {
+                case Prestacion::CONVENIO_8180:
+                    $convenio = '8180';
+                    break;
+                case Prestacion::CONVENIO_8277:
+                    $convenio = '8277';
+                    break;
+                
+                default:
+                    $convenio = 'SINCONVEIO';
+
+                    break;
+            }
+
+            $convenio_apellido = Help::mbstrpad($convenio.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
             $nombre = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['nombre']), 0, 16)), 16);
             $tipo_documento = Help::mbstrpad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
             $nro_documento = Help::mbstrpad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
