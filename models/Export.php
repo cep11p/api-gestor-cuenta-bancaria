@@ -54,9 +54,12 @@ class Export extends BaseExport
                 break;
             
             case 'ctasaldo':
-
+                
+                if(count($this->prestacions) == 0 ){
+                    throw new \yii\web\HttpException(403, 'La lista de persona se encuentra vacía!.');
+                }
                 #Chequeamos permiso
-                if(!Yii::$app->user->can('cuenta_saldo_exportar')){
+                if(!Yii::$app->user->can('cuenta_saldo_exportar',$this->prestacions[0]->tipo_convenioid)){
                     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
                 }
 

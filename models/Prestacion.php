@@ -388,7 +388,6 @@ class Prestacion extends BasePrestacion
             'estado' => Prestacion::PREPARADO_A_EXPORTAR    
         ])->asArray()->all();
         
-
         /***** Armamos la instancia completa con Persona y Sub-Sucursal*****/
         $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($lista_prestacion);
 

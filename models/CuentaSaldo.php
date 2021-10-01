@@ -57,268 +57,266 @@ class CuentaSaldo
         #Armamos la estructura necesaria para reutilzar el codigo siguiente
         $lista_prestacion = [];
         foreach ($prestaciones as $value) {
-            $pres['id'] = $value['personaid'];
-            $pres['prestacion'] = $value;
-            $lista_prestacion[] = $pres;
+            $value;
+            $lista_prestacion[] = $value;
         }
 
-        
-        $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($lista_prestacion);
-        $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
+        $lista_persona_prestacion = Prestacion::setInstanciaSubSucursalYPersona($lista_prestacion);
+        $resultado = Prestacion::setCuentaSaldoTxt($lista_persona_prestacion);
 
         return $resultado;
     }
 
-    /**
-     * Se exportan prestacion es una archivo llamado CTASLDO.TXT
-     * @param array $params
-     * @return string
-     * @throws \yii\web\HttpException
-     */
-    public static function exportCtaSaldo($params){
-        $resultado = [];
-        $errors = [];
+    // /**
+    //  * Se exportan prestacion es una archivo llamado CTASLDO.TXT
+    //  * @param array $params
+    //  * @return string
+    //  * @throws \yii\web\HttpException
+    //  */
+    // public static function exportCtaSaldo($params){
+    //     $resultado = [];
+    //     $errors = [];
         
-        /***** Armamos la instancia completa con Persona y Sub-Sucursal*****/
-        $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($params);
+    //     /***** Armamos la instancia completa con Persona y Sub-Sucursal*****/
+    //     $lista_persona_prestacion = self::setInstanciaSubSucursalYPersona($params);
 
         
-        /***** Se validan y se registran las prestaciones *********/
-        $i=0;
-        foreach ($lista_persona_prestacion as $value) { 
+    //     /***** Se validan y se registran las prestaciones *********/
+    //     $i=0;
+    //     foreach ($lista_persona_prestacion as $value) { 
             
-            if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
-                $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
-                $model->estado = Prestacion::SIN_CBU;
-                $model->observacion = $value['prestacion']['observacion'];
-                $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;      
-            }else{
-                //Registramos la prestacion
-                $model = new Prestacion();
-                $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
-                $model->personaid = (isset($value['id']))?$value['id']:null;
-                $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
-                $model->create_at = date('Y-m-d H:m:i');
-                $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
-                $model->estado = Prestacion::SIN_CBU;
-                $model->observacion = $value['prestacion']['observacion'];
-                $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');  
+    //         if(isset($value['prestacion']['id']) && !empty($value['prestacion']['id'])){
+    //             $model = Prestacion::findOne(['id'=>$value['prestacion']['id']]);
+    //             $model->estado = Prestacion::SIN_CBU;
+    //             $model->observacion = $value['prestacion']['observacion'];
+    //             $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;      
+    //         }else{
+    //             //Registramos la prestacion
+    //             $model = new Prestacion();
+    //             $model->scenario = $model::SCENARIO_EXPORT_CUENTA_SALDO;
+    //             $model->personaid = (isset($value['id']))?$value['id']:null;
+    //             $model->monto = (isset($value['prestacion']['monto']))?$value['prestacion']['monto']:null;
+    //             $model->create_at = date('Y-m-d H:m:i');
+    //             $model->sub_sucursalid = (isset($value['prestacion']['sub_sucursalid']))?$value['prestacion']['sub_sucursalid']:null;
+    //             $model->estado = Prestacion::SIN_CBU;
+    //             $model->observacion = $value['prestacion']['observacion'];
+    //             $model->fecha_ingreso =(isset($value['prestacion']['fecha_ingreso']) && !empty($value['prestacion']['fecha_ingreso']))?$value['prestacion']['fecha_ingreso']:date('Y-m-d');  
                 
-                #Establecemos el area y el convenio por defecto
-                $model->tipo_convenioid = Prestacion::CONVENIO_8180;
-                $model->areaid = Prestacion::AREA_SECRETARIA_DE_POLITICA_SOCIALES_Y_ARTICULACION_TERRITORIAL;
+    //             #Establecemos el area y el convenio por defecto
+    //             $model->tipo_convenioid = Prestacion::CONVENIO_8180;
+    //             $model->areaid = Prestacion::AREA_SECRETARIA_DE_POLITICA_SOCIALES_Y_ARTICULACION_TERRITORIAL;
                 
-            }
+    //         }
             
-            if(!$model->save()){
-                // throw new \yii\web\HttpException(400, $model->scenario);
-                $error = $model->errors;
-                $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
-                $errors[] = $error;
-            }
+    //         if(!$model->save()){
+    //             // throw new \yii\web\HttpException(400, $model->scenario);
+    //             $error = $model->errors;
+    //             $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
+    //             $errors[] = $error;
+    //         }
 
-            $lista_persona_prestacion[$i]['prestacion']['id'] = $model->id;
+    //         $lista_persona_prestacion[$i]['prestacion']['id'] = $model->id;
 
-            $i++;
-        }
-        //si hay errores notificamos
-        if(!empty($errors)){
-            throw new \yii\web\HttpException(400, json_encode($errors));
-        }
+    //         $i++;
+    //     }
+    //     //si hay errores notificamos
+    //     if(!empty($errors)){
+    //         throw new \yii\web\HttpException(400, json_encode($errors));
+    //     }
         
-        //Seteamos el txt a exportar
-        $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
+    //     //Seteamos el txt a exportar
+    //     $resultado = self::setCuentaSaldoTxt($lista_persona_prestacion);
 
-        self::registrarExportacion($lista_persona_prestacion);
+    //     self::registrarExportacion($lista_persona_prestacion);
         
-        return $resultado;
-    }
+    //     return $resultado;
+    // }
 
-    /**
-     * Se arma CTASLDO.TXT para exportar la prestaciones registradas
-     * @param array $lista_prestacion
-     * @return string
-     */
-    static function setCuentaSaldoTxt($lista_prestacion) {
-        $ctasaldo = '';
-        $error = [];
-        foreach ($lista_prestacion as $value) {
-            $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
+    // /**
+    //  * Se arma CTASLDO.TXT para exportar la prestaciones registradas
+    //  * @param array $lista_prestacion
+    //  * @return string
+    //  */
+    // static function setCuentaSaldoTxt($lista_prestacion) {
+    //     $ctasaldo = '';
+    //     $error = [];
+    //     foreach ($lista_prestacion as $value) {
+    //         $error['persona'] = $value['nombre']." ".$value['apellido']." cuil:".$value['cuil'];
 
-            /*********** Validamos CtaSldo ***********/
-            if(!isset($value['lugar']) || empty($value['lugar'])){
-                $error['direccion'] = 'Faltan los datos de direccion.';
-            }
+    //         /*********** Validamos CtaSldo ***********/
+    //         if(!isset($value['lugar']) || empty($value['lugar'])){
+    //             $error['direccion'] = 'Faltan los datos de direccion.';
+    //         }
                         
-            //si hay errores notificamos
-            if(count($error)>1){
-                throw new \yii\web\HttpException(400, json_encode(array($error)));
-            }
+    //         //si hay errores notificamos
+    //         if(count($error)>1){
+    //             throw new \yii\web\HttpException(400, json_encode(array($error)));
+    //         }
             
-            /************* Fin de validacion CtaSldo ***************/
+    //         /************* Fin de validacion CtaSldo ***************/
             
-            //Estructura de CTASLDO.TXT
-            $convenio_apellido = Help::mbstrpad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
-            $nombre = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['nombre']), 0, 16)), 16);
-            $tipo_documento = Help::mbstrpad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
-            $nro_documento = Help::mbstrpad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
-            $nacionalidad = Help::mbstrpad($value['nacionalidad'], 3, "0", STR_PAD_LEFT);
-            $fecha_nacimiento = \DateTime::createFromFormat('Y-m-d', $value['fecha_nacimiento'])->format('dmY');
-            $sexo = ($value['sexo']=='Masculino')?'M':'F';
-            $estado_civil = 'S';
-            $calle = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['lugar']['calle']), 0, 19)), 19);
+    //         //Estructura de CTASLDO.TXT
+    //         $convenio_apellido = Help::mbstrpad('8180'.strtoupper(\app\components\Help::quitar_tildes($value['apellido'])), 34);
+    //         $nombre = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['nombre']), 0, 16)), 16);
+    //         $tipo_documento = Help::mbstrpad($value['tipo_documentoid'], 3, "0", STR_PAD_LEFT);
+    //         $nro_documento = Help::mbstrpad($value['nro_documento'], 17, "0", STR_PAD_LEFT);
+    //         $nacionalidad = Help::mbstrpad($value['nacionalidad'], 3, "0", STR_PAD_LEFT);
+    //         $fecha_nacimiento = \DateTime::createFromFormat('Y-m-d', $value['fecha_nacimiento'])->format('dmY');
+    //         $sexo = ($value['sexo']=='Masculino')?'M':'F';
+    //         $estado_civil = 'S';
+    //         $calle = Help::mbstrpad(strtoupper(substr(\app\components\Help::quitar_tildes($value['lugar']['calle']), 0, 19)), 19);
 
-            #Seteamos la altura en CTASALDO
-            $patron = "/^[[:digit:]]+$/";
-            if (!preg_match($patron, $value['lugar']['altura'])){
-                $altura = '00001'; #Valor por defecto
-            }else{
-                $altura = $value['lugar']['altura'];
-            }
-            $altura = Help::mbstrpad(Help::mbstrpad(substr($altura, 0, 5), 5,'0',STR_PAD_LEFT),9);
+    //         #Seteamos la altura en CTASALDO
+    //         $patron = "/^[[:digit:]]+$/";
+    //         if (!preg_match($patron, $value['lugar']['altura'])){
+    //             $altura = '00001'; #Valor por defecto
+    //         }else{
+    //             $altura = $value['lugar']['altura'];
+    //         }
+    //         $altura = Help::mbstrpad(Help::mbstrpad(substr($altura, 0, 5), 5,'0',STR_PAD_LEFT),9);
 
 
-            $localidad = Help::mbstrpad(strtoupper($value['lugar']['localidad']), 30);
-            //  (strtoupper($value['lugar']['localidad']), 30);
-            $codigo_postal = Help::mbstrpad(Help::mbstrpad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
-            $cuil = Help::mbstrpad('008'.$value['cuil'].Help::mbstrpad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
-            $sucursal = Help::mbstrpad(date('dmY',strtotime(date('Y-m-d').' -1 day')).$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
-            $sucursal_codigo_postal = Help::mbstrpad(Help::mbstrpad($value['prestacion']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //sub_sucursal[codigo_postal]
+    //         $localidad = Help::mbstrpad(strtoupper($value['lugar']['localidad']), 30);
+    //         //  (strtoupper($value['lugar']['localidad']), 30);
+    //         $codigo_postal = Help::mbstrpad(Help::mbstrpad($value['lugar']['codigo_postal'].'16'.'2', 8, "0", STR_PAD_LEFT), 38); //codigopostal.provinciaid.tipocuenta
+    //         $cuil = Help::mbstrpad('008'.$value['cuil'].Help::mbstrpad($value['prestacion']['monto'], 5, "0", STR_PAD_LEFT), 37); //tipoincripcion.cuil.saldo
+    //         $sucursal = Help::mbstrpad(date('dmY',strtotime(date('Y-m-d').' -1 day')).$value['prestacion']['sucursal_codigo'], 23); //fecha.sucursal_codigo
+    //         $sucursal_codigo_postal = Help::mbstrpad(Help::mbstrpad($value['prestacion']['codigo_postal'], 5, "0", STR_PAD_LEFT), 30).'000000000                       '; //sub_sucursal[codigo_postal]
 
-            $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
-            $ctasaldo .= (empty($ctasaldo))?$linea_ctasaldo:"\r\n".$linea_ctasaldo;
+    //         $linea_ctasaldo = $convenio_apellido.$nombre.$tipo_documento.$nro_documento.$nacionalidad.$fecha_nacimiento.$sexo.$estado_civil.$calle.$altura.$localidad.$codigo_postal.$cuil.$sucursal.$sucursal_codigo_postal;
+    //         $ctasaldo .= (empty($ctasaldo))?$linea_ctasaldo:"\r\n".$linea_ctasaldo;
             
-        }
+    //     }
         
-        return $ctasaldo;
-    }
+    //     return $ctasaldo;
+    // }
     
-    /**
-     * Se vinculan los datos de Persona y SubSucursal
-     * @param array $params
-     * @return Array
-        (
-            [0] => Array
-                (
-                    [id] => 1
-                    [apellido] => González
-                    [nombre] => Victoria Margarita
-                    [nro_documento] => 23851266
-                    [tipo_documentoid] => 1
-                    [fecha_nacimiento] => 1982-12-30
-                    [sexo] => Femenino
-                    [nacionalidadid] => 1
-                    [nacionalidad] => A
-                    [lugar] => Array
-                        (
-                            [calle] => escalera 39 planta baja dpto. d b°guido
-                            [altura] => 
-                            [localidad] => Viedma
-                            [codigo_postal] => 8500
-                        )
+    // /**
+    //  * Se vinculan los datos de Persona y SubSucursal
+    //  * @param array $params
+    //  * @return Array
+    //     (
+    //         [0] => Array
+    //             (
+    //                 [id] => 1
+    //                 [apellido] => González
+    //                 [nombre] => Victoria Margarita
+    //                 [nro_documento] => 23851266
+    //                 [tipo_documentoid] => 1
+    //                 [fecha_nacimiento] => 1982-12-30
+    //                 [sexo] => Femenino
+    //                 [nacionalidadid] => 1
+    //                 [nacionalidad] => A
+    //                 [lugar] => Array
+    //                     (
+    //                         [calle] => escalera 39 planta baja dpto. d b°guido
+    //                         [altura] => 
+    //                         [localidad] => Viedma
+    //                         [codigo_postal] => 8500
+    //                     )
 
-                    [cuil] => 20238512669
-                    [prestacion] => Array
-                        (
-                            [sub_sucursalid] => 1
-                            [localidad] => Allen
-                            [codigo_postal] => 8328
-                            [codigo] => 161014
-                            [sucursalid] => 14
-                            [nombre] => Allen (Suc. Allen)
-                            [sucursal_codigo] => 265
-                        )
+    //                 [cuil] => 20238512669
+    //                 [prestacion] => Array
+    //                     (
+    //                         [sub_sucursalid] => 1
+    //                         [localidad] => Allen
+    //                         [codigo_postal] => 8328
+    //                         [codigo] => 161014
+    //                         [sucursalid] => 14
+    //                         [nombre] => Allen (Suc. Allen)
+    //                         [sucursal_codigo] => 265
+    //                     )
 
-                )
-        )
-     * @throws \yii\web\HttpException
-     */
-    public static function setInstanciaSubSucursalYPersona($params) {
-        $subSucursalSearch = new SubSucursalSearch();
-        $lista_persona_prestacion = [];
-        $sub_sucursalesids = '';
-        $ids = '';
+    //             )
+    //     )
+    //  * @throws \yii\web\HttpException
+    //  */
+    // public static function setInstanciaSubSucursalYPersona($params) {
+    //     $subSucursalSearch = new SubSucursalSearch();
+    //     $lista_persona_prestacion = [];
+    //     $sub_sucursalesids = '';
+    //     $ids = '';
         
-        /******** Instancia con Persona ************/
-        //hacemos instancia con todas las persoans
-        foreach ($params as $value) {
-            //nos comunicamos con registrar para obtener lista de personas
-            if(isset($value['id'])){
-                $ids .= (empty($ids))?$value['id']:','.$value['id'];
-            }else{
-                throw new \yii\web\HttpException(400,'No se permite una prestacion sin id de una persona');
-            }
-        }
-        $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
-        //validamos si la lista tiene personas
-        if(count($lista_persona['resultado'])<1){
-            throw new \yii\web\HttpException(400,'Hubo problemas con obtener la lista de personas');
-        }
+    //     /******** Instancia con Persona ************/
+    //     //hacemos instancia con todas las persoans
+    //     foreach ($params as $value) {
+    //         //nos comunicamos con registrar para obtener lista de personas
+    //         if(isset($value['id'])){
+    //             $ids .= (empty($ids))?$value['id']:','.$value['id'];
+    //         }else{
+    //             throw new \yii\web\HttpException(400,'No se permite una prestacion sin id de una persona');
+    //         }
+    //     }
+    //     $lista_persona = \Yii::$app->registral->buscarPersona(["ids"=>$ids]);
+    //     //validamos si la lista tiene personas
+    //     if(count($lista_persona['resultado'])<1){
+    //         throw new \yii\web\HttpException(400,'Hubo problemas con obtener la lista de personas');
+    //     }
         
-        //vamos a vincular la lista de persona con sus prestaciones correspondientes
-        $i=0;
-        foreach ($params as $value) {
-            foreach ($lista_persona['resultado'] as $persona) {
-                if(isset($persona['id']) && isset($value['id']) && $persona['id']==$value['id']){
-                    $lista_persona_prestacion[$i]['id'] = $persona['id'];
-                    $lista_persona_prestacion[$i]['apellido'] = $persona['apellido'];
-                    $lista_persona_prestacion[$i]['nombre'] = $persona['nombre'];
-                    $lista_persona_prestacion[$i]['nro_documento'] = $persona['nro_documento'];
-                    $lista_persona_prestacion[$i]['tipo_documentoid'] = $persona['tipo_documentoid'];
-                    $lista_persona_prestacion[$i]['fecha_nacimiento'] = $persona['fecha_nacimiento'];
-                    $lista_persona_prestacion[$i]['sexo'] = $persona['sexo'];
-                    $lista_persona_prestacion[$i]['nacionalidadid'] = $persona['nacionalidadid'];
-                    $lista_persona_prestacion[$i]['nacionalidad'] = ($persona['nacionalidadid']==self::NACIONALIDAD_ARGENTINA)?'A':'E';
-                    $lista_persona_prestacion[$i]['cuil'] = $persona['cuil'];
-                    $lista_persona_prestacion[$i]['telefono'] = $persona['telefono'];
-                    $lista_persona_prestacion[$i]['celular'] = $persona['celular'];
-                    $lista_persona_prestacion[$i]['email'] = $persona['email'];
+    //     //vamos a vincular la lista de persona con sus prestaciones correspondientes
+    //     $i=0;
+    //     foreach ($params as $value) {
+    //         foreach ($lista_persona['resultado'] as $persona) {
+    //             if(isset($persona['id']) && isset($value['id']) && $persona['id']==$value['id']){
+    //                 $lista_persona_prestacion[$i]['id'] = $persona['id'];
+    //                 $lista_persona_prestacion[$i]['apellido'] = $persona['apellido'];
+    //                 $lista_persona_prestacion[$i]['nombre'] = $persona['nombre'];
+    //                 $lista_persona_prestacion[$i]['nro_documento'] = $persona['nro_documento'];
+    //                 $lista_persona_prestacion[$i]['tipo_documentoid'] = $persona['tipo_documentoid'];
+    //                 $lista_persona_prestacion[$i]['fecha_nacimiento'] = $persona['fecha_nacimiento'];
+    //                 $lista_persona_prestacion[$i]['sexo'] = $persona['sexo'];
+    //                 $lista_persona_prestacion[$i]['nacionalidadid'] = $persona['nacionalidadid'];
+    //                 $lista_persona_prestacion[$i]['nacionalidad'] = ($persona['nacionalidadid']==self::NACIONALIDAD_ARGENTINA)?'A':'E';
+    //                 $lista_persona_prestacion[$i]['cuil'] = $persona['cuil'];
+    //                 $lista_persona_prestacion[$i]['telefono'] = $persona['telefono'];
+    //                 $lista_persona_prestacion[$i]['celular'] = $persona['celular'];
+    //                 $lista_persona_prestacion[$i]['email'] = $persona['email'];
                     
-                    if(!empty($persona['lugar'])){
-                        $lista_persona_prestacion[$i]['lugar']['calle'] = $persona['lugar']['calle'];
-                        $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
-                        $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
-                        $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
-                        $lista_persona_prestacion[$i]['lugar']['barrio'] = $persona['lugar']['barrio'];
-                        $lista_persona_prestacion[$i]['lugar']['depto'] = $persona['lugar']['depto'];
-                        $lista_persona_prestacion[$i]['lugar']['piso'] = $persona['lugar']['piso'];
-                        $lista_persona_prestacion[$i]['lugar']['escalera'] = $persona['lugar']['escalera'];
-                    }else{
-                        unset($lista_persona_prestacion[$i]['lugar']);
-                    }
-                    break;
-                }
-            }
-            $i++;
-        }
+    //                 if(!empty($persona['lugar'])){
+    //                     $lista_persona_prestacion[$i]['lugar']['calle'] = $persona['lugar']['calle'];
+    //                     $lista_persona_prestacion[$i]['lugar']['altura'] = $persona['lugar']['altura'];
+    //                     $lista_persona_prestacion[$i]['lugar']['localidad'] = $persona['lugar']['localidad'];
+    //                     $lista_persona_prestacion[$i]['lugar']['codigo_postal'] = $persona['lugar']['codigo_postal'];
+    //                     $lista_persona_prestacion[$i]['lugar']['barrio'] = $persona['lugar']['barrio'];
+    //                     $lista_persona_prestacion[$i]['lugar']['depto'] = $persona['lugar']['depto'];
+    //                     $lista_persona_prestacion[$i]['lugar']['piso'] = $persona['lugar']['piso'];
+    //                     $lista_persona_prestacion[$i]['lugar']['escalera'] = $persona['lugar']['escalera'];
+    //                 }else{
+    //                     unset($lista_persona_prestacion[$i]['lugar']);
+    //                 }
+    //                 break;
+    //             }
+    //         }
+    //         $i++;
+    //     }
         
-        /***** Instancia con Sub-Sucursales *****/
-        //hacemos instancia con todas las sub-sucursales
-        foreach ($params as $value) {
-            if(isset($value['prestacion']['sub_sucursalid']) && is_int(intval($value['prestacion']['sub_sucursalid']))){
-                $sub_sucursalesids .= (empty($sub_sucursalesids))?$value['prestacion']['sub_sucursalid']:','.$value['prestacion']['sub_sucursalid'];
-            }else{
-                throw new \yii\web\HttpException(400,'No se permite una prestacion sin sub_sucursalid');
-            }
-        }
-        $lista_sub_sucursales = $subSucursalSearch->search(['ids' => $sub_sucursalesids]);
+    //     /***** Instancia con Sub-Sucursales *****/
+    //     //hacemos instancia con todas las sub-sucursales
+    //     foreach ($params as $value) {
+    //         if(isset($value['prestacion']['sub_sucursalid']) && is_int(intval($value['prestacion']['sub_sucursalid']))){
+    //             $sub_sucursalesids .= (empty($sub_sucursalesids))?$value['prestacion']['sub_sucursalid']:','.$value['prestacion']['sub_sucursalid'];
+    //         }else{
+    //             throw new \yii\web\HttpException(400,'No se permite una prestacion sin sub_sucursalid');
+    //         }
+    //     }
+    //     $lista_sub_sucursales = $subSucursalSearch->search(['ids' => $sub_sucursalesids]);
         
         
-        //vamos a vincular las sub_sucursales correspondiente a cada prestacion
-         $i=0;
-        foreach ($params as $value) {
-            foreach ($lista_sub_sucursales as $sub_sucursal) {
-                if(isset($sub_sucursal['id']) && isset($value['prestacion']['sub_sucursalid']) && $sub_sucursal['id']==$value['prestacion']['sub_sucursalid']){
-                    unset($sub_sucursal['id']);
-                    $lista_persona_prestacion[$i]['prestacion']=ArrayHelper::merge($params[$i]['prestacion'], $sub_sucursal);
-                    break;
-                }
-            }
-            $i++;
-        }
+    //     //vamos a vincular las sub_sucursales correspondiente a cada prestacion
+    //      $i=0;
+    //     foreach ($params as $value) {
+    //         foreach ($lista_sub_sucursales as $sub_sucursal) {
+    //             if(isset($sub_sucursal['id']) && isset($value['prestacion']['sub_sucursalid']) && $sub_sucursal['id']==$value['prestacion']['sub_sucursalid']){
+    //                 unset($sub_sucursal['id']);
+    //                 $lista_persona_prestacion[$i]['prestacion']=ArrayHelper::merge($params[$i]['prestacion'], $sub_sucursal);
+    //                 break;
+    //             }
+    //         }
+    //         $i++;
+    //     }
         
-        return $lista_persona_prestacion;
-    }
+    //     return $lista_persona_prestacion;
+    // }
     
     /**
      * Se registrar prestacion con estado pendiente. Esto nos permite seguir trabajando sobre una exportacion de ctaSaldo
