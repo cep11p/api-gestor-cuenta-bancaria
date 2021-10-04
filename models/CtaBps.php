@@ -84,7 +84,7 @@ class CtaBps extends Model
 
             $resultado = $this->registrarListaPersonaConCBU($listaPersona);
         } else {
-            throw new \yii\web\HttpException(400, json_encode($this->errors));
+            throw new \yii\web\HttpException(400, Help::ArrayErrorsToString($this->errors));
         }
         
         return $resultado;
