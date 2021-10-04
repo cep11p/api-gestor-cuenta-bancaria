@@ -16,9 +16,14 @@ use Yii;
  * @property integer $tipo_cuentaid
  * @property string $create_at
  * @property integer $tesoreria_alta
+ * @property integer $sub_sucursalid
+ * @property string $import_at
+ * @property integer $tipo_convenioid
  *
  * @property \app\models\Banco $banco
+ * @property \app\models\SubSucursal $subSucursal
  * @property \app\models\TipoCuenta $tipoCuenta
+ * @property \app\models\TipoConvenio $tipoConvenio
  * @property string $aliasModel
  */
 abstract class Cuenta extends \yii\db\ActiveRecord
@@ -41,12 +46,14 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     {
         return [
             [['cbu', 'personaid', 'bancoid', 'tipo_cuentaid'], 'required'],
-            [['personaid', 'bancoid', 'tipo_cuentaid', 'tesoreria_alta'], 'integer'],
-            [['create_at'], 'safe'],
+            [['personaid', 'bancoid', 'tipo_cuentaid', 'tesoreria_alta', 'sub_sucursalid', 'tipo_convenioid'], 'integer'],
+            [['create_at', 'import_at'], 'safe'],
             [['cbu'], 'string', 'max' => 45],
             [['cbu'], 'unique'],
             [['bancoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Banco::className(), 'targetAttribute' => ['bancoid' => 'id']],
-            [['tipo_cuentaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoCuenta::className(), 'targetAttribute' => ['tipo_cuentaid' => 'id']]
+            [['sub_sucursalid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\SubSucursal::className(), 'targetAttribute' => ['sub_sucursalid' => 'id']],
+            [['tipo_cuentaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoCuenta::className(), 'targetAttribute' => ['tipo_cuentaid' => 'id']],
+            [['tipo_convenioid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoConvenio::className(), 'targetAttribute' => ['tipo_convenioid' => 'id']]
         ];
     }
 
@@ -63,18 +70,10 @@ abstract class Cuenta extends \yii\db\ActiveRecord
             'tipo_cuentaid' => 'Tipo Cuentaid',
             'create_at' => 'Create At',
             'tesoreria_alta' => 'Tesoreria Alta',
+            'sub_sucursalid' => 'Sub Sucursalid',
+            'import_at' => 'Import At',
+            'tipo_convenioid' => 'Tipo Convenioid',
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeHints()
-    {
-        return array_merge(parent::attributeHints(), [
-            'create_at' => ' Nos indica de donde fue dado de alta
-',
-        ]);
     }
 
     /**
@@ -88,9 +87,25 @@ abstract class Cuenta extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getSubSucursal()
+    {
+        return $this->hasOne(\app\models\SubSucursal::className(), ['id' => 'sub_sucursalid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTipoCuenta()
     {
         return $this->hasOne(\app\models\TipoCuenta::className(), ['id' => 'tipo_cuentaid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoConvenio()
+    {
+        return $this->hasOne(\app\models\TipoConvenio::className(), ['id' => 'tipo_convenioid']);
     }
 
 
