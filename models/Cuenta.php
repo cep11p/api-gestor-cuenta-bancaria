@@ -50,6 +50,12 @@ class Cuenta extends BaseCuenta
             'origen_convenio' => function($model){
                 return $model->getOrigenConvenio();
             },
+            'import_at' => function($model){
+                return (isset($model->import_at) && !empty($model->import_at))?$model->import_at:'';
+            },
+            'tipo_convenio' => function($model){
+                return (isset($model->tipo_convenioid) && !empty($model->tipo_convenioid))?$model->tipoConvenio->nombre:'S/N';
+            }
         ]);
         
     }

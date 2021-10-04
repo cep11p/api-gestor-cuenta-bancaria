@@ -73,7 +73,6 @@ class CuentaController extends ActiveController{
         
         if(!empty($resultado['resultado'])){
             $resultado['resultado'] = \app\models\Cuenta::vincularPropietario($resultado['resultado']);
-            // $resultado['resultado'] = \app\models\Cuenta::setOrigenConvenio($resultado['resultado']);
         }
 
         return $resultado;
