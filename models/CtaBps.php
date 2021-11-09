@@ -165,7 +165,7 @@ class CtaBps extends Model
             $cuenta->bancoid = self::BANCO_PATAGONIA;
             $cuenta->tipo_cuentaid = self::CAJA_AHORRO;
             $cuenta->cbu = $persona['cuenta']['cbu'];
-            $cuenta->create_at = date('Y-m-d H:m:s');
+            $cuenta->create_at = date('Y-m-d H:i:s');
             $cuenta->scenario = Cuenta::SCENARIO_IMPORTADO_BPS;
 
             #Cuantificamos los cbu existentes

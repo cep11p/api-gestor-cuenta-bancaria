@@ -123,7 +123,7 @@ class CuentaSearch extends Cuenta
             $query->andWhere(['between', 'create_at', '1970-01-01', $params['fecha_hasta']]);
         }else if(!isset($params['fecha_desde']) && !isset($params['fecha_hasta'])){
             $params['fecha_hasta'] = date('Y-m-d').' 23:59:59';
-            $params['fecha_desde'] = date('Y-m-d H:m:s',strtotime($params['fecha_hasta'].' -1 year'));
+            $params['fecha_desde'] = date('Y-m-d H:i:s',strtotime($params['fecha_hasta'].' -1 year'));
             
             $query->andWhere(['between', 'create_at', $params['fecha_desde'], $params['fecha_hasta']]);
         }

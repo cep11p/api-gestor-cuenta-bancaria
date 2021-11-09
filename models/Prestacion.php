@@ -49,7 +49,7 @@ class Prestacion extends BasePrestacion
             $model = new Prestacion();
             $model->personaid = intval($prestacion['personaid']);
             $model->monto = $prestacion['monto'];
-            $model->create_at = date('Y-m-d H:m:i');
+            $model->create_at = date('Y-m-d H:i:s');
             $model->observacion = $prestacion['observacion'];
             $model->sub_sucursalid = $prestacion['sub_sucursalid'];
             $model->estado = $prestacion['estado'];
@@ -136,7 +136,7 @@ class Prestacion extends BasePrestacion
     
     public function setAttributesCustom($values) {
         parent::setAttributes($values);
-        $this->create_at = date('Y-m-d H:m:i');
+        $this->create_at = date('Y-m-d H:i:s');
         
         if(empty($this->fecha_ingreso)){
             $this->fecha_ingreso = date('Y-m-d');
