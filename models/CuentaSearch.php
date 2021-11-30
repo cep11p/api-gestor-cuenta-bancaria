@@ -107,8 +107,7 @@ class CuentaSearch extends Cuenta
                 'personaid' => $this->personaid,
                 'bancoid' => $this->bancoid,
                 'tipo_cuentaid' => $this->tipo_cuentaid,
-                'create_at' => $this->create_at,
-                'tesoreria_alta' => $this->tesoreria_alta,
+                'create_at' => $this->create_at
             ]);
 
             $query->andFilterWhere(['like', 'cbu', $this->cbu]);
