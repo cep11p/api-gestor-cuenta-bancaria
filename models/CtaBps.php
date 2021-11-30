@@ -110,6 +110,7 @@ class CtaBps extends Model
         foreach ($lista_persona_encontrada as $persona) {
             foreach ($lista_persona_bps as $persona_bps) {
                 if(isset($persona['cuil']) && isset($persona_bps['cuil']) && $persona['cuil']==$persona_bps['cuil']){                    
+                    $lista_persona_encontrada[$i]['cuenta']['convenio'] = $persona_bps['convenio'];
                     $lista_persona_encontrada[$i]['cuenta']['cbu'] = $persona_bps['cuenta']['cbu'];
                     $lista_persona_encontrada[$i]['cuenta']['tipo_inscripcionid'] = $persona_bps['cuenta']['tipo_inscripcionid'];
                     $lista_persona_encontrada[$i]['cuenta']['tipo_cuentaid'] = $persona_bps['cuenta']['tipo_cuentaid'];
@@ -160,12 +161,26 @@ class CtaBps extends Model
         $errors = array();
         $i=0;
         foreach ($lista_personas as $persona) {
+
+            #Chequeamos el tipo de convenio a importar
+            $tipo_convenioid = null;
+            switch ($persona['cuenta']['convenio']) {
+                case '8180':
+                    $tipo_convenioid = 1;
+                    break;
+                case '8277':
+                    $tipo_convenioid = 2;
+                    break;
+            }
+
             $cuenta = new Cuenta();
             $cuenta->personaid = intval($persona['id']);
             $cuenta->bancoid = self::BANCO_PATAGONIA;
             $cuenta->tipo_cuentaid = self::CAJA_AHORRO;
             $cuenta->cbu = $persona['cuenta']['cbu'];
             $cuenta->create_at = date('Y-m-d H:i:s');
+            $cuenta->import_at = date('Y-m-d H:i:s');
+            $cuenta->tipo_convenioid = $tipo_convenioid;
             $cuenta->scenario = Cuenta::SCENARIO_IMPORTADO_BPS;
 
             #Cuantificamos los cbu existentes
