@@ -28,6 +28,9 @@ $config = [
                 ],
             ],
         ],
+        'registral'=> [
+            'class' => $params['servicioRegistral'],
+        ],
         'db' => $db,
     ],
     'params' => $params,
