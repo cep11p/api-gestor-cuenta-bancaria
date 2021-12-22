@@ -94,37 +94,4 @@ class CuentaSaldoController extends ActiveController{
         
     }
     
-     public function actionCreate() {
-        $params = \Yii::$app->request->post();
-        $resultado['message']='Se guarda el documento ctasaldo';
-        $transaction = Yii::$app->db->beginTransaction();
-        
-        #Chequeamos el permiso
-        if (!\Yii::$app->user->can('cuenta_saldo_crear')) {
-            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
-        }
-
-        try{            
-            
-            $resultado = \app\models\CuentaSaldo::guardarCtaSaldo($params);
-            $transaction->commit();
-            
-            return $resultado;
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
-        }
-
-    }
-    
-    public function actionIndex()
-    {
-        $resultado = \app\models\CuentaSaldo::verCtaSaldo();
-
-        
-        return $resultado;
-
-    }
-    
 }

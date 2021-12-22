@@ -27,7 +27,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $this->_client = $guzzleClient;
     }
 
-    public function filtrarPersonaPorIds($data)
+    public function filtrarPersonaPorCuils($data)
     {
         $client =   $this->_client;
         try{
