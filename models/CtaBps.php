@@ -39,15 +39,11 @@ class CtaBps extends Model
     }
     
     public function importar() {
+
         $resultado = array();
         if ($this->validate()) {
             $content = file_get_contents($this->file->tempName);
             $ctaBps_array = preg_split('/\n|\r\n?/', trim($content)); 
-
-            #Se valida la cantidad de filas del archivo a importar
-            if(count($ctaBps_array)>500){
-                throw new \yii\web\HttpException(400, 'El archivo excede a las 500 personas para importar!.');
-            }
 
             $listaPersona = array();
             foreach ($ctaBps_array as $value) {
@@ -96,58 +92,28 @@ class CtaBps extends Model
      */
     private function registrarListaPersonaConCBU($lista_persona_bps){
 
+        #obtenemos las personas pendiente a importar(SIN CBU)
+        $personas_perndientes_sin_cbu = Prestacion::find()->select('personaid as  id')->where(['estado' => Prestacion::SIN_CBU])->asArray()->all();
+        $lista_personas_pendientes = \Yii::$app->registral->filtrarPersonaPorIds(['lista_ids' => $personas_perndientes_sin_cbu]);
+
         $resultado = array();
-        $cuils='';
-        foreach ($lista_persona_bps as $persona) {
-            //buscamos persona por lista de cuils
-            $cuils .= (empty($cuils))?$persona['cuil']:','.$persona['cuil'];
-        }
-        
-        $lista_persona_encontrada = PersonaForm::buscarPersonaEnRegistral(['cuils'=>$cuils,'pagesize'=>5000]);
-        
-        //vinculamos los datos bancarios correspondientes a las personas encontradas 
-        $i=0;
-        foreach ($lista_persona_encontrada as $persona) {
-            foreach ($lista_persona_bps as $persona_bps) {
-                if(isset($persona['cuil']) && isset($persona_bps['cuil']) && $persona['cuil']==$persona_bps['cuil']){                    
-                    $lista_persona_encontrada[$i]['cuenta']['convenio'] = $persona_bps['convenio'];
-                    $lista_persona_encontrada[$i]['cuenta']['cbu'] = $persona_bps['cuenta']['cbu'];
-                    $lista_persona_encontrada[$i]['cuenta']['tipo_inscripcionid'] = $persona_bps['cuenta']['tipo_inscripcionid'];
-                    $lista_persona_encontrada[$i]['cuenta']['tipo_cuentaid'] = $persona_bps['cuenta']['tipo_cuentaid'];
-                    $lista_persona_encontrada[$i]['cuenta']['sub_sucursalid'] = $persona_bps['cuenta']['sub_sucursalid'];
-                    $lista_persona_encontrada[$i]['prestacion']['monto'] = $persona_bps['prestacion']['monto'];
-                    $lista_persona_encontrada[$i]['prestacion']['fecha'] = $persona_bps['prestacion']['fecha'];
-                    $lista_persona_encontrada[$i]['prestacion']['observacion'] = 'Prestación creada desde un archivo CTABPS.txt';
-                    break;
+        $lista_persona_encontrada = [];
+        foreach ($lista_personas_pendientes as $pendiente) {
+            foreach ($lista_persona_bps as $persona) {
+                //buscamos persona por lista de cuils
+                if(strval($persona['cuil']) === strval($pendiente['cuil'])){
+                    $pendiente['cuenta']['cbu'] = $persona['cuenta']['cbu'];
+                    $pendiente['cuenta']['convenio'] = $persona['convenio'];
+                    $lista_persona_encontrada[] = $pendiente;
                 }
-            }
-            $i++;
-        }
-        
-        //Separamos las personas que aun no existen
-        $i=0;
-        foreach ($lista_persona_bps as $persona_bps) {
-            foreach ($lista_persona_encontrada as $persona) {
-                if(isset($persona['cuil']) && isset($persona_bps['cuil']) && $persona['cuil']==$persona_bps['cuil']){   
-                    unset($lista_persona_bps[$i]);
-                    break;
-                }
-            }
-            $i++;
-        }
-        
-        //registramos la cuenta bancaria de la persona
-        $resultado = $this->crearCuentas($lista_persona_encontrada);
-        
-        //Se notifican las personas que aun no estan registradas
-        $error_persona = array();
-        foreach ($lista_persona_bps as $persona) {
-            $resultado['errors'][] = "No se encuentra registrada la persona ".$persona['nombre']." ".$persona['apellido']." cuil:".$persona['cuil'];
+            }            
         }
                 
-
+        //registramos la cuenta bancaria de la persona
+        $resultado = $this->crearCuentas($lista_persona_encontrada);
+                
+        $resultado['errors'] = [];
         return $resultado;
-        
     }
     
     /**
@@ -160,6 +126,7 @@ class CtaBps extends Model
         $resultado = array();
         $errors = array();
         $i=0;
+
         foreach ($lista_personas as $persona) {
 
             #Chequeamos el tipo de convenio a importar

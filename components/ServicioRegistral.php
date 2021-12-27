@@ -27,7 +27,45 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $this->_client = $guzzleClient;
     }
 
+    /**
+     * Se filtrar persona por un listado de cuils. Esta interoperabilidad no actua con el ActiveRecord
+     * @param array $array['lista_cuils'] = [1,2,3,4]
+     * @return array Devuelte una lista de personas con su nombre, apellido y cuil
+     */
     public function filtrarPersonaPorCuils($data)
+    {
+        $client =   $this->_client;
+        try{
+            \Yii::error(json_encode($data));
+            $headers = [
+                'Authorization' => 'Bearer ' .$this->crearToken(), 
+           ];          
+            
+           
+           $response = $client->request('POST', 'http://registral/api/personas/filtrar-por-cuils', ['json' => $data,'headers' => $headers]);
+           $respuesta = json_decode($response->getBody()->getContents(), true);
+           \Yii::error($respuesta);
+           return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+            $resultado = json_decode($e->getResponse()->getBody()->getContents());
+            
+            \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+            \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+            return $resultado;
+        } catch (Exception $e) {            
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return $e->getMessage();
+        }
+       
+    }
+
+    /**
+     * Se filtrar persona por un listado de ids. Esta interoperabilidad no actua con el ActiveRecord
+     * @param array $array['lista_ids'] = [1,2,3,4]
+     * @return array Devuelte una lista de personas con su nombre, apellido y cuil
+     */
+    public function filtrarPersonaPorIds($data)
     {
         $client =   $this->_client;
         try{
