@@ -22,7 +22,7 @@ services:
     image: mariadb:10.4
     restart: always
     volumes:
-     - inventario-vol:/var/lib/mysql
+     - gcb-vol:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: root
