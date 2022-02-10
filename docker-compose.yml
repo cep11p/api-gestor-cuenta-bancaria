@@ -15,7 +15,7 @@ services:
       DB_PASS: root
     labels:
      - "traefik.backend=gcb"
-     - "traefik.frontend.rule=Host:api.gcb.local"
+     - "traefik.frontend.rule=Host:gcb.local"
      - "traefik.port=80"
 
   gcb_db:
