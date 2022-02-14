@@ -67,6 +67,9 @@ Realizar los pasos en el siguiente orden:
     y corremos el siguiente comando
         composer install
 
+RULES
+-------
+Este sistema tiene la seguridad de yii2-user dektrium... Por lo tanto hay una rule que es creada mediante el formulario de dektrium que esta ubicado en http://gcb.local/rbac/rule/index
 
 TESTING
 -------
