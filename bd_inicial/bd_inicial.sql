@@ -1,8 +1,8 @@
--- MariaDB dump 10.18  Distrib 10.4.17-MariaDB, for debian-linux-gnu (x86_64)
+-- MariaDB dump 10.19  Distrib 10.4.21-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: gcb
 -- ------------------------------------------------------
--- Server version	10.4.17-MariaDB-1:10.4.17+maria~focal
+-- Server version	10.4.21-MariaDB-1:10.4.21+maria~focal
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -31,7 +31,7 @@ CREATE TABLE `audit_data` (
   PRIMARY KEY (`id`),
   KEY `fk_audit_data_entry_id` (`entry_id`),
   CONSTRAINT `fk_audit_data_entry_id` FOREIGN KEY (`entry_id`) REFERENCES `audit_entry` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12256 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12316 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `audit_entry` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_route` (`route`)
-) ENGINE=InnoDB AUTO_INCREMENT=2529 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2544 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,6 +320,7 @@ CREATE TABLE `auth_rule` (
 
 LOCK TABLES `auth_rule` WRITE;
 /*!40000 ALTER TABLE `auth_rule` DISABLE KEYS */;
+INSERT INTO `auth_rule` VALUES ('convenio_rule','O:21:\"app\\rbac\\ConvenioRule\":3:{s:4:\"name\";s:13:\"convenio_rule\";s:9:\"createdAt\";i:1644845794;s:9:\"updatedAt\";i:1644845794;}',1644845794,1644845794);
 /*!40000 ALTER TABLE `auth_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -639,7 +640,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','admin@correo.com','$2y$10$MjbC0Kz/xjyO0.aHr2kKDeMrVMx5q1iXpfUqbH0YzgggsCHNfrGGC','sbkJe8GTYk9a8y_F52gvKHSN2_j83bQC',1604425496,NULL,NULL,'172.20.0.2',1604425496,1616070969,0,1616070969);
+INSERT INTO `user` VALUES (1,'admin','admin@correo.com','$2y$10$MjbC0Kz/xjyO0.aHr2kKDeMrVMx5q1iXpfUqbH0YzgggsCHNfrGGC','sbkJe8GTYk9a8y_F52gvKHSN2_j83bQC',1604425496,NULL,NULL,'172.20.0.2',1604425496,1616070969,0,1644845762);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -681,4 +682,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-18 12:55:59
+-- Dump completed on 2022-02-14 13:39:55
