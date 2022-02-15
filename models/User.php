@@ -230,6 +230,12 @@ class User extends ApiUser
             $user->addError('password','La contraseña no debe estar vacia.');
 
         }
+
+        #Chequeamos que el usuario venga con rol
+        if(!isset($params['usuario']['rol']) || empty($params['usuario']['rol'])){
+            $user->addError('rol','El usuario debe tener un rol asiganado.');
+
+        }
         
         #Registramos el usuario
         if ( $user->load(['User'=>$params['usuario']]) && $user->create()) {
@@ -252,14 +258,11 @@ class User extends ApiUser
         $userPersona->setAttributes($params['usuario']);
         $userPersona->userid = $id;
 
-        $userPersona->addError('pepe','esto es un error1');
-        $userPersona->addError('pepe2','esto es un error2');
-
         if(!$userPersona->save()){
             throw new \yii\web\HttpException(400, json_encode(array($userPersona->errors)));
         }
         
-        $user->setRol('usuario');
+        $user->setRol($params['usuario']['rol']);
 
         return $id;
     }
