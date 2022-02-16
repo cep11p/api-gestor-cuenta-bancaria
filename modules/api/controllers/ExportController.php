@@ -83,7 +83,7 @@ class ExportController extends ActiveController{
         if($model==NULL){
             throw new \yii\web\HttpException(400, 'El recurso con el id '.$id.' no existe!');
         }
-        
+
         $resultado = $model->exportar();
         
         return $resultado;
