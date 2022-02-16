@@ -47,12 +47,33 @@ class CuentaSaldo
      * Esta funcion nos permite reexportar el archivo ctasaldo que ya fueron exportadas
      *
      * @param string $lista_ids
-     * @return void
+     * @return array
      */
     public static function reexportCtaSaldo($id){
 
-        // $lista_ids = explode(',',$lista_ids);
-        $prestaciones = Prestacion::find()->asArray()->where(['exportid'=>$id])->all();
+        $prestaciones = Prestacion::find()->asArray()->where(['exportid'=>$id, 'estado' => Prestacion::SIN_CBU])->all();
+
+        #Armamos la estructura necesaria para reutilzar el codigo siguiente
+        $lista_prestacion = [];
+        foreach ($prestaciones as $value) {
+            $lista_prestacion[] = $value;
+        }
+
+        $lista_persona_prestacion = Prestacion::setInstanciaSubSucursalYPersona($lista_prestacion);
+        $resultado = Prestacion::setCuentaSaldoTxt($lista_persona_prestacion);
+
+        return $resultado;
+    }
+
+    /**
+     * Esta funcion nos permite reexportar a todas la personas pendientes (Personas sin CBU que solicitan CBU)
+     *
+     * @param string $lista_ids
+     * @return array
+     */
+    public static function exportarPendientesPorConvenio($tipo_convenioid){
+
+        $prestaciones = Prestacion::find()->asArray()->where(['estado' => Prestacion::SIN_CBU, 'tipo_convenioid' => $tipo_convenioid])->all();
 
         #Armamos la estructura necesaria para reutilzar el codigo siguiente
         $lista_prestacion = [];

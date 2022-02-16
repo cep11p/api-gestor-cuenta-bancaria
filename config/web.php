@@ -157,6 +157,10 @@ $config = [
                 [   #Export
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/export', 
+                    'extraPatterns' => [
+                        'GET pendientes-por-convenio/{id}' => 'pendientes-por-convenio',
+                        'OPTIONS pendientes-por-convenio/{id}' => 'pendientes-por-convenio',
+                    ], 
                 ], 
                 [   #CTASLDO
                     'class' => 'yii\rest\UrlRule',

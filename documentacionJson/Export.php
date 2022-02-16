@@ -46,3 +46,12 @@
 * @method GET
 * @return array {"exportacion":"texto plano"}
 */
+
+
+/**** Para re-exportar ****/
+/**
+* Se realiza una exportacion de todas las peticiones pendientes por convenio (sin respuesta del banco)
+* @url http://gcb.local/api/exports/pendientes-por-convenio/1
+* @method GET
+* @return array {"exportacion":"texto plano"}
+*/

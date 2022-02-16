@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\api\controllers;
 
+use app\models\CuentaSaldo;
 use app\models\Export;
 use app\models\ExportSearch;
 use yii\rest\ActiveController;
@@ -89,5 +90,22 @@ class ExportController extends ActiveController{
         return $resultado;
     }
     
+    public function actionPendientesPorConvenio($id)
+    {
+        $resultado['message']='Se exporta';
+        if(!isset($id) || empty($id)){
+            throw new \yii\web\HttpException(400, 'Por favor seleccione un convenio');
+        }  
+
+        #Chequeamos permiso
+        if(!Yii::$app->user->can('cuenta_saldo_exportar',$id)){
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
+        $resultado['cuenta_saldo'] = CuentaSaldo::exportarPendientesPorConvenio($id);        
+
+        
+        return $resultado;
+    }
     
 }
