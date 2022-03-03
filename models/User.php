@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Help;
 use app\models\ApiUser;
 use Exception;
 use Yii;
@@ -93,26 +94,38 @@ class User extends ApiUser
 
             #Asignamos los permisos
             foreach ($params['lista_permiso'] as $value) {
+
+                if (!\Yii::$app->user->can('admin') && $value['name'] === 'admin') {
+                    throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para asignar un rol admin');
+                }
+
+                $auth_item = AuthItem::find()->where(['name' => $value])->one();
+                if($auth_item === null){
+                    throw new \yii\web\HttpException(400, "El rol o permiso llamado '".$value['name']."' no existe.");
+                }
+
                 if((AuthAssignment::findOne(['item_name'=>$value['name'], 'user_id'=>strval($params['usuarioid'])])) === NULL){
                     $auth_assignment = new AuthAssignment();
                     $auth_assignment->setAttributes(['item_name'=>$value['name'],'user_id'=>strval($params['usuarioid'])]);
                     if(!$auth_assignment->save()){
-                        throw new \yii\web\HttpException(400, json_encode([$auth_assignment->errors]));
+                        throw new \yii\web\HttpException(400, Help::ArrayErrorsToString($auth_assignment->errors));
                     }
                 }
-            }
+            
 
-            #Asociamos el convenio (vinculacion de convenio, permiso y usuario)
-            foreach ($params['lista_permiso'] as $value) {
-                $model = new UsuarioHasConvenio();
-                $model->setAttributes([
-                    'userid'=>$params['usuarioid'],
-                    'tipo_convenioid'=>$params['tipo_convenioid'],
-                    'permiso'=>$value['name']
-                ]);
-
-                if(!$model->save()){
-                    throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                #Asociamos el convenio (vinculacion de convenio, permiso y usuario)
+                //si el authitem es un permiso realizamos la vinculacion
+                if($auth_item->type == AuthItem::PERMISO){
+                    $model = new UsuarioHasConvenio();
+                    $model->setAttributes([
+                        'userid'=>$params['usuarioid'],
+                        'tipo_convenioid'=>$params['tipo_convenioid'],
+                        'permiso'=>$value['name']
+                    ]);
+    
+                    if(!$model->save()){
+                        throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                    }
                 }
             }
             
