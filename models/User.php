@@ -95,6 +95,7 @@ class User extends ApiUser
             #Asignamos los permisos
             foreach ($params['lista_permiso'] as $value) {
 
+                #Si el rol a asignar es admin debemos comprobar que el usuario asignador sea admin
                 if (!\Yii::$app->user->can('admin') && $value['name'] === 'admin') {
                     throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para asignar un rol admin');
                 }
