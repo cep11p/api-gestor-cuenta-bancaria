@@ -62,8 +62,8 @@ class Help extends \yii\base\Component{
     
     /**
      * Se valida la fechas
-     * @param type $date
-     * @param type $format
+     * @param string $date
+     * @param string $format
      * @return type
      */
     public static function validateDate($date, $format = 'Y-m-d H:i:s')
