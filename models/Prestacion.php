@@ -466,7 +466,42 @@ class Prestacion extends BasePrestacion
             if(!isset($value['lugar']) || empty($value['lugar'])){
                 $error['direccion'] = 'Faltan los datos de direccion.';
             }
-                        
+            
+            #nro documento
+            if(!isset($value['nro_documento']) || empty($value['nro_documento'])){
+                $error['nro_documento'] = 'Faltan nro de documento.';
+            }
+
+            #fecha_nacimiento
+            if(!isset($value['fecha_nacimiento']) || empty($value['fecha_nacimiento'])){
+                $error['fecha_nacimiento'] = 'Faltan fecha de nacimiento.';
+            }
+
+            #sexo
+            if(!isset($value['sexo']) || empty($value['sexo'])){
+                $error['sexo'] = 'Faltan el sexo.';
+            }
+
+            #cuil
+            if(!isset($value['cuil']) || empty($value['cuil'])){
+                $error['cuil'] = 'Faltan nro de cuil.';
+            }
+
+            #Validamos tipo_documento
+            if(!isset($value['tipo_documentoid']) || empty($value['tipo_documentoid'])){
+                $error['tipo_documento'] = 'Faltan tipo documento.';
+            }
+
+            #Validamos que tenga nacionalidad
+            if(!isset($value['nacionalidadid']) || empty($value['nacionalidadid'])){
+                $error['nacionalidad'] = 'Faltan nacionalidad.';
+            }
+        
+            #Validamos que tenga calle
+            if(!isset($value['lugar']['calle']) || empty($value['lugar']['calle'])){
+                $error['calle'] = 'Faltan domicilio.';
+            }
+                            
             //si hay errores notificamos
             if(count($error)>1){
                 throw new \yii\web\HttpException(400, json_encode(array($error)));
